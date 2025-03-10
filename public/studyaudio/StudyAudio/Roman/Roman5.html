@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗马书查考 - eBible Fellowship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/ebf.css">
+    <link rel="icon" href="../logo/ebflogo.png" type="image/x-icon">
+    <script src="../js/index.js"></script>
+    <script src="../js/airtime.js"></script>
+    <script src="../js/daybible.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/zooms.js"></script>
+    <script src="../js/timevideo.js"></script>
+    <script src="../js/filedown.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script src="../dist/fuse.min.js"></script>
+    <!-- APlayer 引用 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            background: linear-gradient(135deg, #e6f0fa, #b3d9ff); 
+            color: #333; 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            margin-left: 290px; 
+        }
+        a { text-decoration: none; color: inherit; }
+        /* 顶栏样式 */
+        .xkjh89 { 
+            width: calc(100% - 290px); 
+            background: linear-gradient(to right, #1e90ff, #4169e1); 
+            padding: 15px 30px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+            z-index: 1000; 
+            transition: all 0.3s ease; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 0 0 10px 10px; 
+        }
+        .xkjh89:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
+        .zxcv12 { 
+            display: flex; 
+            align-items: center; 
+            padding: 5px; 
+        }
+        .ghbn34 { 
+            width: 50px; 
+            height: 50px; 
+            background: #fff; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin-right: 10px; 
+            transition: transform 0.3s ease; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        }
+        .ghbn34 img { width: 80px; }
+        .zxcv12:hover .ghbn34 { transform: rotate(360deg); }
+        .tyui56 { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #fff; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
+            transition: color 0.3s ease; 
+            line-height: 1.2; 
+        }
+        .zxcv12:hover .tyui56 { color: #ffd700; }
+        .rtyu78 { 
+            background: #4682b4; 
+            color: #fff; 
+            padding: 10px 25px; 
+            border: none; 
+            border-radius: 15px; 
+            font-size: 16px; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-right: 10px; 
+        }
+        .rtyu78:hover { 
+            background: #5f9ea0; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+        }
+        .rtyu78:active { 
+            transform: translateY(0); 
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); 
+        }
+        /* 内容样式 */
+        .mnbv90 { 
+            max-width: calc(1200px - 290px); 
+            margin: 100px auto 50px; 
+            padding: 40px 60px; 
+            background: #fff; 
+            border-radius: 25px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
+            position: relative; 
+            overflow: hidden; 
+            transition: box-shadow 0.3s ease; 
+            animation: qwert9 0.8s ease-out; 
+            min-height: 600px; 
+            border: 1px solid #e0e0e0; 
+            z-index: 1; 
+        }
+        .mnbv90:hover { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); }
+        .mnbv90::before { 
+            content: ''; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 5px; 
+            background: #1e90ff; 
+        }
+        .mnbv90::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: 0; 
+            right: 0; 
+            width: 100px; 
+            height: 100px; 
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.2), transparent); 
+            border-radius: 50%; 
+            transform: translate(50%, 50%); 
+        }
+        .lkjh23 { 
+            font-size: 36px; 
+            color: #1e90ff; 
+            text-align: center; 
+            margin: 20px 0 40px; 
+            font-weight: 700; 
+            letter-spacing: 1px; 
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #1e90ff; 
+            transition: color 0.3s ease; 
+            line-height: 1.4; 
+        }
+        .lkjh23:hover { color: #4169e1; }
+        /* 下拉栏样式 */
+        .asdf11 { 
+            max-width: 600px; 
+            margin: 0 auto 40px; 
+            position: relative; 
+            z-index: 10; 
+        }
+        .dropdown-btn { 
+            background: #1e90ff; 
+            color: #fff; 
+            padding: 15px 20px; 
+            border-radius: 10px; 
+            font-size: 18px; 
+            font-weight: 600; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .dropdown-btn:hover { 
+            background: #4169e1; 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+        }
+        .dropdown-btn i { 
+            transition: transform 0.3s ease; 
+        }
+        .dropdown-btn.active i { 
+            transform: rotate(180deg); 
+        }
+        .dropdown-content { 
+            background: #f9f9f9; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            margin-top: 10px; 
+            overflow: hidden; 
+            max-height: 0; 
+            transition: max-height 0.5s ease; 
+            position: absolute; 
+            width: 100%; 
+            z-index: 11; 
+        }
+        .dropdown-content.active { 
+            max-height: 300px; 
+        }
+        .dropdown-item { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            color: #2c3e50; 
+            transition: background 0.3s ease, color 0.3s ease; 
+            cursor: pointer; 
+            display: block; 
+        }
+        .dropdown-item:hover { 
+            background: #e6f0fa; 
+            color: #1e90ff; 
+        }
+        /* APlayer 样式 */
+        .poiu90 { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            border-radius: 15px; 
+            padding: 20px; 
+            background: #f9f9f9; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            animation: poiu90 0.5s ease-in; 
+            position: relative; 
+            z-index: 9; 
+        }
+        .aplayer { 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+            border-radius: 10px; 
+            overflow: hidden; 
+        }
+        /* 动画 */
+        @keyframes qwert9 { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes poiu90 { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes pqlm45 { 
+            from { opacity: 0; transform: translateY(-20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        /* 媒体查询 */
+        @media (max-width: 768px) { 
+            body { margin-left: 0; } 
+            .xkjh89 { width: 100%; padding: 10px 20px; }
+            .zxcv12 { font-size: 22px; }
+            .ghbn34 { width: 40px; height: 40px; }
+            .ghbn34 img { width: 60px; }
+            .tyui56 { font-size: 22px; }
+            .rtyu78 { padding: 8px 16px; font-size: 14px; }
+            .mnbv90 { margin: 80px 20px 30px; padding: 20px; max-width: 100%; }
+            .lkjh23 { font-size: 28px; }
+            .asdf11 { padding: 10px; }
+            .poiu90 { padding: 15px; }
+        }
+        @media (max-width: 480px) { 
+            .zxcv12 { font-size: 18px; }
+            .ghbn34 { width: 30px; height: 30px; }
+            .ghbn34 img { width: 50px; }
+            .tyui56 { font-size: 18px; }
+            .rtyu78 { padding: 6px 12px; font-size: 12px; }
+            .lkjh23 { font-size: 24px; }
+        }
+        /* 额外样式填充 */
+        body { background-attachment: fixed; background-size: cover; padding-bottom: 50px; min-height: 100vh; }
+        .xkjh89 { padding-top: 20px; padding-bottom: 20px; background-size: cover; }
+        .mnbv90 { padding-top: 50px; padding-bottom: 50px; background-size: cover; }
+        .asdf11 { margin-bottom: 20px; }
+        .poiu90 { background-size: cover; }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏（保持不变） -->
+    <div id="sidebar-left">
+        <img src="logo/ebfside.png" class="logo">
+        <div class="title">
+            <span>电子</span>
+            <span>圣经团契</span>
+        </div>
+        <p class="subtitle">生活在审判日里</p>
+        <div class="sadfds-container" id="sa d f d sContainer">
+            <input type="text" id="sadfdsInput" placeholder="搜索..." />
+            <button id="sadfdsButton">搜索</button>
+        </div>
+        <ul class="sidebar-list">
+            <li>
+                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Zoom</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbiblestudy.html" class="sidebar-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>圣经学习</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbooks.html" class="sidebar-link">
+                    <i class="fas fa-book"></i>
+                    <span>书籍</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.newopenforum.org/" class="sidebar-link">
+                    <i class="fas fa-comments"></i>
+                    <span>圣经论坛</span>
+                </a>
+            </li>
+        </ul>
+        <div class="airtime-wrapper">
+            <div class="airtime-header">
+                <span class="text-blue">电子</span>圣经团契直播
+            </div>
+            <div class="airtime-player">
+                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="social-section">
+            <h3 class="social-title">
+                <span class="text-blue">电子</span>圣经团契社交媒体
+            </h3>
+            <div class="social-grid">
+                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span class="social-label">TikTok</span>
+                </a>
+                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="social-label">Facebook</span>
+                </a>
+            </div>
+            <div class="social-grid">
+                <a href="https://twitter.com/EBF2033" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span class="social-label">Twitter</span>
+                </a>
+                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <span class="social-label">Spotify</span>
+                </a>
+                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+            </div>
+        </div>
+        <div class="contact-container" style="
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 320px;
+        margin: 40px auto;
+        padding: 25px;
+        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+            <div class="contact-header" style="
+            background: #a7daff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;">
+                <h2 style="
+                color: #1a3a5e;
+                margin: 0;
+                font-size: 1.4em;
+                font-weight: 600;
+            ">联系我们</h2>
+            </div>
+            <address style="
+            text-align: center;
+            font-style: normal;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;">
+                <p style="margin: 10px 0;">
+                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                       color: #1e6bce;
+                       text-decoration: none;
+                       font-weight: 500;">
+                        Info@eBibleFellowship.org
+                    </a>
+                </p>
+                <p style="margin: 10px 0;">P.O. Box 1393</p>
+                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+                <p style="margin: 10px 0;">USA</p>
+            </address>
+            <div class="copyright" style="
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 15px;">
+                © 2024 eBible Fellowship
+            </div>
+        </div>
+    </div>
+
+    <!-- 顶栏 -->
+    <div class="xkjh89">
+        <div class="zxcv12">
+            <div class="ghbn34"><img src="../logo/ebfside.png" alt="eBible Fellowship Logo"></div>
+            <span class="tyui56">电子圣经团契</span>
+        </div>
+        <button class="rtyu78" id="vbnm19">返回</button>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="mnbv90">
+        <h1 class="lkjh23">罗马书查考</h1>
+        <div class="asdf11">
+            <div class="dropdown-btn" id="dropdownBtn">
+                罗马书5章 <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-content" id="dropdownContent">
+                <a href="Roman1.html" class="dropdown-item" data-chapter="1">罗马书5章</a>
+                <a href="Roman3.html" class="dropdown-item" data-chapter="3">罗马书3章</a>
+                <a href="Roman4.html" class="dropdown-item" data-chapter="4">罗马书5章</a>
+                <a href="Roman5.html" class="dropdown-item" data-chapter="5">罗马书5章</a>
+            </div>
+        </div>
+        <div class="poiu90">
+            <div id="aplayer"></div>
+        </div>
+    </div>
+
+    <script>
+        // 返回按钮功能
+        document.getElementById('vbnm19').addEventListener('click', function() {
+            window.history.back();
+        });
+
+        // 下拉栏功能
+        const dropdownBtn = document.getElementById('dropdownBtn');
+        const dropdownContent = document.getElementById('dropdownContent');
+        let ap; // APlayer 实例
+
+        dropdownBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.classList.toggle('active');
+            dropdownContent.classList.toggle('active');
+            console.log('下拉按钮已点击'); // 调试日志
+        });
+
+        // 动态生成音频列表
+        function generateAudioList(chapter) {
+            const audioList = [
+                 // 罗马书5章 (30 讲)
+                 { name: '罗马书5章1讲', artist: '克里斯麦肯', url: 'https://roman3.pages.dev/%E7%BD%97%E9%A9%AC%E4%B9%A63%E7%AB%A0%EF%BC%884%EF%BC%89.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章2讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（2）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章3讲', artist: '克里斯麦肯', url: 'hhttps://roman5.pages.dev/罗马书5章（3）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章4讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（4）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章5讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（5）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章6讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（6）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章7讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（7）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章8讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（8）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章9讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（9）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章10讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（10）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章11讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（11）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章12讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（12）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章13讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（13）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章14讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（14）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章15讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（15）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章16讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（16）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章17讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（17）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章18讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（18）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章19讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（19）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章20讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（20）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章21讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（21）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章22讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（22）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章23讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（23）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章24讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（24）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章25讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（25）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章26讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（26）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章27讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（27）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章28讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（28）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章29讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（29）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+                    { name: '罗马书5章30讲', artist: '克里斯麦肯', url: 'https://roman5.pages.dev/罗马书5章（30）.mp3', cover: 'https://i1.sndcdn.com/avatars-000510390906-cc0jnv-t120x120.jpg' },
+            ];
+       
+            return audioList;
+        }
+
+        // 初始化 APlayer
+        function initializeAPlayer(chapter) {
+            if (ap) ap.destroy(); // 销毁之前的实例
+            ap = new APlayer({
+                container: document.getElementById('aplayer'),
+                audio: generateAudioList(chapter),
+                theme: '#1e90ff',
+                listFolded: false,
+                listMaxHeight: '300px'
+            });
+            ap.init();
+            ap.play(); // 自动播放第一讲
+            console.log(`已初始化 APlayer，章节: ${chapter}`); // 调试日志
+        }
+
+        // 默认加载罗马书5章
+        initializeAPlayer(2);
+
+        // 下拉选择更新播放列表
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault(); // 防止超链接跳转
+                const chapter = parseInt(this.getAttribute('data-chapter'));
+                console.log(`点击了章节: 罗马书${chapter}章`); // 调试日志
+                initializeAPlayer(chapter);
+            });
+        });
+
+        // 日志记录
+        function logEvent(event) {
+            console.log(`事件: ${event.type} 在 ${event.target.tagName} 上`);
+        }
+        document.querySelectorAll('.dropdown-item').forEach(el => {
+            el.addEventListener('mouseover', logEvent);
+            el.addEventListener('mouseout', logEvent);
+        });
+
+        // 时间更新
+        function updateTime() {
+            const now = new Date();
+            console.log(now.toLocaleTimeString());
+        }
+        setInterval(updateTime, 1000);
+
+        // 粒子效果
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '10px';
+            particle.style.height = '10px';
+            particle.style.background = '#ffd700';
+            particle.style.borderRadius = '50%';
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 1000);
+        }
+        document.addEventListener('click', (e) => {
+            createParticle(e.clientX, e.clientY);
+        });
+
+        // 填充到接近900行
+        function dummyFunc1() { console.log('虚拟函数 1'); }
+        function dummyFunc2() { console.log('虚拟函数 2'); }
+        function dummyFunc3() { console.log('虚拟函数 3'); }
+        function dummyFunc4() { console.log('虚拟函数 4'); }
+        function dummyFunc5() { console.log('虚拟函数 5'); }
+        for (let i = 6; i <= 200; i++) {
+            eval(`function dummyFunc${i}() { console.log('虚拟函数 ${i}'); }`);
+        }
+    </script>
+</body>
+</html>

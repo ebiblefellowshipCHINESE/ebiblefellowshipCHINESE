@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子圣经团契 UI - YouTube 1:1</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        /* 顶部导航栏 */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .nav-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+            white-space: nowrap;
+        }
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+            max-width: 600px;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 20px 0 0 20px;
+            outline: none;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .search-btn {
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 0 20px 20px 0;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        /* 顶部图片 */
+        .header-image {
+            width: 100%;
+            height: auto;
+            max-height: 200px;
+            background-color: #ccc;
+            margin-top: 60px;
+            object-fit: cover;
+            display: block;
+        }
+        /* 主内容 */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        .profile-logo {
+            width: 60px;
+            height: 60px;
+            background-color: #ddd;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            word-wrap: break-word;
+        }
+        .username {
+            color: #606060;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .description {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .expand-btn {
+            float: right;
+            color: #065fd4;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        /* 标签页导航 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ccc;
+            margin-top: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .tab {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #606060;
+            cursor: pointer;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .tab.active {
+            color: #000;
+            font-weight: bold;
+            border-bottom: 2px solid #000;
+        }
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* 首页内容样式 */
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .section-divider {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        .timeline-cover {
+            width: 200px;
+            height: 150px;
+            background-color: #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+        /* 弹窗 */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+            z-index: 20;
+        }
+        .popup.show {
+            display: block;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #606060;
+            font-size: 20px;
+        }
+        .about-section {
+            font-size: 14px;
+            color: #606060;
+            line-height: 1.5;
+        }
+        .about-section h2 {
+            font-size: 16px;
+            color: #000;
+            margin: 20px 0 10px;
+        }
+        .about-section a {
+            color: #065fd4;
+            text-decoration: none;
+        }
+        .about-section .stats span {
+            display: block;
+            margin: 5px 0;
+        }
+        @keyframes slideIn {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .top-nav {
+                flex-wrap: wrap;
+                padding: 8px;
+            }
+            .nav-logo {
+                margin-bottom: 8px;
+            }
+            .search-container {
+                margin: 0;
+                width: 100%;
+            }
+            .header-image {
+                margin-top: 80px;
+            }
+            .profile-logo {
+                width: 50px;
+                height: 50px;
+            }
+            .title {
+                font-size: 18px;
+            }
+            .popup {
+                max-width: 90%;
+            }
+            .timeline-cover {
+                width: 150px;
+                height: 100px;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-title {
+                font-size: 16px;
+            }
+            .search-bar {
+                font-size: 12px;
+                padding: 5px 8px;
+            }
+            .search-btn {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+            .profile-logo {
+                width: 40px;
+                height: 40px;
+            }
+            .title {
+                font-size: 16px;
+            }
+            .username, .description, .expand-btn {
+                font-size: 12px;
+            }
+            .header-image {
+                max-height: 150px;
+            }
+            .tabs {
+                font-size: 12px;
+            }
+            .tab {
+                padding: 8px 15px;
+            }
+            .section-title {
+                font-size: 14px;
+            }
+            .timeline-cover {
+                width: 120px;
+                height: 80px;
+            }
+            .about-section {
+                font-size: 12px;
+            }
+            .about-section h2 {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="top-nav">
+        <div class="nav-logo">
+            <div class="logo"></div>
+            <span class="nav-title">电子圣经团契</span>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="搜索">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 顶部图片 -->
+        <div class="header-image" title="顶部图片"></div>
+
+        <!-- logo和标题 -->
+        <div class="profile-header">
+            <div class="profile-logo"></div>
+            <h1 class="title">电子圣经团契</h1>
+            <h1 style="color: red;">本页面暂未完成,请点击返回</h1>
+            <a href="https://chineseebiblefellowship.pages.dev"> <button>返回</button></a>
+           
+        </div>
+
+        <!-- 用户名和描述 -->
+        <p class="username">@电子圣经团契</p>
+        <p class="description">电子圣经团契的命名</p>
+
+        <!-- 展开按钮 -->
+        <span class="expand-btn" onclick="togglePopup()">关于</span>
+
+        <!-- 标签页导航 -->
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('home')">首页</div>
+            <div class="tab" onclick="showTab('videos')">视频</div>
+            <div class="tab" onclick="showTab('playlists')">播放列表</div>
+            <div class="tab" onclick="showTab('shorts')">短视频</div>
+        </div>
+
+        <!-- 标签页内容 -->
+        <div id="home" class="tab-content active">
+            <!-- 圣经论坛 -->
+            <div class="section">
+                <h2 class="section-title">圣经论坛</h2>
+                <hr class="section-divider">
+            </div>
+
+            <!-- 圣经历史年代表 -->
+            <div class="section">
+                <h2 class="section-title">圣经历史年代表</h2>
+                <div class="timeline-cover"></div>
+                <hr class="section-divider">
+            </div>
+
+            <!-- 歌曲 -->
+            <div class="section">
+                <h2 class="section-title">歌曲</h2>
+                <hr class="section-divider">
+            </div>
+
+            <!-- 圣经查考 -->
+            <div class="section">
+                <h2 class="section-title">圣经查考</h2>
+                <hr class="section-divider">
+            </div>
+        </div>
+        <div id="videos" class="tab-content">
+            <div class="content-placeholder">这里是视频内容</div>
+        </div>
+        <div id="playlists" class="tab-content">
+            <div class="content-placeholder">这里是播放列表内容</div>
+        </div>
+        <div id="shorts" class="tab-content">
+            <div class="content-placeholder">这里是短视频内容</div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="popup" id="popup">
+        <button class="close-btn" onclick="togglePopup()" title="关闭"><i class="fas fa-times"></i></button>
+        <div class="about-section">
+            <p>电子圣经团契的官方频道。E 圣经团契之所以得名，是因为：</p>
+            <p><strong>电子</strong>：我们相信主已经以惊人的方式利用电子媒介（无线电、互联网等）拯救了世界教会和会众之外的大量人群。现在手头的任务是“喂养他的羊”，以便上帝拯救的所有人能够被福音所启迪。</p>
+            <p><strong>圣经</strong>：圣经是我们的权威。任何人造的信仰、信条或教义声明都不能凌驾于圣经之上。我们生活在一个圣经被上帝高度推崇的时代。上帝的话语在其宣告的一切中都是至高无上的。</p>
+            <p><strong>团契</strong>：我们是一群信徒，渴望通过他的话语与上帝团契。圣经告诉我们，教会时代已经结束；因此，我们与任何教会或教派都没有任何从属关系或认同。</p>
+            <p>请访问 <a href="https://chineseebiblefellowship.pages.dev" target="_blank">chineseebiblefellowship.pages.dev</a></p>
+
+            <h2>链接</h2>
+            <p><a href="https://chineseebiblefellowship.pages.dev" target="_blank">圣经团契之家</a> - chinese</p>
+            <p><a href="https://facebook.com/ebiblefellowship" target="_blank">Facebook</a> - facebook.com/ebiblefellowship</p>
+            <p><a href="https://ebiblefellowship.org/player" target="_blank">全天候网络电台和节目表</a> - ebiblefellowship.org/player</p>
+            <p><a href="https://ebiblefellowship.org/biblestudies/genesis-chapter-1" target="_blank">研究</a> - ebiblefellowship.org/biblestudies/genesis-chapter-1</p>
+            <p><a href="https://ebiblefellowship.org/nofs" target="_blank">问答</a> - ebiblefellowship.org/nofs</p>
+
+            <h2>频道详情</h2>
+            <p><a href="mailto:someone@example.com">查看电子邮件地址</a></p>
+            <p><a href="https://www.youtube.com/@Ebiblefellowship" target="_blank">www.youtube.com/@Ebiblefellowship</a></p>
+            <div class="stats">
+                <span>17.9K 名订阅者</span>
+                <span>5,860 个视频</span>
+                <span>观看次数：2,699,917</span>
+                <span>加入日期：2013 年 4 月 21 日</span>
+                <span>美国</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePopup() {
+            const popup = document.getElementById('popup');
+            popup.classList.toggle('show');
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>电子圣经团契</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/ebf.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
+    <script src="js/index.js"></script>
+    <SCRIpt src="js/airtime.js"></SCRIpt>
+    <script src="js/daybible.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/zooms.JS"></script>
+    <script src="js/timevideo.js"></script>
+    <script src="js/filedown.js"></script>
+    <script src="js/cookie.js"></script>
+
+    <script src="dist/fuse.min.js"></script>
+    
+</head>
+
+<body>
+    <div id="sidebar-left">
+        <img src="logo/ebfside.png" class="logo">
+        <div class="title">
+            <span>电子</span>
+            <span>圣经团契</span>
+        </div>
+        <p class="subtitle">生活在审判日里</p>
+        <div class="sadfds-container" id="sa d f d sContainer">
+            <input type="text" id="sadfdsInput" placeholder="搜索..." />
+            <button id="sadfdsButton">搜索</button>
+        </div>
+        <ul class="sidebar-list">
+            <li>
+                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09"
+                    class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Zoom</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbiblestudy.html" class="sidebar-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>圣经学习</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbooks.html" class="sidebar-link">
+                    <i class="fas fa-book"></i>
+                    <span>书籍</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.newopenforum.org/" class="sidebar-link">
+                    <i class="fas fa-comments"></i>
+                    <span>圣经论坛</span>
+                </a>
+            </li>
+        </ul>
+        <div class="airtime-wrapper">
+            <div class="airtime-header">
+                <span class="text-blue">电子</span>圣经团契直播
+            </div>
+            <div class="airtime-player">
+                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        <div class="social-section">
+            <h3 class="social-title">
+                <span class="text-blue">电子</span>圣经团契社交媒体
+            </h3>
+            <div class="social-grid">
+                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+
+                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span class="social-label">TikTok</span>
+                </a>
+
+                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="social-label">Facebook</span>
+                </a>
+            </div>
+            <div class="social-grid">
+                <a href="https://twitter.com/EBF2033" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span class="social-label">Twitter</span>
+                </a>
+                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <span class="social-label">Spotify</span>
+                </a>
+                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+            </div>
+        </div>
+        <div class="contact-container" style="
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 320px;
+        margin: 40px auto;
+        padding: 25px;
+        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+            <div class="contact-header" style="
+            background: #a7daff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;">
+                <h2 style="
+                color: #1a3a5e;
+                margin: 0;
+                font-size: 1.4em;
+                font-weight: 600;
+            ">联系我们</h2>
+            </div>
+
+            <address style="
+            text-align: center;
+            font-style: normal;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;">
+                <p style="margin: 10px 0;">
+                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                       color: #1e6bce;
+                       text-decoration: none;
+                       font-weight: 500;">
+                        Info@eBibleFellowship.org
+                    </a>
+                </p>
+                <p style="margin: 10px 0;">P.O. Box 1393</p>
+                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+                <p style="margin: 10px 0;">USA</p>
+            </address>
+
+            <div class="copyright" style="
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 15px;">
+                © 2024 eBible Fellowship
+            </div>
+        </div>
+    </div>
+    <header class="bibl-header">
+        <div class="header-grid">
+            <!-- 品牌区 -->
+            <div class="branding">
+                
+                <div class="books"style>
+          
+                    <img src="logo/ebfside.png" width="100px">
+                    <h1 class="site-title" style="text-align: center;font-family: Arial, Helvetica, sans-serif;"><span>电子</span>圣经团契</h1>
+                    <h1 class="site-title" style="text-align: center;font-family: Arial, Helvetica, sans-serif;">圣经书籍</h1>
+                </div>
+            </div>
+            <!-- 智能搜索 -->
+            <div class="searcsadfpper">
+                <input type="text" id="adsgarch" placeholder="搜索经文、主题或注释...">
+             
+            </div>
+            <ul id="dropdown" class="dropdown"></ul>
+        </div>
+    </header>
+    <p style="text-align: center;font-size: 20px;color: #0095ff;font-family: Arial, Helvetica, sans-serif;">电子圣经团契整理了很多书籍</p>
+    <div class="asdgsadfgadfg">
+
+        <main class="book-list">
+            <div class="book-card" id="roman1">
+                <img src="picture/roman1.png" alt="圣经注释" class="book-cover">
+                <h3 class="book-title">罗马书1章查考</h3>
+                <div class="book-meta">
+                    <p>📚 作者：克里斯·麦肯</p>
+                    <p class="xl">罗马书系列</p>
+
+                </div>
+                <div class="book-actions" >
+                    <a href="#" class="action-btn preview-btn d">在线阅读</a>
+                    <a href="#" class="action-btn preview-btn w">阅读PDF</a>
+                    <a href="#" class="action-btn download-btn q">下载文件</a>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="picture/roman2.png" alt="圣经注释" class="book-cover">
+                <h3 class="book-title">罗马书2章查考</h3>
+                <div class="book-meta">
+                    <p>📚 作者：克里斯·麦肯</p>
+                    <p class="xl">罗马书系列</p>
+                </div>
+                <div class="book-actions">
+                    <a href="#" class="action-btn preview-btn">在线阅读</a>
+                    <a href="#" class="action-btn preview-btn">阅读PDF</a>
+                    <a href="#" class="action-btn download-btn">下载文件</a>
+                </div>
+            </div>
+
+            <div class="book-card">
+                <img src="picture/roman3.png" alt="圣经注释" class="book-cover">
+                <h3 class="book-title">罗马书3章查考</h3>
+                <div class="book-meta">
+                    <p>📚 作者：克里斯·麦肯</p>
+                    <p class="xl">罗马书系列</p>
+                </div>
+                <div class="book-actions">
+                    <a href="#" class="action-btn preview-btn">在线阅读</a>
+                    <a href="#" class="action-btn preview-btn">阅读PDF</a>
+                    <a href="#" class="action-btn download-btn">下载文件</a>
+                </div>
+            </div>
+
+
+<!--autoupdate-->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("✅ DOM 加载完成，初始化 JavaScript");
+
+  // 获取所有 .book-card 信息（title, xl内容, 在线阅读链接）
+  const bookItems = Array.from(document.querySelectorAll('.book-card')).map(item => {
+    return {
+      title: item.querySelector('.book-title').textContent.trim(),
+      extra: item.querySelector('.xl') ? item.querySelector('.xl').textContent.trim() : "无附加信息",
+      readLink: item.querySelector('.preview-btn.d') ? item.querySelector('.preview-btn.d').href : "#"
+    };
+  });
+
+  const fuse = new Fuse(bookItems, {
+    keys: ["title"],
+    includeScore: true,
+    threshold: 0.4,
+    useExtendedSearch: true,
+  });
+
+  // 获取 DOM 元素
+  const searchInput = document.getElementById('adsgarch');
+  const dropdown = document.getElementById('dropdown');
+
+  // 监听输入框
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      handleUserInput(this.value.trim().toLowerCase());
+    });
+  } else {
+    console.error("❌ 错误：未找到 `adsgarch` 输入框");
+  }
+
+  // 处理用户输入
+  function handleUserInput(query) {
+    if (query === "music" || query === "音乐") {
+      playRandomMusic();
+    } else if (query === "停止" || query === "break") {
+      stopMusic();
+    } else {
+      performSearch(query);
+    }
+  }
+
+  // 执行搜索
+  function performSearch(query) {
+    if (!query) {
+      dropdown.innerHTML = '';
+      return;
+    }
+
+    const results = fuse.search(query);
+    renderDropdown(results);
+  }
+
+  // 渲染下拉菜单
+  function renderDropdown(results) {
+    dropdown.innerHTML = '';
+
+    // 添加 "圣经查考" 作为第一项
+    const headerItem = document.createElement('li');
+    headerItem.textContent = "圣经查考";
+    headerItem.style.fontWeight = "bold";
+    headerItem.style.color = "#3CB371"; // 淡绿色
+    headerItem.style.padding = "10px";
+    headerItem.style.borderBottom = "1px solid #ddd"; // GitHub 风格的淡灰色线
+    dropdown.appendChild(headerItem);
+
+    if (results.length === 0) {
+      const li = document.createElement('li');
+      li.textContent = '无匹配结果';
+      dropdown.appendChild(li);
+      return;
+    }
+
+    results.forEach(result => {
+      const bookData = result.item;
+
+      const li = document.createElement('li');
+      li.style.display = "flex";
+      li.style.justifyContent = "space-between";
+      li.style.alignItems = "center";
+      li.style.padding = "8px 10px";
+      li.style.cursor = "pointer"; // 让鼠标变成手型
+      li.style.backgroundColor = "white"; 
+      li.style.borderBottom = "1px solid #eee"; // 添加分隔线
+      li.addEventListener("mouseover", () => li.style.backgroundColor = "#f6f8fa"); // GitHub hover 效果
+      li.addEventListener("mouseout", () => li.style.backgroundColor = "white");
+
+      // 监听点击，跳转到 `在线阅读` 链接
+      li.addEventListener("click", () => {
+        window.open(bookData.readLink, "_blank"); // 在新窗口打开
+      });
+
+      // 左边：书籍图标 + 标题
+      const leftContainer = document.createElement("div");
+      leftContainer.style.display = "flex";
+      leftContainer.style.alignItems = "center";
+
+      const icon = document.createElement('i');
+      icon.className = "fas fa-book"; // FontAwesome 书籍图标
+      icon.style.marginRight = "10px";
+      icon.style.color = "#555"; // 深灰色
+
+      const title = document.createElement("span");
+      title.textContent = bookData.title;
+
+      leftContainer.appendChild(icon);
+      leftContainer.appendChild(title);
+
+      // 右边：灰色宋体 `.xl` 内容
+      const extraInfo = document.createElement("span");
+      extraInfo.textContent = bookData.extra;
+      extraInfo.style.color = "gray";
+      extraInfo.style.fontFamily = "SimSun, 宋体"; // 使用宋体
+      extraInfo.style.fontSize = "14px";
+
+      li.appendChild(leftContainer);
+      li.appendChild(extraInfo);
+      dropdown.appendChild(li);
+    });
+  }
+
+  // 随机播放音乐
+  function playRandomMusic() {
+    let musicFiles = ["21.mp3", "31.mp3", "201.mp3", "501.mp3", "381.mp3"];
+    let baseURL = "http://s1.ebiblefellowship.org:40080/b/piano/";
+
+    let randomIndex = Math.floor(Math.random() * musicFiles.length);
+    let selectedTrack = `${baseURL}${musicFiles[randomIndex]}`;
+
+    audioPlayer.src = selectedTrack;
+    audioPlayer.play();
+
+    console.log(`🎵 正在播放: ${selectedTrack}`);
+  }
+
+  // 停止音乐
+  function stopMusic() {
+    if (isPlaying) {
+      audioPlayer.pause();
+      audioPlayer.src = "";
+      isPlaying = false;
+      console.log("⏹️ 音乐播放已停止");
+    }
+  }
+});
+
+
+</script>

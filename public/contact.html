@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - eBible Fellowship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/ebf.css">
+    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
+    <script src="js/index.js"></script>
+    <script src="js/airtime.js"></script>
+    <script src="js/daybible.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/zooms.js"></script>
+    <script src="js/timevideo.js"></script>
+    <script src="js/filedown.js"></script>
+    <script src="js/cookie.js"></script>
+    <script src="dist/fuse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f0fa;
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+        /* 顶栏样式 */
+        .xkjh89 {
+            margin-left: 290px;
+            width: calc(100% - 290px);
+            height: 80px;
+            background: linear-gradient(to right, #3498db, #5dade2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: pqlm45 0.5s ease-in;
+        }
+        .zxcv12 {
+            display: flex;
+            align-items: center;
+        }
+        .ghbn34 {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+        .ghbn34 img {
+            width: 80px;
+        }
+        .ghbn34:hover {
+            transform: rotate(360deg);
+        }
+        .tyui56 {
+            font-size: 1.8em;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .rtyu78 {
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .rtyu78:hover {
+            background-color: #ecf0f1;
+            transform: scale(1.05);
+        }
+        /* 内容样式 */
+        .mnbv90 {
+            margin-left: 290px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .lkjh23 {
+            text-align: center;
+            color: #3498db;
+            margin: 20px 0 40px;
+            animation: asdf67 1s ease-in;
+        }
+        .qwert1 {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: vbnm45 0.5s ease-in;
+        }
+        .zxcv78 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .zxcv78 img {
+            width: 100px;
+            transition: transform 0.3s ease;
+        }
+        .zxcv78 img:hover {
+            transform: scale(1.1);
+        }
+        .poiu90 {
+            margin-bottom: 20px;
+        }
+        .poiu90 label {
+            display: block;
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .poiu90 input,
+        .poiu90 textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #2c3e50;
+            transition: border-color 0.3s ease;
+        }
+        .poiu90 input:focus,
+        .poiu90 textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .poiu90 textarea {
+            height: 150px;
+            resize: vertical;
+        }
+        .asdf11 {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .asdf11:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        .tyui12 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            background-color: #e6f0fa;
+            padding: 10px;
+            border-radius: 5px;
+            animation: hjkl90 1s ease-in;
+        }
+        /* 动画 */
+        @keyframes asdf67 {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes vbnm45 {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pqlm45 {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes hjkl90 {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @media (max-width: 991px) {
+            .xkjh89 {
+                margin-left: 0;
+                width: 100%;
+            }
+            .mnbv90 {
+                margin-left: 0;
+            }
+            .lkjh23 {
+                margin-left: 0;
+            }
+            #sidebar-left {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏（保持不变） -->
+    <div id="sidebar-left">
+        <img src="logo/ebfside.png" class="logo">
+        <div class="title">
+            <span>电子</span>
+            <span>圣经团契</span>
+        </div>
+        <p class="subtitle">生活在审判日里</p>
+        <div class="sadfds-container" id="sa d f d sContainer">
+            <input type="text" id="sadfdsInput" placeholder="搜索..." />
+            <button id="sadfdsButton">搜索</button>
+        </div>
+        <ul class="sidebar-list">
+            <li>
+                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Zoom</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbiblestudy.html" class="sidebar-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>圣经学习</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbooks.html" class="sidebar-link">
+                    <i class="fas fa-book"></i>
+                    <span>书籍</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.newopenforum.org/" class="sidebar-link">
+                    <i class="fas fa-comments"></i>
+                    <span>圣经论坛</span>
+                </a>
+            </li>
+        </ul>
+        <div class="airtime-wrapper">
+            <div class="airtime-header">
+                <span class="text-blue">电子</span>圣经团契直播
+            </div>
+            <div class="airtime-player">
+                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="social-section">
+            <h3 class="social-title">
+                <span class="text-blue">电子</span>圣经团契社交媒体
+            </h3>
+            <div class="social-grid">
+                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span class="social-label">TikTok</span>
+                </a>
+                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="social-label">Facebook</span>
+                </a>
+            </div>
+            <div class="social-grid">
+                <a href="https://twitter.com/EBF2033" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span class="social-label">Twitter</span>
+                </a>
+                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <span class="social-label">Spotify</span>
+                </a>
+                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+            </div>
+        </div>
+        <div class="contact-container" style="
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 320px;
+        margin: 40px auto;
+        padding: 25px;
+        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+            <div class="contact-header" style="
+            background: #a7daff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;">
+                <h2 style="
+                color: #1a3a5e;
+                margin: 0;
+                font-size: 1.4em;
+                font-weight: 600;
+            ">联系我们</h2>
+            </div>
+            <address style="
+            text-align: center;
+            font-style: normal;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;">
+                <p style="margin: 10px 0;">
+                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                       color: #1e6bce;
+                       text-decoration: none;
+                       font-weight: 500;">
+                        Info@eBibleFellowship.org
+                    </a>
+                </p>
+                <p style="margin: 10px 0;">P.O. Box 1393</p>
+                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+                <p style="margin: 10px 0;">USA</p>
+            </address>
+            <div class="copyright" style="
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 15px;">
+                © 2024 eBible Fellowship
+            </div>
+        </div>
+    </div>
+
+    <!-- 顶栏 -->
+    <div class="xkjh89">
+        <div class="zxcv12">
+            <div class="ghbn34"><img src="logo/ebfside.png" alt="eBible Fellowship Logo"></div>
+            <span class="tyui56">电子圣经团契</span>
+        </div>
+        <button class="rtyu78" onclick="history.back()">返回</button>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="mnbv90">
+        <h1 class="lkjh23">联系我们</h1>
+        <div class="qwert1">
+            <div class="zxcv78">
+                <img src="logo/ebfside.png" alt="eBible Fellowship Logo">
+            </div>
+            <form action="#" method="post">
+                <div class="poiu90">
+                    <label for="zxcv01">电子邮箱</label>
+                    <input type="email" id="zxcv01" name="email" placeholder="请输入您的邮箱" required>
+                </div>
+                <div class="poiu90">
+                    <label for="asdf02">名字</label>
+                    <input type="text" id="asdf02" name="name" placeholder="请输入您的名字" required>
+                </div>
+                <div class="poiu90">
+                    <label for="qwert3">问题</label>
+                    <textarea id="qwert3" name="question" placeholder="请输入您的问题" required></textarea>
+                </div>
+                <button type="submit" class="asdf11">提交</button>
+            </form>
+            <div class="tyui12">
+                我们将在7日内回复您
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 表单提交后简单的提示（仅示例）
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('您的信息已提交，我们将在7日内回复您！');
+        });
+    </script>
+</body>
+</html>

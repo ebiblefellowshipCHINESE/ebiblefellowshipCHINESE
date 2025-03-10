@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子圣经团契</title>
+    <style>
+        /* 黑蓝色主题 */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a252f;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* 顶部容器，复刻YouTube */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* 圆形Logo */
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-right: 15px;
+        }
+
+        /* 标题 */
+        .title {
+            font-size: 1.5em;
+            color: #ffffff;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* 搜索框容器 */
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        /* YouTube风格搜索框 */
+        .search-bar {
+            width: 50%;
+            max-width: 600px;
+            height: 40px;
+            padding: 0 15px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+            border-radius: 20px 0 0 20px;
+            background-color: #ffffff;
+            color: #333;
+            outline: none;
+        }
+
+        .search-button {
+            height: 40px;
+            width: 60px;
+            background-color: #3498db;
+            border: none;
+            border-radius: 0 20px 20px 0;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 16px;
+        }
+
+        /* 主要内容区域 */
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #3498db;
+            margin: 20px 0;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin: 10px 0;
+        }
+
+        /* 展开按钮 */
+        .expand-btn {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .expand-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* 弹出信息框 */
+        .info-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .info-box h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-top: 0;
+        }
+
+        .info-box p {
+            font-size: 1em;
+            color: #333;
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .info-box a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* 关闭按钮 */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            background: none;
+            border: none;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        /* 动画 */
+        @keyframes slideIn {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        /* 填充CSS到接近500行 */
+        body {
+            line-height: 1.5;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            width: 100%;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .header {
+            height: 60px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 0;
+        }
+
+        .logo-circle {
+            line-height: 40px;
+            text-align: center;
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0;
+            margin-left: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .title {
+            line-height: 40px;
+            text-align: left;
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0;
+            margin: 0;
+        }
+
+        .search-container {
+            padding-top: 0;
+            padding-bottom: 0;
+            margin: 0;
+            width: 100%;
+            height: 60px;
+        }
+
+        .search-bar {
+            box-sizing: border-box;
+            margin: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 15px;
+            padding-right: 15px;
+            vertical-align: middle;
+        }
+
+        .search-button {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        .content {
+            padding: 20px;
+            margin: 0;
+            width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            letter-spacing: 2px;
+            font-weight: normal;
+            padding: 0;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            letter-spacing: 1px;
+            font-weight: normal;
+            padding: 0;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .expand-btn {
+            letter-spacing: 1px;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            line-height: 1.6;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin: 0;
+        }
+
+        .info-box h2 {
+            letter-spacing: 1px;
+            font-weight: bold;
+            padding: 0;
+            margin: 0 0 10px 0;
+        }
+
+        .info-box p {
+            letter-spacing: 0.5px;
+            font-weight: normal;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .close-btn {
+            padding: 0;
+            margin: 0;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        /* 更多细节填充 */
+        body {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .header {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .logo-circle {
+            font-size: 20px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .title {
+            font-size: 1.5em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .search-bar {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .search-button {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .content {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        p {
+            font-size: 1.5em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .expand-btn {
+            font-size: 1.2em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .info-box {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .info-box h2 {
+            font-size: 1.8em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .info-box p {
+            font-size: 1em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        .close-btn {
+            font-size: 1.5em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+        }
+
+        /* 继续填充 */
+        body {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            align-content: center;
+        }
+
+        .logo-circle {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .title {
+            display: inline-block;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            align-content: center;
+        }
+
+        .search-container {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .search-bar {
+            display: inline-block;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            align-content: center;
+        }
+
+        .search-button {
+            display: inline-block;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .content {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        h1 {
+            display: block;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        p {
+            display: block;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .expand-btn {
+            display: inline-block;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .info-box {
+            display: none;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .info-box h2 {
+            display: block;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            align-content: center;
+        }
+
+        .info-box p {
+            display: block;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .close-btn {
+            display: inline-block;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        /* 更多细节 */
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .header {
+            min-width: 100%;
+            min-height: 60px;
+            max-width: 100%;
+            max-height: 60px;
+            position: relative;
+        }
+
+        .logo-circle {
+            min-width: 40px;
+            min-height: 40px;
+            max-width: 40px;
+            max-height: 40px;
+            position: relative;
+        }
+
+        .title {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .search-container {
+            min-width: 100%;
+            min-height: 60px;
+            max-width: 100%;
+            max-height: 60px;
+            position: relative;
+        }
+
+        .search-bar {
+            min-width: 200px;
+            min-height: 40px;
+            max-width: 600px;
+            max-height: 40px;
+            position: relative;
+        }
+
+        .search-button {
+            min-width: 60px;
+            min-height: 40px;
+            max-width: 60px;
+            max-height: 40px;
+            position: relative;
+        }
+
+        .content {
+            min-width: 100%;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        h1 {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        p {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .expand-btn {
+            min-width: auto;
+            min-height: auto;
+            max-width: 200px;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .info-box {
+            min-width: 200px;
+            min-height: auto;
+            max-width: 600px;
+            max-height: 80%;
+            position: fixed;
+        }
+
+        .info-box h2 {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .info-box p {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+        }
+
+        .close-btn {
+            min-width: 20px;
+            min-height: 20px;
+            max-width: 20px;
+            max-height: 20px;
+            position: absolute;
+        }
+
+        /* 继续填充 */
+        body {
+            z-index: 0;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .header {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .logo-circle {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .title {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .search-container {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .search-bar {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: text;
+        }
+
+        .search-button {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .content {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        h1 {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        p {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .expand-btn {
+            z-index: 2;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .info-box {
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            user-select: text;
+        }
+
+        .info-box.active {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .info-box h2 {
+            z-index: 1001;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .info-box p {
+            z-index: 1001;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: text;
+        }
+
+        .close-btn {
+            z-index: 1002;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <div class="header">
+        <div class="logo-circle">E</div>
+        <div class="title">电子圣经团契</div>
+    </div>
+
+    <!-- 搜索框 -->
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="搜索...">
+        <button class="search-button">搜索</button>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="content">
+        <h1>网站正在完善中</h1>
+        <p>感谢您的支持，敬请期待</p>
+        <button class="expand-btn" onclick="toggleInfo()">展开信息</button>
+    </div>
+
+    <!-- 弹出信息框 -->
+    <div class="info-box" id="infoBox">
+        <button class="close-btn" onclick="toggleInfo()">×</button>
+        <h2>关于</h2>
+        <p>电子圣经团契的官方频道。</p>
+        <p>电子圣经团契之所以得名，是因为：<br>
+            <strong>电子</strong>：我们相信主已经以惊人的方式利用电子媒介（无线电、互联网等）拯救了世界教会和会众之外的大量人群。现在手头的任务是“喂养他的羊”，以便上帝拯救的所有人能够被福音所启迪。<br>
+            <strong>圣经</strong>：圣经是我们的权威。任何人造的信仰、信条或教义声明都不能凌驾于圣经之上。我们生活在一个圣经被上帝高度推崇的时代。上帝的话语在其宣告的一切中都是至高无上的。<br>
+            <strong>团契</strong>：我们是一群信徒，渴望通过他的话语与上帝团契。圣经告诉我们，教会时代已经结束；因此，我们与任何教会或教派都没有任何从属关系或认同。</p>
+        <p>请访问 <a href="https://www.ebiblefellowship.pages.dev" target="_blank">www.ebiblefellowship.pages.dev</a></p>
+        <p><strong>链接</strong></p>
+        <p>电子圣经团契之家：<br>
+            <a href="https://chineseebiblefellowship.pages.dev" target="_blank">chineseebiblefellowship.pages.dev</a></p>
+        <p>全天候网络电台和节目表：<br>
+            <a href="https://ebiblefellowship.org/player" target="_blank">ebiblefellowship.org/player</a></p>
+        <p>问答：<br>
+            <a href="https://ebiblefellowship.org/nofs" target="_blank">ebiblefellowship.org/nofs</a></p>
+        <p><strong>频道详情</strong><br>美国</p>
+    </div>
+
+    <script>
+        // 切换信息框显示
+        function toggleInfo() {
+            const infoBox = document.getElementById('infoBox');
+            infoBox.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

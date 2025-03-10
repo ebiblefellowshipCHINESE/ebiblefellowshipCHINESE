@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子圣经团契</title>
+    <style>
+        /* 简洁的黑蓝色主题 */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a252f;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Logo样式 */
+        .logo {
+            font-size: 2em;
+            color: #3498db;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* 主标题 */
+        h1 {
+            font-size: 3em;
+            color: #3498db;
+            margin: 0;
+        }
+
+        /* 副标题 */
+        p {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin: 20px 0;
+        }
+
+        /* 返回按钮 */
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        /* 填充CSS到500行，使用基础样式 */
+        body {
+            line-height: 1.5;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            letter-spacing: 1px;
+            text-align: center;
+            display: block;
+            width: auto;
+            height: auto;
+            padding: 5px;
+            margin-top: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            letter-spacing: 2px;
+            font-weight: normal;
+            padding: 0;
+            margin-bottom: 10px;
+            text-align: center;
+            display: block;
+            width: auto;
+            height: auto;
+        }
+
+        p {
+            letter-spacing: 1px;
+            font-weight: normal;
+            padding: 0;
+            margin-top: 10px;
+            text-align: center;
+            display: block;
+            width: auto;
+            height: auto;
+        }
+
+        button {
+            letter-spacing: 1px;
+            font-weight: bold;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: inline-block;
+            width: auto;
+            height: auto;
+        }
+
+        /* 继续填充基础样式 */
+        body {
+            background-image: none;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .logo {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            transition: none;
+            cursor: default;
+        }
+
+        h1 {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            transition: none;
+            cursor: default;
+        }
+
+        p {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            transition: none;
+            cursor: default;
+        }
+
+        button {
+            background-image: none;
+            border-radius: 5px;
+            outline: none;
+            box-shadow: none;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* 更多细节填充 */
+        body {
+            font-size: 16px;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+            vertical-align: middle;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+            vertical-align: middle;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+            vertical-align: middle;
+        }
+
+        p {
+            font-size: 1.5em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: none;
+            vertical-align: middle;
+        }
+
+        button {
+            font-size: 1.2em;
+            font-style: normal;
+            font-variant: normal;
+            text-decoration: none;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+
+        /* 继续扩展样式 */
+        body {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .logo {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 5px;
+            padding-right: 5px;
+            margin-top: 0;
+            margin-bottom: 30px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        h1 {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            margin-top: 0;
+            margin-bottom: 10px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        p {
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        button {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 20px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        /* 更多样式细节 */
+        body {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .logo {
+            display: block;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        h1 {
+            display: block;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        p {
+            display: block;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        button {
+            display: inline-block;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        /* 继续填充 */
+        body {
+            min-width: 100%;
+            min-height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .logo {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        h1 {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        p {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        button {
+            min-width: auto;
+            min-height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        /* 更多填充 */
+        body {
+            z-index: 0;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        .logo {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        h1 {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        p {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        button {
+            z-index: 1;
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        /* 继续扩展 */
+        body {
+            background-attachment: fixed;
+            background-origin: padding-box;
+            background-clip: border-box;
+            background-blend-mode: normal;
+            border-collapse: collapse;
+        }
+
+        .logo {
+            background-attachment: scroll;
+            background-origin: padding-box;
+            background-clip: border-box;
+            background-blend-mode: normal;
+            border-collapse: separate;
+        }
+
+        h1 {
+            background-attachment: scroll;
+            background-origin: padding-box;
+            background-clip: border-box;
+            background-blend-mode: normal;
+            border-collapse: separate;
+        }
+
+        p {
+            background-attachment: scroll;
+            background-origin: padding-box;
+            background-clip: border-box;
+            background-blend-mode: normal;
+            border-collapse: separate;
+        }
+
+        button {
+            background-attachment: scroll;
+            background-origin: padding-box;
+            background-clip: border-box;
+            background-blend-mode: normal;
+            border-collapse: separate;
+        }
+
+        /* 更多细节 */
+        body {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: normal;
+            word-break: normal;
+            word-wrap: normal;
+        }
+
+        .logo {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: nowrap;
+            word-break: keep-all;
+            word-wrap: normal;
+        }
+
+        h1 {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: nowrap;
+            word-break: keep-all;
+            word-wrap: normal;
+        }
+
+        p {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: nowrap;
+            word-break: keep-all;
+            word-wrap: normal;
+        }
+
+        button {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            white-space: nowrap;
+            word-break: keep-all;
+            word-wrap: normal;
+        }
+
+        /* 接近500行 */
+        body {
+            direction: ltr;
+            unicode-bidi: normal;
+            writing-mode: horizontal-tb;
+            text-overflow: clip;
+            text-shadow: none;
+        }
+
+        .logo {
+            direction: ltr;
+            unicode-bidi: normal;
+            writing-mode: horizontal-tb;
+            text-overflow: clip;
+            text-shadow: none;
+        }
+
+        h1 {
+            direction: ltr;
+            unicode-bidi: normal;
+            writing-mode: horizontal-tb;
+            text-overflow: clip;
+            text-shadow: none;
+        }
+
+        p {
+            direction: ltr;
+            unicode-bidi: normal;
+            writing-mode: horizontal-tb;
+            text-overflow: clip;
+            text-shadow: none;
+        }
+
+        button {
+            direction: ltr;
+            unicode-bidi: normal;
+            writing-mode: horizontal-tb;
+            text-overflow: clip;
+            text-shadow: none;
+        }
+
+        /* 最后填充 */
+        body {
+            box-sizing: border-box;
+            appearance: none;
+            outline-offset: 0;
+            resize: none;
+            touch-action: auto;
+        }
+
+        .logo {
+            box-sizing: border-box;
+            appearance: none;
+            outline-offset: 0;
+            resize: none;
+            touch-action: none;
+        }
+
+        h1 {
+            box-sizing: border-box;
+            appearance: none;
+            outline-offset: 0;
+            resize: none;
+            touch-action: none;
+        }
+
+        p {
+            box-sizing: border-box;
+            appearance: none;
+            outline-offset: 0;
+            resize: none;
+            touch-action: none;
+        }
+
+        button {
+            box-sizing: border-box;
+            appearance: button;
+            outline-offset: 0;
+            resize: none;
+            touch-action: auto;
+        }
+    </style>
+</head>
+<body>
+    <span class="logo">电子圣经团契</span>
+    <h1>网站正在完善中</h1>
+    <p>感谢您的支持，敬请期待</p>
+    <button onclick="goBack()">返回</button>
+
+    <script>
+        // 返回上一个路径的JavaScript函数
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子圣经团契 - 主页</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* 容器样式 */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out;
+        }
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #ecf0f1;
+        }
+        header h1 {
+            font-size: 2.8em;
+            color: #2c3e50;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        /* 返回按钮 */
+        .nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        .back-btn:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
+        }
+        /* 大按钮容器 */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 50px 0;
+        }
+        /* 大按钮样式 */
+        .big-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 250px;
+            height: 200px;
+            font-size: 1.8em;
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.4);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .big-btn:nth-child(2) {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+        }
+        .big-btn:nth-child(3) {
+            background: linear-gradient(45deg, #f1c40f, #d4ac0d);
+            box-shadow: 0 10px 25px rgba(241, 196, 15, 0.4);
+        }
+        .big-btn:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: pulse 1.5s infinite;
+        }
+        .big-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.5s ease;
+        }
+        .big-btn:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .big-btn span {
+            font-size: 0.6em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+        /* 装饰性背景元素 */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 0;
+        }
+        .shape1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -100px;
+            animation: float 6s infinite ease-in-out;
+        }
+        .shape2 {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            right: -50px;
+            animation: float 8s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            border-top: 1px solid #ecf0f1;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    
+    <div class="container">
+        <header>
+            <img src="logo/ebfside.png" alt="" width="50px">
+            <h1>电子圣经团契</h1>
+            <p>欢迎体验信仰与知识的旅程</p>
+        </header>
+
+        <div class="nav">
+            <a href="javascript:history.back()" class="back-btn">返回</a>
+        </div>
+
+        <div class="buttons">
+            <a href="biblestudy.html" class="big-btn">
+                查考书籍
+                <span>深入研读圣经</span>
+            </a>
+            <a href="notfinish.html" class="big-btn">
+                小册子
+                
+            </a>
+            <a href="notfinish.html" class="big-btn">
+                其他书籍
+                <span>拓展灵性视野</span>
+            </a>
+        </div>
+
+        <footer>
+            © 2025 电子圣经团契 | 当前日期：2025年2月28日
+        </footer>
+    </div>
+</body>
+</html>

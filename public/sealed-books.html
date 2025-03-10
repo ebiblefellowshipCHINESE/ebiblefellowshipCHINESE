@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未封印的教义时间表 - eBible Fellowship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/ebf.css">
+    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
+    <script src="js/index.js"></script>
+    <script src="js/airtime.js"></script>
+    <script src="js/daybible.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/zooms.js"></script>
+    <script src="js/timevideo.js"></script>
+    <script src="js/filedown.js"></script>
+    <script src="js/cookie.js"></script>
+    <script src="dist/fuse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f0fa;
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+        /* 顶栏样式 */
+        .xkjh89 {
+            margin-left: 290px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(to right, #3498db, #5dade2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: pqlm45 0.5s ease-in;
+        }
+        .zxcv12 {
+            display: flex;
+            align-items: center;
+        }
+        .ghbn34 {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+        .ghbn34 img {
+            width: 80px;
+        }
+        .ghbn34:hover {
+            transform: rotate(360deg);
+        }
+        .tyui56 {
+            font-size: 1.8em;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .rtyu78 {
+            background-color: #fff;
+            color: #3498db;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .rtyu78:hover {
+            background-color: #ecf0f1;
+            transform: scale(1.05);
+        }
+        /* 内容样式 */
+        .mnbv90 {
+            margin-top: 100px;
+            padding: 20px;
+            margin-left: 290px;
+        }
+        .lkjh23 {
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 40px;
+            animation: asdf67 1s ease-in;
+        }
+        .qwert1 {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+        .qwert1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, #3498db, #9ec7e6);
+            transform: translateX(-50%);
+            animation: hjkl90 2s ease-in-out;
+        }
+        .fahj22 {
+            position: relative;
+            width: 380px;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: vbnm45 0.5s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .fahj22:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        .fahj22:nth-child(odd) {
+            margin-left: 0;
+            margin-right: auto;
+        }
+        .fahj22:nth-child(even) {
+            margin-left: calc(50% + 20px);
+        }
+        .fahj22:nth-child(1) { animation-delay: 0.1s; }
+        .fahj22:nth-child(2) { animation-delay: 0.2s; }
+        .fahj22:nth-child(3) { animation-delay: 0.3s; }
+        .fahj22:nth-child(4) { animation-delay: 0.4s; }
+        .fahj22:nth-child(5) { animation-delay: 0.5s; }
+        .fahj22:nth-child(6) { animation-delay: 0.6s; }
+        .fahj22:nth-child(7) { animation-delay: 0.7s; }
+        .fahj22:nth-child(8) { animation-delay: 0.8s; }
+        .fahj22:nth-child(9) { animation-delay: 0.9s; }
+        .fahj22:nth-child(10) { animation-delay: 1.0s; }
+        .fahj22:nth-child(11) { animation-delay: 1.1s; }
+        .fahj22:nth-child(12) { animation-delay: 1.2s; }
+        .fahj22:nth-child(13) { animation-delay: 1.3s; }
+        .fahj22:nth-child(14) { animation-delay: 1.4s; }
+        .fahj22:nth-child(15) { animation-delay: 1.5s; }
+        .fahj22:nth-child(16) { animation-delay: 1.6s; }
+        .fahj22:nth-child(17) { animation-delay: 1.7s; }
+        .fahj22:nth-child(18) { animation-delay: 1.8s; }
+        .fahj22:nth-child(19) { animation-delay: 1.9s; }
+        .fahj22:nth-child(20) { animation-delay: 2.0s; }
+        .fahj22:nth-child(21) { animation-delay: 2.1s; }
+        .fahj22:nth-child(22) { animation-delay: 2.2s; }
+        .fahj22:nth-child(23) { animation-delay: 2.3s; }
+        .fahj22:nth-child(24) { animation-delay: 2.4s; }
+        .zxcv78 {
+            font-size: 1.2em;
+            color: #3498db;
+            margin-bottom: 10px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .fahj22:hover .zxcv78 {
+            color: #2980b9;
+        }
+        .poiu90 {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        .tyui12 {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: asdf67 1s ease-in;
+        }
+        /* 跳转按钮和列表 */
+        .mnbv34 {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .mnbv34:hover {
+            transform: scale(1.1);
+            background-color: #2980b9;
+        }
+        .lkjh56 {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 250px;
+            max-height: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .mnbv34:hover + .lkjh56, .lkjh56:hover {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .qwert9 {
+            padding: 10px 15px;
+            color: #3498db;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .qwert9:hover {
+            background-color: #e6f0fa;
+            color: #2980b9;
+        }
+        /* 动画 */
+        @keyframes asdf67 {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes vbnm45 {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes hjkl90 {
+            0% { height: 0; }
+            100% { height: 100%; }
+        }
+        @keyframes pqlm45 {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+        @media (max-width: 991px) {
+            .xkjh89 {
+                margin-left: 0;
+            }
+            .mnbv90 {
+                margin-left: 0;
+            }
+            .lkjh23 {
+                margin-left: 0;
+            }
+            #sidebar-left {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 侧边栏（保持不变） -->
+    <div id="sidebar-left">
+        <img src="logo/ebfside.png" class="logo">
+        <div class="title">
+            <span>电子</span>
+            <span>圣经团契</span>
+        </div>
+        <p class="subtitle">生活在审判日里</p>
+        <div class="sadfds-container" id="sa d f d sContainer">
+            <input type="text" id="sadfdsInput" placeholder="搜索..." />
+            <button id="sadfdsButton">搜索</button>
+        </div>
+        <ul class="sidebar-list">
+            <li>
+                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09" class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Zoom</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbiblestudy.html" class="sidebar-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>圣经学习</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbooks.html" class="sidebar-link">
+                    <i class="fas fa-book"></i>
+                    <span>书籍</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.newopenforum.org/" class="sidebar-link">
+                    <i class="fas fa-comments"></i>
+                    <span>圣经论坛</span>
+                </a>
+            </li>
+        </ul>
+        <div class="airtime-wrapper">
+            <div class="airtime-header">
+                <span class="text-blue">电子</span>圣经团契直播
+            </div>
+            <div class="airtime-player">
+                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="social-section">
+            <h3 class="social-title">
+                <span class="text-blue">电子</span>圣经团契社交媒体
+            </h3>
+            <div class="social-grid">
+                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span class="social-label">TikTok</span>
+                </a>
+                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="social-label">Facebook</span>
+                </a>
+            </div>
+            <div class="social-grid">
+                <a href="https://twitter.com/EBF2033" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span class="social-label">Twitter</span>
+                </a>
+                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <span class="social-label">Spotify</span>
+                </a>
+                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+            </div>
+        </div>
+        <div class="contact-container" style="
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 320px;
+        margin: 40px auto;
+        padding: 25px;
+        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+            <div class="contact-header" style="
+            background: #a7daff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;">
+                <h2 style="
+                color: #1a3a5e;
+                margin: 0;
+                font-size: 1.4em;
+                font-weight: 600;
+            ">联系我们</h2>
+            </div>
+            <address style="
+            text-align: center;
+            font-style: normal;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;">
+                <p style="margin: 10px 0;">
+                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                       color: #1e6bce;
+                       text-decoration: none;
+                       font-weight: 500;">
+                        Info@eBibleFellowship.org
+                    </a>
+                </p>
+                <p style="margin: 10px 0;">P.O. Box 1393</p>
+                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+                <p style="margin: 10px 0;">USA</p>
+            </address>
+            <div class="copyright" style="
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 15px;">
+                © 2024 eBible Fellowship
+            </div>
+        </div>
+    </div>
+
+    <!-- 顶栏 -->
+    <div class="xkjh89">
+        <div class="zxcv12">
+            <div class="ghbn34"><img src="logo/ebfside.png" alt=""></div>
+            <span class="tyui56">电子圣经团契</span>
+        </div>
+        <button class="rtyu78" onclick="history.back()">返回</button>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="mnbv90">
+        <h1 class="lkjh23">未封印的教义时间表</h1>
+        <div class="tyui12">
+            <p>我们在《但以理书》12:4 中读到：“但以理啊，你要闭上字眼，封存书卷，直到末世，必有许多人来来往往，知识必增长。” 自1988年以来，我们一直生活在末世，上帝开始解开祂的话语，向选民揭示这些教义。以下是24个被解封的教义的时间表。</p>
+        </div>
+        <div class="qwert1">
+            <div class="fahj22" id="zxcv01">
+                <div class="zxcv78">以色列成为一个国家 - 1948</div>
+                <div class="poiu90">1948年5月14日，以色列再次成为一个国家，这曾经被许多人认为是不可能的。圣经在《马可福音》13:28中预言了这一事件。</div>
+            </div>
+            <div class="fahj22" id="asdf02">
+                <div class="zxcv78">发现圣经历史时间表</div>
+                <div class="poiu90">在圣经中发现了时间线，包括创世（公元前11,013年）、洪水（公元前4990年）、耶稣诞生（公元前7年）和地球年龄（13,000+年）等日期。</div>
+            </div>
+            <div class="fahj22" id="qwert3">
+                <div class="zxcv78">基督的信仰</div>
+                <div class="poiu90">这是基督的信仰，而非我们自己的信仰。救恩是上帝赐予的，善行是救恩的结果，而非原因。</div>
+            </div>
+            <div class="fahj22" id="tyui04">
+                <div class="zxcv78">洗礼</div>
+                <div class="poiu90">洗礼只是标志或影子，无能力洗去罪恶。耶稣在十字架上的死是创世时罪孽代价的反映。</div>
+            </div>
+            <div class="fahj22" id="poiu05">
+                <div class="zxcv78">教会时代的终结 - 1988</div>
+                <div class="poiu90">1988年5月21日，教会时代结束，神的圣灵离开教会，撒旦开始统治，救恩停止。</div>
+            </div>
+            <div class="fahj22" id="lkjh06">
+                <div class="zxcv78">大灾难 - 1988-2011</div>
+                <div class="poiu90">大灾难持续23年，从1988年5月21日至2011年5月21日，是属灵审判时期。</div>
+            </div>
+            <div class="fahj22" id="mnbv07">
+                <div class="zxcv78">大群人（后雨） - 1994-2011</div>
+                <div class="poiu90">1994年9月7日至2011年5月21日，上帝拯救了全球大量的人，持续约17年。</div>
+            </div>
+            <div class="fahj22" id="vbnm08">
+                <div class="zxcv78">HELL（湮灭）</div>
+                <div class="poiu90">地狱不是折磨之地，而是坟墓，未得救的人将在最后一天被消灭。</div>
+            </div>
+            <div class="fahj22" id="hjkl09">
+                <div class="zxcv78">从创世之初被杀的羔羊</div>
+                <div class="poiu90">基督从创世时就为罪付出代价，公元33年的十字架是其展示。</div>
+            </div>
+            <div class="fahj22" id="rtyu10">
+                <div class="zxcv78">审判日 - 2011年5月21日</div>
+                <div class="poiu90">2011年5月21日是全球公布的审判日，是后续教义的基础。</div>
+            </div>
+            <div class="fahj22" id="ghbn11">
+                <div class="zxcv78">属灵的审判 - 2011年5月21日</div>
+                <div class="poiu90">审判日的本质是属灵的，对教会和世界的审判均不可见。</div>
+            </div>
+            <div class="fahj22" id="zxcv12">
+                <div class="zxcv78">不再有救赎 - 2011年5月21日</div>
+                <div class="poiu90">2011年5月21日救恩结束，上帝完成救赎计划。</div>
+            </div>
+            <div class="fahj22" id="asdf13">
+                <div class="zxcv78">旷日持久的审判 - 2011年5月21日</div>
+                <div class="poiu90">审判非一天，而是如《希伯来书》3:8-9所述的“试探的日子”。</div>
+            </div>
+            <div class="fahj22" id="qwert14">
+                <div class="zxcv78">炽热的试炼（地狱之火） - 2011年5月21日</div>
+                <div class="poiu90">自2011年5月21日起，选民经历严峻试炼，成为基督受苦的一部分。</div>
+            </div>
+            <div class="fahj22" id="tyui15">
+                <div class="zxcv78">喂羊 - 2011年5月21日</div>
+                <div class="poiu90">救恩结束后，选民的任务是分享这些新教义，而非福音。</div>
+            </div>
+            <div class="fahj22" id="poiu16">
+                <div class="zxcv78">上帝现在正在掌权 - 2011年5月21日</div>
+                <div class="poiu90">2011年5月21日，撒旦被废黜，上帝开始掌权并审判世界。</div>
+            </div>
+            <div class="fahj22" id="lkjh17">
+                <div class="zxcv78">《没人知道》 - 2011年5月21日</div>
+                <div class="poiu90">“知道”指经历，2011年5月21日起世界经历审判日。</div>
+            </div>
+            <div class="fahj22" id="mnbv18">
+                <div class="zxcv78">在审判庭出庭 - 2011年5月21日</div>
+                <div class="poiu90">选民与恶人一同经历审判日，因神不偏待人。</div>
+            </div>
+            <div class="fahj22" id="vbnm19">
+                <div class="zxcv78">神的选民反映基督的苦难 - 2011年5月21日</div>
+                <div class="poiu90">选民如基督受苦，末日将复活并被宣布为“神的儿子”。</div>
+            </div>
+            <div class="fahj22" id="hjkl20">
+                <div class="zxcv78">2033 - 2011年5月21日</div>
+                <div class="poiu90">审判将于2033年完成，持续23年（或实际22年）。</div>
+            </div>
+            <div class="fahj22" id="rtyu21">
+                <div class="zxcv78">绘图延迟 - 2011年5月21日</div>
+                <div class="poiu90">救恩虽止，上帝曾在1994-2011年拯救许多新羊。</div>
+            </div>
+            <div class="fahj22" id="ghbn22">
+                <div class="zxcv78">两次苦难 - 2011年5月21日</div>
+                <div class="poiu90">1988-2011及2011-2033各23年的两次苦难。</div>
+            </div>
+            <div class="fahj22" id="zxcv23">
+                <div class="zxcv78">世界被公开羞辱 - 2011年5月21日</div>
+                <div class="poiu90">上帝羞辱世界机构，政治、媒体、娱乐、宗教皆动荡。</div>
+            </div>
+            <div class="fahj22" id="asdf24">
+                <div class="zxcv78">为什么世界如此分裂？ - 2011年5月21日</div>
+                <div class="poiu90">审判日撒旦王国分裂，居民彼此争战。</div>
+            </div>
+            <div class="fahj22" id="qwert25">
+                <div class="zxcv78">新天新地 - 2011年5月21日</div>
+                <div class="poiu90">末日后新天新地将到来，选民与神永住。</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 跳转按钮和列表 -->
+    <div class="mnbv34">☰</div>
+    <div class="lkjh56">
+        <div class="qwert9" onclick="scrollToSection('zxcv01')">以色列成为一个国家 - 1948</div>
+        <div class="qwert9" onclick="scrollToSection('asdf02')">发现圣经历史时间表</div>
+        <div class="qwert9" onclick="scrollToSection('qwert3')">基督的信仰</div>
+        <div class="qwert9" onclick="scrollToSection('tyui04')">洗礼</div>
+        <div class="qwert9" onclick="scrollToSection('poiu05')">教会时代的终结 - 1988</div>
+        <div class="qwert9" onclick="scrollToSection('lkjh06')">大灾难 - 1988-2011</div>
+        <div class="qwert9" onclick="scrollToSection('mnbv07')">大群人（后雨） - 1994-2011</div>
+        <div class="qwert9" onclick="scrollToSection('vbnm08')">HELL（湮灭）</div>
+        <div class="qwert9" onclick="scrollToSection('hjkl09')">从创世之初被杀的羔羊</div>
+        <div class="qwert9" onclick="scrollToSection('rtyu10')">审判日 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('ghbn11')">属灵的审判 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('zxcv12')">不再有救赎 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('asdf13')">旷日持久的审判 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('qwert14')">炽热的试炼（地狱之火） - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('tyui15')">喂羊 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('poiu16')">上帝现在正在掌权 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('lkjh17')">《没人知道》 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('mnbv18')">在审判庭出庭 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('vbnm19')">神的选民反映基督的苦难 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('hjkl20')">2033 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('rtyu21')">绘图延迟 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('ghbn22')">两次苦难 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('zxcv23')">世界被公开羞辱 - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('asdf24')">为什么世界如此分裂？ - 2011年5月21日</div>
+        <div class="qwert9" onclick="scrollToSection('qwert25')">新天新地 - 2011年5月21日</div>
+    </div>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            element.scrollIntoView({ behavior: 'smooth' });
+            element.style.backgroundColor = '#e6f0fa';
+            setTimeout(() => {
+                element.style.backgroundColor = '#fff';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

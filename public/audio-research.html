@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>圣经朗读</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+body {
+    font-family: 'Noto Serif SC', serif; /* 更优雅的字体 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f8f8f8; /* 淡灰色背景 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 头部样式 */
+header {
+    background-color: #ffffff; /* 白色头部背景 */
+    width: 100%;
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 头部阴影 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    color: #333; /* 标题颜色 */
+    font-size: 24px;
+}
+
+.logo-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute; /* 绝对定位到左上角 */
+    left: 20px;
+    top: 20px;
+}
+
+.logo-btn img {
+    height: 40px; /* Logo 高度 */
+}
+
+
+.container {
+    display: flex;
+    width: 90%; /* 扩大容器宽度 */
+    max-width: 1200px; /* 限制最大宽度 */
+    margin: 0 auto; /* 居中容器 */
+    padding: 20px;
+    background-color: #fff; /* 白色容器背景 */
+    border-radius: 10px; /* 容器圆角 */
+    box-shadow: 0 0 15px rgba(0,0,0,0.05); /* 容器阴影 */
+    justify-content: space-around; /* 均匀分布两个部分 */
+}
+
+.old-testament, .new-testament {
+    width: 48%; /* 略微调整宽度 */
+    padding: 25px; /* 增加内边距 */
+    border: 1px solid #eee; /* 更淡的边框 */
+    border-radius: 8px; /* 分区圆角 */
+    background-color: #fefefe; /* 分区背景色 */
+}
+
+.old-testament h2, .new-testament h2 {
+    color: #555; /* 标题颜色 */
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center; /* 标题居中 */
+}
+
+.old-testament button, .new-testament button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px; /* 调整按钮内边距 */
+    margin-bottom: 8px; /* 增加按钮间距 */
+    border: none;
+    background-color: #5cb85c; /* 绿色按钮背景 */
+    color: white;
+    border-radius: 25px; /* 更圆润的按钮 */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px; /* 按钮字体大小 */
+    box-shadow: 0 2px 3px rgba(0,0,0,0.05); /* 按钮阴影 */
+}
+
+.old-testament button:hover, .new-testament button:hover {
+    background-color: #4cae4c; /* 鼠标悬停时按钮颜色 */
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* 响应式按钮网格 */
+    gap: 10px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.buttons button {
+    padding: 12px 15px;
+    border: none;
+    background-color: #007bff; /* 蓝色按钮背景 */
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 15px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+}
+
+.buttons button:hover {
+    background-color: #0056b3; /* 鼠标悬停时按钮颜色 */
+}
+
+/* 每日金句样式 */
+.daily-verse-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    text-align: center;
+    font-style: italic; /* 斜体 */
+    color: #777; /* 颜色 */
+}
+
+.daily-verse-container h3 {
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-style: normal; /* 标题恢复正常字体 */
+}
+
+/* 页脚样式 */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #888;
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+    width: 100%;
+}
+
+/* 电子圣经团契入口 - 可以是一个链接或按钮 */
+.fellowship-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ffc107; /* 金色链接背景 */
+    color: #333;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+.fellowship-link:hover {
+    background-color: #ffb300; /* 鼠标悬停时链接颜色 */
+}
+
+
+/* 使用 Font Awesome 图标优化按钮内的图标和文字对齐 */
+.old-testament button i, .new-testament button i {
+    margin-right: 10px; /* 图标与文字间距 */
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <button class="logo-btn" onclick="goToHome()">
+        <img src="logo/ebfside.png" alt="圣经朗读 Logo"> </button>
+    <h1>圣经朗读</h1>
+</header>
+<div class="daily-verse-container">
+    <h3>每日金句</h3>
+    <p>“你们要将一切的忧虑卸给神，因为他顾念你们。” - 彼得前书 5:7</p>
+</div>
+<a href="#" class="fellowship-link">返回</a>
+<div class="container">
+    <div class="old-testament">
+        <h2>旧约</h2>
+        <button onclick="location.href='#genesis'"><i class="fas fa-book-open"></i> 创世纪</button>
+        <button onclick="location.href='#exodus'"><i class="fas fa-book-open"></i> 出埃及记</button>
+        <button onclick="location.href='#leviticus'"><i class="fas fa-book-open"></i> 利未记</button>
+        <button onclick="location.href='#numbers'"><i class="fas fa-book-open"></i> 民数记</button>
+        <button onclick="location.href='#deuteronomy'"><i class="fas fa-book-open"></i> 申命记</button>
+        <button onclick="location.href='#joshua'"><i class="fas fa-book-open"></i> 约书亚记</button>
+        <button onclick="location.href='#judges'"><i class="fas fa-book-open"></i> 士师记</button>
+        <button onclick="location.href='#ruth'"><i class="fas fa-book-open"></i> 路得记</button>
+        <button onclick="location.href='#1samuel'"><i class="fas fa-book-open"></i> 撒母耳记上</button>
+        <button onclick="location.href='#2samuel'"><i class="fas fa-book-open"></i> 撒母耳记下</button>
+        <button onclick="location.href='#1kings'"><i class="fas fa-book-open"></i> 列王纪上</button>
+        <button onclick="location.href='#2kings'"><i class="fas fa-book-open"></i> 列王纪下</button>
+        <button onclick="location.href='#1chronicles'"><i class="fas fa-book-open"></i> 历代志上</button>
+        <button onclick="location.href='#2chronicles'"><i class="fas fa-book-open"></i> 历代志下</button>
+        <button onclick="location.href='#ezra'"><i class="fas fa-book-open"></i> 以斯拉记</button>
+        <button onclick="location.href='#nehemiah'"><i class="fas fa-book-open"></i> 尼希米记</button>
+        <button onclick="location.href='#esther'"><i class="fas fa-book-open"></i> 以斯帖记</button>
+        <button onclick="location.href='#job'"><i class="fas fa-book-open"></i> 约伯记</button>
+        <button onclick="location.href='#psalms'"><i class="fas fa-book-open"></i> 诗篇</button>
+        <button onclick="location.href='#proverbs'"><i class="fas fa-book-open"></i> 箴言</button>
+        <button onclick="location.href='#ecclesiastes'"><i class="fas fa-book-open"></i> 传道书</button>
+        <button onclick="location.href='#songofsolomon'"><i class="fas fa-book-open"></i> 雅歌</button>
+        <button onclick="location.href='#isaiah'"><i class="fas fa-book-open"></i> 以赛亚书</button>
+        <button onclick="location.href='#jeremiah'"><i class="fas fa-book-open"></i> 耶利米书</button>
+        <button onclick="location.href='#lamentations'"><i class="fas fa-book-open"></i> 耶利米哀歌</button>
+        <button onclick="location.href='#ezekiel'"><i class="fas fa-book-open"></i> 以西结书</button>
+        <button onclick="location.href='#daniel'"><i class="fas fa-book-open"></i> 但以理书</button>
+        <button onclick="location.href='#hosea'"><i class="fas fa-book-open"></i> 何西阿书</button>
+        <button onclick="location.href='#joel'"><i class="fas fa-book-open"></i> 约珥书</button>
+        <button onclick="location.href='#amos'"><i class="fas fa-book-open"></i> 阿摩司书</button>
+        <button onclick="location.href='#obadiah'"><i class="fas fa-book-open"></i> 俄巴底亚书</button>
+        <button onclick="location.href='#jonah'"><i class="fas fa-book-open"></i> 约拿书</button>
+        <button onclick="location.href='#micah'"><i class="fas fa-book-open"></i> 弥迦书</button>
+        <button onclick="location.href='#nahum'"><i class="fas fa-book-open"></i> 那鸿书</button>
+        <button onclick="location.href='#habakkuk'"><i class="fas fa-book-open"></i> 哈巴谷书</button>
+        <button onclick="location.href='#zephaniah'"><i class="fas fa-book-open"></i> 西番雅书</button>
+        <button onclick="location.href='#haggai'"><i class="fas fa-book-open"></i> 哈该书</button>
+        <button onclick="location.href='#zechariah'"><i class="fas fa-book-open"></i> 撒迦利亚书</button>
+        <button onclick="location.href='#malachi'"><i class="fas fa-book-open"></i> 玛拉基书</button>
+    </div>
+    <div class="new-testament">
+        <h2>新约</h2>
+        <button onclick="location.href='#matthew'"><i class="fas fa-book-open"></i> 马太福音</button>
+        <button onclick="location.href='#mark'"><i class="fas fa-book-open"></i> 马可福音</button>
+        <button onclick="location.href='#luke'"><i class="fas fa-book-open"></i> 路加福音</button>
+        <button onclick="location.href='#john'"><i class="fas fa-book-open"></i> 约翰福音</button>
+        <button onclick="location.href='#acts'"><i class="fas fa-book-open"></i> 使徒行传</button>
+        <button onclick="location.href='#romans'"><i class="fas fa-book-open"></i> 罗马书</button>
+        <button onclick="location.href='#1corinthians'"><i class="fas fa-book-open"></i> 哥林多前书</button>
+        <button onclick="location.href='#2corinthians'"><i class="fas fa-book-open"></i> 哥林多后书</button>
+        <button onclick="location.href='#galatians'"><i class="fas fa-book-open"></i> 加拉太书</button>
+        <button onclick="location.href='#ephesians'"><i class="fas fa-book-open"></i> 以弗所书</button>
+        <button onclick="location.href='#philippians'"><i class="fas fa-book-open"></i> 腓立比书</button>
+        <button onclick="location.href='#colossians'"><i class="fas fa-book-open"></i> 歌罗西书</button>
+        <button onclick="location.href='#1thessalonians'"><i class="fas fa-book-open"></i> 帖撒罗尼迦前书</button>
+        <button onclick="location.href='#2thessalonians'"><i class="fas fa-book-open"></i> 帖撒罗尼迦后书</button>
+        <button onclick="location.href='#1timothy'"><i class="fas fa-book-open"></i> 提摩太前书</button>
+        <button onclick="location.href='#2timothy'"><i class="fas fa-book-open"></i> 提摩太后书</button>
+        <button onclick="location.href='#titus'"><i class="fas fa-book-open"></i> 提多书</button>
+        <button onclick="location.href='#philemon'"><i class="fas fa-book-open"></i> 腓利门书</button>
+        <button onclick="location.href='#hebrews'"><i class="fas fa-book-open"></i> 希伯来书</button>
+        <button onclick="location.href='#james'"><i class="fas fa-book-open"></i> 雅各书</button>
+        <button onclick="location.href='#1peter'"><i class="fas fa-book-open"></i> 彼得前书</button>
+        <button onclick="location.href='#2peter'"><i class="fas fa-book-open"></i> 彼得后书</button>
+        <button onclick="location.href='#1john'"><i class="fas fa-book-open"></i> 约翰一书</button>
+        <button onclick="location.href='#2john'"><i class="fas fa-book-open"></i> 约翰二书</button>
+        <button onclick="location.href='#3john'"><i class="fas fa-book-open"></i> 约翰三书</button>
+        <button onclick="location.href='#jude'"><i class="fas fa-book-open"></i> 犹大书</button>
+        <button onclick="location.href='#revelation'"><i class="fas fa-book-open"></i> 启示录</button>
+    </div>
+</div>
+
+
+<footer>
+    <p>© 2023 圣经朗读. 版权所有.</p>
+ 
+</footer>
+
+<script>
+function playAudio(book) {
+    console.log("播放：" + book);
+    // 这里可以添加实际播放音频的代码
+    alert("播放 " + book + " 功能尚未完成。"); // 提示信息
+}
+
+function goToHome() {
+    // 返回首页的逻辑，如果是在单页应用中，可以刷新页面或跳转到应用首页
+    window.location.href = window.location.origin; // 返回当前网站的根目录
+}
+
+// 示例：设置每日金句 (可以从服务器获取或本地存储)
+function setDailyVerse() {
+    const verses = [
+        "“你们要将一切的忧虑卸给神，因为他顾念你们。” - 彼得前书 5:7",
+        "“我靠着那加给我力量的，凡事都能做。” - 腓立比书 4:13",
+        "“神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生。” - 约翰福音 3:16"
+        // ... 更多金句
+    ];
+    const verseContainer = document.querySelector('.daily-verse-container p');
+    const randomIndex = Math.floor(Math.random() * verses.length);
+    verseContainer.textContent = verses[randomIndex];
+}
+
+// 页面加载时设置每日金句
+document.addEventListener('DOMContentLoaded', setDailyVerse);
+
+</script>
+
+</body>
+</html>

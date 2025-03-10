@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word 预览 - 电子圣经团旗</title>
+    <script src="https://unpkg.com/mammoth@1.4.2/mammoth.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #00b0f0;
+            --bg-color: #f4f4f4;
+            --text-color: #333;
+            --muted-color: #999;
+        }
+
+        body {
+            font-family: 'PingFang SC', Arial, sans-serif;
+            background: var(--bg-color);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            margin: 0;
+        }
+
+        .sidebar {
+            width: 290px;
+            height: 100vh;
+            background: #ddd;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .main-content {
+            margin-left: 290px;
+            width: calc(100% - 290px);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .file-info {
+            padding: 15px;
+            font-size: 14px;
+            color: var(--muted-color);
+            flex-shrink: 0;
+        }
+
+        .file-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .file-info a:hover {
+            text-decoration: underline;
+        }
+
+        .document-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .file-info {
+                display: none; /* 移动端隐藏路径信息 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>左侧内容</h2>
+        <p>这里是左侧290px的固定内容。</p>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <img src="logo/ebfside.png" class="logo" alt="Logo">
+            <span class="header-title">电子圣经团旗</span>
+        </div>
+        <div class="file-info" id="fileInfo">路径: 加载中...</div>
+        <div class="document-content" id="documentContent">正在加载 Word 文档...</div>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const fileName = decodeURIComponent(getQueryParam('file') || '未知文件');
+        const filePath = decodeURIComponent(getQueryParam('path') || '');
+        const baseUrl = "file:///Users/owner/Desktop/Chineseebiblefellowship/flie/word.html";
+
+        // 显示文件路径和超链接
+        const fullUrl = `${baseUrl}${filePath}`;
+        document.getElementById('fileInfo').innerHTML = `路径: ${filePath} <a href="${fullUrl}" target="_blank">打开文件</a>`;
+
+        // 预览 Word 内容
+        if (filePath) {
+            fetch(fullUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error('文件加载失败');
+                    return response.arrayBuffer();
+                })
+                .then(buffer => mammoth.convertToHtml({ arrayBuffer: buffer }))
+                .then(result => {
+                    document.getElementById('documentContent').innerHTML = result.value;
+                })
+                .catch(err => {
+                    console.error('错误:', err);
+                    document.getElementById('documentContent').innerHTML = '无法加载文档，请检查文件路径或网络连接。';
+                });
+        } else {
+            document.getElementById('documentContent').innerHTML = '未提供文件路径。';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A senior-friendly Bible music player with 10 tracks">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>圣经音乐播放器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/ebf.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
+    <style>
+        /* Reset styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Body styling */
+        body {
+            background: #f5faff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+            font-size: 18px;
+        }
+
+        /* Top bar design */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(135deg, #87CEFA, #5ba4cf);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .top-bar .branding {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-bar .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: url('https://cdn.prod.website-files.com/5cf040785de32135f9371ad2/5ffa5cef27d340ef0dff7cb8_5e62997cb6815f2d771c71a9_E%20Bible%20Fellowship%20Hymn-p-500.png') no-repeat center;
+            background-size: cover;
+            border: 2px solid #fff;
+        }
+
+        .top-bar h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .top-bar .back-btn {
+            background: #fff;
+            border: none;
+            font-size: 20px;
+            color: #87CEFA;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .top-bar .back-btn:hover {
+            background: #e6f0fa;
+            color: #5ba4cf;
+        }
+
+        /* Search bar design */
+        .search-bar {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 600px;
+            padding: 12px;
+            background: #fff;
+            border: 2px solid #87CEFA;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-bar:focus-within {
+            border-color: #5ba4cf;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-bar i {
+            font-size: 22px;
+            color: #333;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 20px;
+            color: #333;
+            background: transparent;
+        }
+
+        .search-bar input::placeholder {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* Player container */
+        .player-container {
+            padding: 120px 20px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Music player styling */
+        .music-player {
+            width: 340px;
+            height: 480px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+            perspective: 1200px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px;
+            background: #fff;
+        }
+
+        /* Square cover area */
+        .cover-area {
+            width: 100%;
+            height: 240px;
+            background: #e9eef2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #d9e8f5;
+            overflow: hidden;
+        }
+
+        .cover-area img {
+            width: 240px;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .cover-area img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Info section */
+        .info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .song-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        .artist {
+            font-size: 20px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* Progress bar */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 0 15px;
+        }
+
+        .time {
+            font-size: 16px;
+            min-width: 50px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #d9e8f5;
+            border-radius: 4px;
+            margin: 0 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .progress-bar:hover {
+            background: #b3d4fc;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+            background: #87CEFA;
+            transition: width 0.1s linear;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-top: 1px solid #d9e8f5;
+            gap: 25px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #333;
+            padding: 10px;
+            transition: transform 0.2s, color 0.3s;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.2);
+            color: #87CEFA;
+        }
+
+        /* Lyrics */
+        .lyrics {
+            padding: 15px;
+            height: 130px;
+            overflow-y: auto;
+            font-size: 20px;
+            line-height: 30px;
+            background: #fff;
+            color: #333;
+        }
+
+        .lyrics::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .lyrics::-webkit-scrollbar-thumb {
+            background: #87CEFA;
+            border-radius: 4px;
+        }
+
+        .lyric-line {
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .lyric-line.active {
+            color: #87CEFA;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Back lyrics */
+        .back-lyrics {
+            font-size: 30px;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+            padding: 20px;
+        }
+
+        /* Desktop layout with 290px offset */
+
+    </style>
+</head>
+
+<body>
+    <div id="sidebar-left">
+        <img src="logo/ebfside.png" class="logo">
+        <div class="title">
+            <span>电子</span>
+            <span>圣经团契</span>
+        </div>
+        <p class="subtitle">生活在审判日里</p>
+        <div class="sadfds-container" id="sa d f d sContainer">
+            <input type="text" id="sadfdsInput" placeholder="搜索..." />
+            <button id="sadfdsButton">搜索</button>
+        </div>
+        <ul class="sidebar-list">
+            <li>
+                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09"
+                    class="sidebar-link">
+                    <i class="fas fa-video"></i>
+                    <span>Zoom</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbiblestudy.html" class="sidebar-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>圣经学习</span>
+                </a>
+            </li>
+            <li>
+                <a href="ebfbooks.html" class="sidebar-link">
+                    <i class="fas fa-book"></i>
+                    <span>书籍</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.newopenforum.org/" class="sidebar-link">
+                    <i class="fas fa-comments"></i>
+                    <span>圣经论坛</span>
+                </a>
+            </li>
+        </ul>
+        <div class="airtime-wrapper">
+            <div class="airtime-header">
+                <span class="text-blue">电子</span>圣经团契直播
+            </div>
+            <div class="airtime-player">
+                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        <div class="social-section">
+            <h3 class="social-title">
+                <span class="text-blue">电子</span>圣经团契社交媒体
+            </h3>
+            <div class="social-grid">
+                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <span class="social-label">YouTube</span>
+                </a>
+
+                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span class="social-label">TikTok</span>
+                </a>
+
+                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span class="social-label">Facebook</span>
+                </a>
+            </div>
+            <div class="social-grid">
+                <a href="https://twitter.com/EBF2033" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                    </div>
+                    <span class="social-label">Twitter</span>
+                </a>
+                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-spotify"></i>
+                    </div>
+                    <span class="social-label">Spotify</span>
+                </a>
+                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                    <div class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span class="social-label">Instagram</span>
+                </a>
+            </div>
+        </div>
+        <div class="contact-container" style="
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 320px;
+        margin: 40px auto;
+        padding: 25px;
+        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+            <div class="contact-header" style="
+            background: #a7daff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;">
+                <h2 style="
+                color: #1a3a5e;
+                margin: 0;
+                font-size: 1.4em;
+                font-weight: 600;
+            ">联系我们</h2>
+            </div>
+
+            <address style="
+            text-align: center;
+            font-style: normal;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;">
+                <p style="margin: 10px 0;">
+                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                       color: #1e6bce;
+                       text-decoration: none;
+                       font-weight: 500;">
+                        Info@eBibleFellowship.org
+                    </a>
+                </p>
+                <p style="margin: 10px 0;">P.O. Box 1393</p>
+                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+                <p style="margin: 10px 0;">USA</p>
+            </address>
+
+            <div class="copyright" style="
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 15px;">
+                © 2024 eBible Fellowship
+            </div>
+        </div>
+    </div>
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <div class="branding">
+            <div class="logo"></div>
+            <h1>圣经音乐</h1>
+        </div>
+        <button class="back-btn" onclick="history.back()">返回</button>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar animate__animated animate__fadeInDown">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="搜索圣经音乐..." autocomplete="off">
+    </div>
+<br>
+<br>
+    <!-- Player container for 10 players -->
+    <div class="player-container"></div>
+
+    <script>
+        // User-provided audio data (extended to 10 tracks for demonstration)
+        const audioData = [
+            {
+                name: "有福的确据",
+                artist: "eBible Fellowship-Hymns",
+                url: "bles.mp3",
+                lrc: "[-1:-9.-20]有福的确据\n[00:03.83]eBibleFellowship-Hymns\n[00:17.08]1.有福的确据，耶稣属我，\n[00:25.00]何等的荣耀向我显明，\n[00:32.32]被救主赎回，为神后嗣，\n[00:39.31]藉宝血洗罪，圣灵重生。\n[00:47.05]这是我信息，或讲或唱，\n[00:54.06]赞美我救主，心里欢畅。\n[01:00.45]常讲主慈爱，并颂主恩\n[01:07.27]赞美我救主，昼夜不分\n[01:16.29]2.完全顺服主，我灵欢喜，\n[01:22.85]天堂的荣耀显于我心，\n[01:29.77]仿佛有天使由天降临，\n[01:36.20]报明主慈爱，并主怜悯。\n[01:43.24]这是我信息，或讲或唱，\n[01:49.79]赞美我救主，心里欢畅。\n[01:55.42]常讲主慈爱，并颂主恩\n[02:02.77]赞美我救主，昼夜不分。\n[02:12.15]3.完全献与主，万事安宁，\n[02:19.25]荣耀的圣灵充满我心，\n[02:25.99]时刻仰望主，儆醒等候，\n[02:32.69]不住的祈祷，到主来临。\n[02:39.83]这是我信息，或讲或唱，\n[02:46.72]赞美我救主，心里欢畅。\n[02:53.12]常讲主慈爱，并颂主恩，\n[03:01.52]赞美我救主，昼夜不分。",
+                theme: "#1db954",
+                cover: "https://cdn.prod.website-files.com/5cf040785de32135f9371ad2/5ffa5cef27d340ef0dff7cb8_5e62997cb6815f2d771c71a9_E%20Bible%20Fellowship%20Hymn-p-500.png"
+            },
+          
+         
+        ];
+
+        // MusicPlayer class
+        class MusicPlayer {
+            constructor(container, trackIndex) {
+                this.container = container;
+                this.audio = new Audio();
+                this.audio.preload = 'auto';
+                this.isPlaying = false;
+                this.lyrics = [];
+                this.isFlipped = false;
+                this.touchStartX = 0;
+                this.touchEndX = 0;
+                this.currentIndex = trackIndex; // Unique index for each player
+                this.init();
+            }
+
+            init() {
+                this.render();
+                this.setupEvents();
+                this.updatePlayer(audioData[this.currentIndex]);
+            }
+
+            render() {
+                const track = audioData[this.currentIndex];
+                this.container.innerHTML = `
+                    <div class="front">
+                        <div class="cover-area">
+                            <img src="${track.cover}" alt="Album Cover">
+                        </div>
+                        <div class="info">
+                            <div class="song-name">${track.name}</div>
+                            <div class="artist">${track.artist}</div>
+                            <div class="progress-container">
+                                <span class="time current-time">00:00</span>
+                                <div class="progress-bar">
+                                    <div class="progress"></div>
+                                </div>
+                                <span class="time duration">00:00</span>
+                            </div>
+                        </div>
+                        <div class="controls">
+                            <button class="control-btn prev"><i class="fas fa-backward"></i></button>
+                            <button class="control-btn play-pause"><i class="fas fa-play"></i></button>
+                            <button class="control-btn next"><i class="fas fa-forward"></i></button>
+                        </div>
+                        <div class="lyrics"></div>
+                    </div>
+                    <div class="back">
+                        <div class="controls">
+                            <button class="control-btn prev"><i class="fas fa-backward"></i></button>
+                            <button class="control-btn play-pause"><i class="fas fa-play"></i></button>
+                            <button class="control-btn next"><i class="fas fa-forward"></i></button>
+                        </div>
+                        <div class="back-lyrics"></div>
+                    </div>
+                `;
+                this.container.style.background = `linear-gradient(135deg, ${track.theme}, #fff)`;
+            }
+
+            setupEvents() {
+                const player = this.container;
+                const audio = this.audio;
+                const front = player.querySelector('.front');
+                const back = player.querySelector('.back');
+                const progressBar = front.querySelector('.progress-bar');
+                const playPauseBtns = player.querySelectorAll('.play-pause');
+                const prevBtn = player.querySelector('.prev');
+                const nextBtn = player.querySelector('.next');
+
+                player.addEventListener('touchstart', (e) => this.touchStartX = e.touches[0].clientX);
+                player.addEventListener('touchmove', (e) => this.touchEndX = e.touches[0].clientX);
+                player.addEventListener('touchend', () => this.handleSwipe());
+
+                audio.addEventListener('timeupdate', () => this.updateProgress());
+                audio.addEventListener('ended', () => this.nextTrack());
+                audio.addEventListener('canplay', () => this.updateDuration());
+                audio.addEventListener('error', () => this.handleError());
+
+                progressBar.addEventListener('click', (e) => {
+                    const rect = progressBar.getBoundingClientRect();
+                    const pos = (e.clientX - rect.left) / rect.width;
+                    audio.currentTime = pos * audio.duration;
+                });
+
+                playPauseBtns.forEach(btn => btn.addEventListener('click', () => this.togglePlay()));
+                prevBtn.addEventListener('click', () => this.prevTrack());
+                nextBtn.addEventListener('click', () => this.nextTrack());
+            }
+
+            handleSwipe() {
+                if (this.touchStartX - this.touchEndX > 50) this.flipCard(true);
+                else if (this.touchEndX - this.touchStartX > 50) this.flipCard(false);
+            }
+
+            flipCard(toBack = true) {
+                if (toBack && !this.isFlipped) {
+                    this.container.style.transform = 'rotateY(180deg)';
+                    this.isFlipped = true;
+                } else if (!toBack && this.isFlipped) {
+                    this.container.style.transform = 'rotateY(0deg)';
+                    this.isFlipped = false;
+                }
+            }
+
+            updatePlayer(track) {
+                if (this.isPlaying) this.audio.pause();
+                this.audio.src = track.url;
+                this.render(); // Re-render to update UI
+                this.parseLyrics(track.lrc);
+                this.setupEvents(); // Re-attach events after render
+                if (this.isPlaying) this.audio.play().catch(e => console.error('Playback error:', e));
+            }
+
+            togglePlay() {
+                if (this.isPlaying) {
+                    this.audio.pause();
+                    this.container.querySelectorAll('.play-pause').forEach(btn =>
+                        btn.innerHTML = '<i class="fas fa-play"></i>'
+                    );
+                } else {
+                    players.forEach(p => p !== this && p.isPlaying && p.togglePlay());
+                    this.audio.play().catch(e => console.error('Playback error:', e));
+                    this.container.querySelectorAll('.play-pause').forEach(btn =>
+                        btn.innerHTML = '<i class="fas fa-pause"></i>'
+                    );
+                }
+                this.isPlaying = !this.isPlaying;
+            }
+
+            updateProgress() {
+                const current = this.audio.currentTime || 0;
+                const duration = this.audio.duration || 0;
+                const front = this.container.querySelector('.front');
+                const progress = front.querySelector('.progress');
+                const currentTime = front.querySelector('.current-time');
+                const durationTime = front.querySelector('.duration');
+
+                progress.style.width = `${duration ? (current / duration) * 100 : 0}%`;
+                currentTime.textContent = this.formatTime(current);
+                durationTime.textContent = this.formatTime(duration);
+                this.updateLyrics(current);
+            }
+
+            updateDuration() {
+                const front = this.container.querySelector('.front');
+                front.querySelector('.duration').textContent = this.formatTime(this.audio.duration || 0);
+            }
+
+            formatTime(seconds) {
+                const min = Math.floor(seconds / 60);
+                const sec = Math.floor(seconds % 60);
+                return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+            }
+
+            parseLyrics(lrc) {
+                this.lyrics = lrc.split('\n').map(line => {
+                    const match = line.match(/\[(-?\d+):(\d+\.\d+)\](.*)/);
+                    return match ? {
+                        time: parseInt(match[1]) * 60 + parseFloat(match[2]),
+                        text: match[3].trim()
+                    } : null;
+                }).filter(Boolean);
+
+                const lyricsDiv = this.container.querySelector('.lyrics');
+                lyricsDiv.innerHTML = this.lyrics.map(l =>
+                    `<div class="lyric-line">${l.text}</div>`
+                ).join('');
+            }
+
+            updateLyrics(currentTime) {
+                const lyricLines = this.container.querySelectorAll('.lyric-line');
+                const backLyrics = this.container.querySelector('.back-lyrics');
+                let activeIndex = -1;
+
+                this.lyrics.forEach((lyric, i) => {
+                    if (currentTime >= lyric.time &&
+                        (!this.lyrics[i + 1] || currentTime < this.lyrics[i + 1].time)) {
+                        activeIndex = i;
+                    }
+                });
+
+                lyricLines.forEach((line, i) => {
+                    line.classList.toggle('active', i === activeIndex);
+                    if (i === activeIndex) {
+                        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        backLyrics.textContent = this.lyrics[i].text;
+                    }
+                });
+            }
+
+            prevTrack() {
+                if (this.isPlaying) this.audio.pause();
+                this.currentIndex = (this.currentIndex - 1 + audioData.length) % audioData.length;
+                this.updatePlayer(audioData[this.currentIndex]);
+                if (this.isPlaying) this.audio.play();
+            }
+
+            nextTrack() {
+                if (this.isPlaying) this.audio.pause();
+                this.currentIndex = (this.currentIndex + 1) % audioData.length;
+                this.updatePlayer(audioData[this.currentIndex]);
+                if (this.isPlaying) this.audio.play();
+            }
+
+            handleError() {
+                console.error('Audio error:', this.audio.error);
+                this.currentIndex = 0;
+                this.updatePlayer(audioData[this.currentIndex]);
+            }
+        }
+
+        // Global variables
+        const players = [];
+        const container = document.querySelector('.player-container');
+        const searchInput = document.getElementById('searchInput');
+
+        // Initialize 10 players
+        for (let i = 0; i < Math.min(10, audioData.length); i++) {
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'music-player';
+            container.appendChild(playerDiv);
+            players.push(new MusicPlayer(playerDiv, i));
+        }
+
+        // Search functionality
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            const filteredData = query
+                ? audioData.filter(t =>
+                    t.name.toLowerCase().includes(query) ||
+                    t.artist.toLowerCase().includes(query)
+                )
+                : audioData;
+
+            players.forEach((player, index) => {
+                const track = filteredData[index % filteredData.length] || audioData[index % audioData.length];
+                player.currentIndex = audioData.indexOf(track);
+                player.updatePlayer(track);
+            });
+        }
+
+        // Debounced search
+        let searchTimeout;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performSearch, 500);
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            const activePlayer = players.find(p => p.isPlaying) || players[0];
+            switch (e.key) {
+                case ' ':
+                    e.preventDefault();
+                    activePlayer.togglePlay();
+                    break;
+                case 'ArrowLeft':
+                    activePlayer.prevTrack();
+                    break;
+                case 'ArrowRight':
+                    activePlayer.nextTrack();
+                    break;
+                case 'ArrowUp':
+                    activePlayer.audio.currentTime = Math.max(0, activePlayer.audio.currentTime - 5);
+                    break;
+                case 'ArrowDown':
+                    activePlayer.audio.currentTime = Math.min(activePlayer.audio.duration || 0, activePlayer.audio.currentTime + 5);
+                    break;
+            }
+        });
+
+        // Sync players (only one plays at a time)
+        setInterval(() => {
+            const playingPlayer = players.find(p => p.isPlaying);
+            if (playingPlayer) {
+                players.forEach(p => p !== playingPlayer && p.isPlaying && p.togglePlay());
+            }
+        }, 1000);
+
+        // Security
+        container.addEventListener('contextmenu', (e) => e.preventDefault());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+
+.container {
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.main-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5%; /* Adjust the gap between sections */
+}
+
+.section {
+    flex: 0 0 17%; /* Each section takes 17% of the width */
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.section img {
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.animated-title {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>圣经朗读界面</title>
+  <link rel="stylesheet" href="css/ebf.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/ebf.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* 基本样式 */
+    * {
+      box-sizing: border-box;
+    }
+
+
+
+    /* 夜间模式样式 */
+    body.night-mode {
+      background: #333;
+      color: #eee;
+    }
+
+    body.night-mode .header {
+      background-color: #222;
+    }
+
+    body.night-mode .nav-bar a {
+      color: #66ccff;
+    }
+
+    body.night-mode .chapter-content {
+      background-color: #444;
+      border-color: #555;
+    }
+
+    body.night-mode .back-btn {
+      background: linear-gradient(45deg, #555, #333);
+    }
+
+    body.night-mode .xxxxxx input {
+      background: linear-gradient(270deg, #006400, #0000ff);
+    }
+
+    /* ========== 顶栏 ========== */
+    .header {
+      width: 100%;
+      height: 250px;
+      background-color: #f0f8ff;
+      /* 淡蓝背景 */
+
+   
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background 0.3s ease;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-left img.logo {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    .group-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* 改良后的返回按钮 */
+    .back-btn {
+      font-size: 16px;
+      padding: 8px 12px;
+      border: none;
+      background: linear-gradient(45deg, #6dd5ed, #2193b0);
+      color: #fff;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .header-middle {
+      text-align: center;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* 修改顶部标题 */
+    .header-middle .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .header-middle .subtitle {
+      font-size: 20px;
+      color: #555;
+    }
+
+    .header-bottom {
+      text-align: center;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 搜索框采用绿色到蓝色的渐变，并添加动画 */
+    .xxxxxx input {
+      left: 50px;
+      width: 300px;
+  
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      padding: 0 15px;
+      font-size: 16px;
+      color: #333;
+
+      background-size: 400% 400%;
+      animation: gradientAnimation 8s ease infinite;
+      transition: transform 0.3s ease;
+    }
+@media (max-width: 991px) {
+  .header {
+    margin-left: 0;
+  }
+  
+}
+    .xxxxxx input:hover {
+      transform: scale(1.02);
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ========== 主体部分 ========== */
+    .content {
+     
+      padding: 20px;
+    }
+
+    .nav-bar {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .nav-bar a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007BFF;
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-bar a:hover {
+      transform: scale(1.05);
+    }
+
+    /* 章节导航区：50个按钮（左对齐） */
+    .chapter-navigation {
+      margin-bottom: 15px;
+    }
+
+    .chapter-buttons {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: flex-start;
+    }
+
+    .chapter-buttons li button:hover {
+      background-color: #007BFF;
+    }
+
+    .chapter-buttons li button {
+      width: 35px;
+      height: 35px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      text-align: center;
+      line-height: 35px;
+      transition: transform 0.3s ease;
+    }
+
+    .chapter-buttons li button:hover {
+      transform: scale(1.05);
+    }
+
+    .chapter-buttons li button.active {
+      background-color: #d0eaff;
+      border-color: #007BFF;
+      font-weight: bold;
+    }
+
+    /* 固定按钮：上一篇、下一篇、返回顶部（图标按钮） */
+    .prev-chapter-btn,
+    .next-chapter-btn,
+    .back-to-top {
+      position: fixed;
+      padding: 10px 15px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+.bible-body {
+  margin-left: 290px
+}
+@media (max-width: 991px) {
+  .bible-body {
+    margin-left: 0;
+  }
+}
+    .prev-chapter-btn:hover,
+    .next-chapter-btn:hover,
+    .back-to-top:hover {
+
+      transform: scale(1.1);
+    }
+
+    .prev-chapter-btn {
+      left: 20px;
+      bottom: 20px;
+    }
+
+    .next-chapter-btn {
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .back-to-top {
+      right: 20px;
+      bottom: 80px;
+    }
+
+    /* 字体控制区：左对齐，尺寸改为35px */
+    .font-controls {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .font-controls button {
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    p {
+    display: block;
+    /* 移除所有外边距 */
+    margin: 0; 
+    unicode-bidi: isolate;
+}
+    .font-controls button:hover {
+      transform: scale(1.1);
+    }
+
+    /* 经文内容展示区 */
+    .chapter-content {
+
+      padding: 15px;
+
+      font-size: 16px;
+
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .chapter-heading {
+      font-weight: bold;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .xxx {
+      margin-bottom: 10px;
+    }
+
+    .xxx .xxx-number {
+      color: blue;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sidebar-left" style="width: 290px;">
+    <img src="logo/ebfside.png" class="logo">
+    <div class="title">
+        <span>电子</span>
+        <span>圣经团契</span>
+    </div>
+    <p class="subtitle">生活在审判日里</p>
+    <div class="sadfds-container" id="sa d f d sContainer">
+        <input type="text" id="sadfdsInput" placeholder="搜索..." />
+        <button id="sadfdsButton">搜索</button>
+    </div>
+    <ul class="sidebar-list">
+        <li>
+            <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09"
+                class="sidebar-link">
+                <i class="fas fa-video"></i>
+                <span>Zoom</span>
+            </a>
+        </li>
+        <li>
+            <a href="ebfbiblestudy.html" class="sidebar-link">
+                <i class="fas fa-book-open"></i>
+                <span>圣经学习</span>
+            </a>
+        </li>
+        <li>
+            <a href="ebfbooks.html" class="sidebar-link">
+                <i class="fas fa-book"></i>
+                <span>书籍</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.newopenforum.org/" class="sidebar-link">
+                <i class="fas fa-comments"></i>
+                <span>圣经论坛</span>
+            </a>
+        </li>
+    </ul>
+    <div class="airtime-wrapper">
+        <div class="airtime-header">
+            <span class="text-blue">电子</span>圣经团契直播
+        </div>
+        <div class="airtime-player">
+            <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+    <div class="social-section">
+        <h3 class="social-title">
+            <span class="text-blue">电子</span>圣经团契社交媒体
+        </h3>
+        <div class="social-grid">
+            <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <span class="social-label">YouTube</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-tiktok"></i>
+                </div>
+                <span class="social-label">TikTok</span>
+            </a>
+
+            <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <span class="social-label">Facebook</span>
+            </a>
+        </div>
+        <div class="social-grid">
+            <a href="https://twitter.com/EBF2033" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <span class="social-label">Twitter</span>
+            </a>
+            <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-spotify"></i>
+                </div>
+                <span class="social-label">Spotify</span>
+            </a>
+            <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <span class="social-label">Instagram</span>
+            </a>
+        </div>
+    </div>
+    <div class="contact-container" style="
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 320px;
+    margin: 40px auto;
+    padding: 25px;
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+        <div class="contact-header" style="
+        background: #a7daff;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 20px;
+        text-align: center;">
+            <h2 style="
+            color: #1a3a5e;
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+        ">联系我们</h2>
+        </div>
+
+        <address style="
+        text-align: center;
+        font-style: normal;
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 20px;">
+            <p style="margin: 10px 0;">
+                <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                   color: #1e6bce;
+                   text-decoration: none;
+                   font-weight: 500;">
+                    Info@eBibleFellowship.org
+                </a>
+            </p>
+            <p style="margin: 10px 0;">P.O. Box 1393</p>
+            <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+            <p style="margin: 10px 0;">USA</p>
+        </address>
+
+        <div class="copyright" style="
+        text-align: center;
+        color: #666;
+        font-size: 0.9em;
+        border-top: 1px solid #eee;
+        padding-top: 15px;">
+            © 2024 eBible Fellowship
+        </div>
+    </div>
+</div>
+  <!-- 顶栏 -->
+   <div class="bible-body">
+  <header class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <img src="logo/ebfside.png" alt="Logo" class="logo">
+        <span class="group-text">电子圣经团契</span>
+      </div>
+      <div class="header-right">
+        <a href="../ebfbiblestudy.html"><button class="back-btn"><i class="fas fa-arrow-left"></i> 返回</button></a>
+        
+        <button id="mode-toggle" title="切换夜间模式"
+          style="font-size:16px; padding:8px; border:none; background:transparent; cursor:pointer;">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="header-middle">
+      <div class="title">圣经和合本</div>
+      <div class="subtitle" style="color: white;">阿摩司书</div>
+    </div>
+    <div class="header-bottom">
+      <div class="xxxxxx">
+        <input type="text" placeholder="搜索">
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <div class="content">
+    <div class="nav-bar">
+      <a href="#">首页</a>
+      <a href="#">圣经阅读</a>
+      <a href="#">阿摩司书</a>
+    </div>
+
+    <!-- 章节导航区：50个按钮（左对齐） -->
+    <div class="chapter-navigation">
+      <ul class="chapter-buttons">
+        <!-- 50个章节按钮由 JS 动态生成 -->
+      </ul>
+    </div>
+
+    <!-- 字体控制区（左对齐） -->
+    <div class="font-controls">
+      <button id="decrease-font" title="字体减小"><i class="fas fa-minus"></i></button>
+      <button id="increase-font" title="字体增大"><i class="fas fa-plus"></i></button>
+      <button id="BACKGROUND" title="字体减小"><i class="fa-solid fa-eye"></i></button>
+
+    </div>
+
+    <!-- 经文内容展示区 -->
+    <div class="chapter-content" id="chapter-content">
+      <!-- 默认显示阿摩司书第1章内容 -->
+
+    </div>
+
+    <!-- 固定按钮：上一篇、下一篇、返回顶部 -->
+    <button class="prev-chapter-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+    <button class="next-chapter-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+    <button class="back-to-top" id="top-btn"><i class="fas fa-arrow-up"></i></button>
+</div>
+  <script>
+const bibleTitle = "阿摩司书";
+const totalChapters = 9;
+const websites = {
+  "01": {
+    chapters: {
+      "1": [
+        { verse: 1, text: "当犹大王乌西雅，以色列王约阿施的儿子，耶罗波安在位的时候，大地震前二年，提哥亚牧人中的阿摩司得默示论以色列。" },
+        { verse: 2, text: "他说，耶和华必从锡安吼叫，从耶路撒冷发声。牧人的草场要悲哀，迦密的山顶要枯干。" },
+        { verse: 3, text: "耶和华如此说，大马色三番四次地犯罪，我必不免去她的刑罚。因为她以打粮食的铁器打过基列。" },
+        { verse: 4, text: "我却要降火在哈薛的家中，烧灭便哈达的宫殿。" },
+        { verse: 5, text: "我必折断大马色的门闩，剪除亚文平原的居民，和伯伊甸掌权的。亚兰人必被掳到吉珥。这是耶和华说的。" },
+        { verse: 6, text: "耶和华如此说，迦萨三番四次的犯罪，我必不免去她的刑罚。因为她掳掠众民交给以东。" },
+        { verse: 7, text: "我却要降火在迦萨的城内，烧灭其中的宫殿。" },
+        { verse: 8, text: "我必剪除亚实突的居民，和亚实基伦掌权的。也必反手攻击以革伦。非利士人所余剩的必都灭亡。这是主耶和华说的。" },
+        { verse: 9, text: "耶和华如此说，推罗三番四次的犯罪，我必不免去她的刑罚。因为她将众民交给以东，并不记念弟兄的盟约。" },
+        { verse: 10, text: "我却要降火在推罗的城内，烧灭其中的宫殿。" },
+        { verse: 11, text: "耶和华如此说，以东三番四次的犯罪，我必不免去她的刑罚。因为她拿刀追赶兄弟，毫无怜悯，发怒撕裂，永怀忿怒。" },
+        { verse: 12, text: "我却要降火在提幔，烧灭波斯拉的宫殿。" },
+        { verse: 13, text: "耶和华如此说，亚扪人三番四次的犯罪，我必不免去他们的刑罚。因为他们剖开基列的孕妇，扩张自己的境界。" },
+        { verse: 14, text: "我却要在争战呐喊的日子，旋风狂暴的时候，点火在拉巴的城内，烧灭其中的宫殿。" },
+        { verse: 15, text: "他们的王和首领，必一同被掳去。这是耶和华说的。" },
+      ],
+      "2": [
+        { verse: 1, text: "耶和华如此说，摩押三番四次的犯罪，我必不免去她的刑罚。因为她将以东王的骸骨焚烧成灰。" },
+        { verse: 2, text: "我却要降火在摩押，烧灭加略的宫殿。摩押必在哄嚷呐喊吹角之中死亡。" },
+        { verse: 3, text: "我必剪除摩押中的审判者，将其中的一切首领，和他一同杀戮。这是耶和华说的。" },
+        { verse: 4, text: "耶和华如此说，犹大人三番四次的犯罪，我必不免去他们的刑罚。因为他们厌弃耶和华的训诲，不遵守他的律例。他们列祖所随从虚假的偶像，使他们走迷了。" },
+        { verse: 5, text: "我却要降火在犹大，烧灭耶路撒冷的宫殿。" },
+        { verse: 6, text: "耶和华如此说，以色列人三番四次的犯罪，我必不免去他们的刑罚。因他们为银子卖了义人，为一双鞋卖了穷人。" },
+        { verse: 7, text: "他们见穷人头上所蒙的灰也都垂涎。阻碍谦卑人的道路。父子同一个女子行淫，亵渎我的圣名。" },
+        { verse: 8, text: "他们在各坛旁，铺人所当的衣服，卧在其上。又在他们神的庙中，喝受罚之人的酒。" },
+        { verse: 9, text: "我从以色列人面前除灭亚摩利人。他虽高大如香柏树，坚固如橡树，我却上灭他的果子，下绝他的根本。" },
+        { verse: 10, text: "我也将你们从埃及地领上来，在旷野引导你们四十年，使你们得亚摩利人之地为业。" },
+        { verse: 11, text: "我从你们子弟中兴起先知，又从你们少年人中兴起拿细耳人。以色列人哪，不是这样吗？这是耶和华说的。" },
+        { verse: 12, text: "你们却给拿细耳人酒喝，嘱咐先知说，不要说预言。" },
+        { verse: 13, text: "看哪，在你们所住之地，我必压你们，如同装满禾捆的车压物一样。" },
+        { verse: 14, text: "快跑的不能逃脱，有力的不能用力，刚勇的也不能自救。" },
+        { verse: 15, text: "拿弓的不能站立，腿快的不能逃脱。骑马的也不能自救。" },
+        { verse: 16, text: "到那日，勇士中最有胆量的，必赤身逃跑。这是耶和华说的。" },
+      ],
+      "3": [
+        { verse: 1, text: "以色列人哪，你们全家是我从埃及地领上来的，当听耶和华攻击你们的话。" },
+        { verse: 2, text: "在地上万族中，我只认识你们。因此，我必追讨你们的一切罪孽。" },
+        { verse: 3, text: "二人若不同心，岂能同行呢？" },
+        { verse: 4, text: "狮子若非抓食，岂能在林中咆哮呢？少壮狮子若无所得，岂能从洞中发声呢？" },
+        { verse: 5, text: "若没有机槛，雀鸟岂能陷在网罗里呢？网罗若无所得，岂能从地上翻起呢？" },
+        { verse: 6, text: "城中若吹角，百姓岂不惊恐呢？灾祸若临到一城，岂非耶和华所降的吗？" },
+        { verse: 7, text: "主耶和华若不将奥秘指示他的仆人众先知，就一无所行。" },
+        { verse: 8, text: "狮子吼叫，谁不惧怕呢？主耶和华发命，谁能不说预言呢？" },
+        { verse: 9, text: "要在亚实突的宫殿中，和埃及地的宫殿里，传扬说，你们要聚集在撒玛利亚的山上，就看见城中有何等大的扰乱与欺压的事。" },
+        { verse: 10, text: "那些以强暴抢夺财物，积蓄在自己家中的人，不知道行正直的事。这是耶和华说的。" },
+        { verse: 11, text: "所以主耶和华如此说，敌人必来围攻这地，使你的势力衰微，抢掠你的家宅。" },
+        { verse: 12, text: "耶和华如此说，牧人怎样从狮子口中抢回两条羊腿或半个耳朵，住撒玛利亚的以色列人躺卧在床角上，或铺绣花毯的榻上，他们得救也不过如此。" },
+        { verse: 13, text: "主耶和华万军之神说，当听这话，警戒雅各家。" },
+        { verse: 14, text: "我讨以色列罪的日子，也要讨伯特利祭坛的罪。坛角必被砍下，坠落于地。" },
+        { verse: 15, text: "我要拆毁过冬和过夏的房屋，象牙的房屋也必毁灭，高大的房屋都归无有。这是耶和华说的。" },
+      ],
+      "4": [
+        { verse: 1, text: "你们住撒玛利亚山如巴珊母牛的啊，当听我的话，你们欺负贫寒的，压碎穷乏的，对家主说，拿酒来，我们喝吧。" },
+        { verse: 2, text: "主耶和华指着自己的圣洁起誓说，日子快到，人必用钩子将你们钩去，用鱼钩将你们余剩的钩去。" },
+        { verse: 3, text: "你们各人必从破口直往前行，投入哈门。这是耶和华说的。" },
+        { verse: 4, text: "以色列人哪，任你们往伯特利去犯罪，到吉甲加增罪过。每日早晨献上你们的祭物，每三日奉上你们的十分之一。" },
+        { verse: 5, text: "任你们献有酵的感谢祭，把甘心祭宣传报告给众人，因为是你们所喜爱的。这是主耶和华说的。" },
+        { verse: 6, text: "我使你们在一切城中牙齿干净，在你们各处粮食缺乏，你们仍不归向我。这是耶和华说的。" },
+        { verse: 7, text: "在收割的前三月，我使雨停止，不降在你们那里。我降雨在这城，不降雨在那城。这块地有雨，那块地无雨，无雨的就枯干了。" },
+        { verse: 8, text: "这样，两三城的人凑到一城去找水，却喝不足。你们仍不归向我。这是耶和华说的。" },
+        { verse: 9, text: "我以旱风，霉烂攻击你们。你们园中许多菜蔬，葡萄树，无花果树，橄榄树都被剪虫所吃。你们仍不归向我。这是耶和华说的。" },
+        { verse: 10, text: "我降瘟疫在你们中间，像在埃及一样。用刀杀戮你们的少年人，使你们的马匹被掳掠，营中尸首的臭气扑鼻。你们仍不归向我。这是耶和华说的。" },
+        { verse: 11, text: "我倾覆你们中间的城邑，如同我从前倾覆所多玛，蛾摩拉一样，使你们好像从火中抽出来的一根柴。你们仍不归向我。这是耶和华说的。" },
+        { verse: 12, text: "以色列啊，我必向你如此行。以色列啊，我既这样行，你当预备迎见你的神。" },
+        { verse: 13, text: "那创山，造风，将心意指示人，使晨光变为幽暗，脚踏在地之高处的。他的名是耶和华万军之神。" },
+      ],
+      "5": [
+        { verse: 1, text: "以色列家啊，要听我为你们所作的哀歌。" },
+        { verse: 2, text: "以色列民（原文作处女）跌倒，不得再起，躺在地上，无人搀扶。" },
+        { verse: 3, text: "主耶和华如此说，以色列家的城，发出一千兵的，只剩一百，发出一百的，只剩十个。" },
+        { verse: 4, text: "耶和华向以色列家如此说，你们要寻求我，就必存活。" },
+        { verse: 5, text: "不要往伯特利寻求，不要进入吉甲，不要过到别是巴。因为吉甲必被掳掠，伯特利也必归于无有。" },
+        { verse: 6, text: "要寻求耶和华，就必存活。免得他在约瑟家像火发出，在伯特利焚烧，无人扑灭。" },
+        { verse: 7, text: "你们这使公平变为茵陈，将公义丢弃于地的，" },
+        { verse: 8, text: "要寻求那造昴星和参星，使死荫变为晨光，使白日变为黑夜，命海水来浇在地上的，（耶和华是他的名）" },
+        { verse: 9, text: "他使力强的忽遭灭亡，以致保障遭遇毁坏。" },
+        { verse: 10, text: "你们怨恨那在城门口责备人的，憎恶那说正直话的。" },
+        { verse: 11, text: "你们践踏贫民，向他们勒索麦子。你们用凿过的石头建造房屋，却不得住在其内，栽种美好的葡萄园，却不得喝所出的酒。" },
+        { verse: 12, text: "我知道你们的罪过何等多，你们的罪恶何等大。你们苦待义人，收受贿赂，在城门口屈枉穷乏人。" },
+        { verse: 13, text: "所以通达人见这样的时势，必静默不言。因为时势真恶。" },
+        { verse: 14, text: "你们要求善，不要求恶，就必存活。这样，耶和华万军之神，必照你们所说的，与你们同在。" },
+        { verse: 15, text: "要恶恶好善，在城门口秉公行义。或者耶和华万军之神，向约瑟的余民施恩。" },
+        { verse: 16, text: "主耶和华万军之神如此说，在一切宽阔处必有哀号的声音。在各街市上必有人说，哀哉，哀哉。又必叫农夫来哭号，叫善唱哀歌的来举哀。" },
+        { verse: 17, text: "在各葡萄园，必有哀号的声音。因为我必从你中间经过。这是耶和华说的。" },
+        { verse: 18, text: "想望耶和华日子来到的有祸了。你们为何想望耶和华的日子呢？那日黑暗没有光明，" },
+        { verse: 19, text: "景况好像人躲避狮子又遇见熊。或是进房屋以手靠墙，就被蛇咬。" },
+        { verse: 20, text: "耶和华的日子，不是黑暗没有光明吗？不是幽暗毫无光辉吗？" },
+        { verse: 21, text: "我厌恶你们的节期，也不喜悦你们的严肃会。" },
+        { verse: 22, text: "你们虽然向我献燔祭，和素祭，我却不悦纳。也不顾你们用肥畜献的平安祭。" },
+        { verse: 23, text: "要使你们歌唱的声音远离我。因为我不听你们弹琴的响声。" },
+        { verse: 24, text: "惟愿公平如大水滚滚，使公义如江河滔滔。" },
+        { verse: 25, text: "以色列家啊，你们在旷野四十年，岂是将祭物和供物献给我呢？" },
+        { verse: 26, text: "你们抬着为自己所造之摩洛的帐幕，和偶像的龛，并你们的神星。" },
+        { verse: 27, text: "所以我要把你们掳到大马色以外。这是耶和华，名为万军之神说的。" },
+      ],
+      "6": [
+        { verse: 1, text: "国为列国之首，人最著名，且为以色列家所归向，在锡安和撒玛利亚山安逸无虑的，有祸了。" },
+        { verse: 2, text: "你们要过到甲尼察看，从那里往大城哈马去，又下到非利士人的迦特，看那些国比你们的国还强吗？境界比你们的境界还宽吗？" },
+        { verse: 3, text: "你们以为降祸的日子还远，坐在位上尽行强暴（或作行强暴使审判临近）。" },
+        { verse: 4, text: "你们躺卧在象牙床上，舒身在榻上，吃群中的羊羔，棚里的牛犊。" },
+        { verse: 5, text: "弹琴鼓瑟唱消闲的歌曲，为自己制造乐器，如同大卫所造的。" },
+        { verse: 6, text: "以大碗喝酒，用上等的油抹身。却不为约瑟的苦难担忧。" },
+        { verse: 7, text: "所以这些人必在被掳的人中首先被掳。舒身的人荒宴之乐必消灭了。" },
+        { verse: 8, text: "主耶和华万军之神指着自己起誓说，我憎恶雅各的荣华，厌弃他的宫殿。因此，我必将城和其中所有的，都交付敌人。" },
+        { verse: 9, text: "那时，若在一房之内剩下十个人，也都必死。" },
+        { verse: 10, text: "死人的伯叔，就是烧他尸首的，要将这尸首搬到房外，问房屋内间的人说，你那里还有人没有。他必说，没有。又说，不要作声，因为我们不可提耶和华的名。" },
+        { verse: 11, text: "看哪，耶和华出令，大房就被攻破，小屋就被打裂。" },
+        { verse: 12, text: "马岂能在崖石上奔跑？人岂能在那里用牛耕种呢？你们却使公平变为苦胆，使公义的果子变为茵陈。" },
+        { verse: 13, text: "你们喜爱虚浮的事，自夸说，我们不是凭自己的力量取了角吗？" },
+        { verse: 14, text: "耶和华，万军之神说，以色列家啊，我必兴起一国攻击你们。他们必欺压你们，从哈马口直到亚拉巴的河。" },
+      ],
+      "7": [
+        { verse: 1, text: "主耶和华指示我一件事。为王割菜之后（菜或作草），菜又发生，刚发生的时候，主造蝗虫。" },
+        { verse: 2, text: "蝗虫吃尽那地的青物，我就说，主耶和华啊，求你赦免。因为雅各微弱，他怎能站立得住呢？" },
+        { verse: 3, text: "耶和华就后悔说，这灾可以免了。" },
+        { verse: 4, text: "主耶和华又指示我一件事。他命火来惩罚以色列，火就吞灭深渊，险些将地烧灭。" },
+        { verse: 5, text: "我就说，主耶和华啊，求你止息。因为雅各微弱。他怎能站立得住呢？" },
+        { verse: 6, text: "耶和华就后悔说，这灾也可免了。" },
+        { verse: 7, text: "他又指示我一件事。有一道墙是按准绳建筑的，主手拿准绳站在其上。" },
+        { verse: 8, text: "耶和华对我说，阿摩司啊，你看见什么。我说，看见准绳。主说，我要吊起准绳在我民以色列中。我必不再宽恕他们。" },
+        { verse: 9, text: "以撒的丘坛必然凄凉，以色列的圣所必然荒废。我必兴起，用刀攻击耶罗波安的家。" },
+        { verse: 10, text: "伯特利的祭司亚玛谢打发人，到以色列王耶罗波安那里，说，阿摩司在以色列家中图谋背叛你。他所说的一切话，这国担当不起。" },
+        { verse: 11, text: "因为阿摩司如此说，耶罗波安必被刀杀，以色列民定被掳去离开本地。" },
+        { verse: 12, text: "亚玛谢又对阿摩司说，你这先见哪，要逃往犹大地去，在那里糊口，在那里说预言。" },
+        { verse: 13, text: "却不要在伯特利再说预言，因为这里有王的圣所，有王的宫殿。" },
+        { verse: 14, text: "阿摩司对亚玛谢说，我原不是先知，也不是先知的门徒（原文作儿子）。我是牧人，又是修理桑树的。" },
+        { verse: 15, text: "耶和华选召我，使我不跟从羊群，对我说，你去向我民以色列说预言。" },
+        { verse: 16, text: "亚玛谢啊，现在你要听耶和华的话。你说，不要向以色列说预言，也不要向以撒家滴下预言。" },
+        { verse: 17, text: "所以耶和华如此说，你的妻子必在城中作妓女，你的儿女必倒在刀下，你的地必有人用绳子量了分取，你自己必死在污秽之地，以色列民定被掳去离开本地。" },
+      ],
+      "8": [
+        { verse: 1, text: "主耶和华又指示我一件事。我看见一筐夏天的果子。" },
+        { verse: 2, text: "他说，阿摩司啊，你看见什么。我说，看见一筐夏天的果子。耶和华说，我民以色列的结局到了。我必不再宽恕他们。" },
+        { verse: 3, text: "主耶和华说，那日，殿中的诗歌变为哀号。必有许多尸首在各处抛弃，无人作声。" },
+        { verse: 4, text: "你们这些要吞吃穷乏人，使困苦人衰败的，当听我的话。" },
+        { verse: 5, text: "你们说，月朔几时过去，我们好卖粮。安息日几时过去，我们好摆开麦子，卖出用小升斗，收银用大戥子，用诡诈的天平欺哄人。" },
+        { verse: 6, text: "好用银子买贫寒人，用一双鞋换穷乏人，将坏了的麦子卖给人。" },
+        { verse: 7, text: "耶和华指着雅各的荣耀起誓说，他们的一切行为，我必永远不忘。" },
+        { verse: 8, text: "地岂不因这事震动，其上的居民，不也悲哀吗？地必全然像尼罗河涨起，如同埃及河涌上落下。" },
+        { verse: 9, text: "主耶和华说，到那日，我必使日头在午间落下，使地在白昼黑暗。" },
+        { verse: 10, text: "我必使你们的节期变为悲哀，歌曲变为哀歌。众人腰束麻布，头上光秃，使这场悲哀如丧独生子，至终如痛苦的日子一样。" },
+        { verse: 11, text: "主耶和华说，日子将到，我必命饥荒降在地上。人饥饿非因无饼，干渴非因无水，乃因不听耶和华的话。" },
+        { verse: 12, text: "他们必飘流，从这海到那海，从北边到东边，往来奔跑，寻求耶和华的话，却寻不着。" },
+        { verse: 13, text: "当那日，美貌的处女，和少年的男子，必因干渴发昏。" },
+        { verse: 14, text: "那指着撒玛利亚牛犊（原文作罪）起誓的，说，但哪，我们指着你那里的活神起誓。又说，我们指着别是巴的神道（神原文作活）起誓。这些人都必仆倒，永不再起来。" },
+      ],
+      "9": [
+        { verse: 1, text: "我看见主站在祭坛旁边。他说，你要击打柱顶，使门槛震动，打碎柱顶，落在众人头上。所剩下的人，我必用刀杀戮。无一人能逃避，无一人能逃脱。" },
+        { verse: 2, text: "他们虽然挖透阴间，我的手必取出他们来。虽然爬上天去，我必拿下他们来。" },
+        { verse: 3, text: "虽然藏在迦密山顶，我必搜寻，捉出他们来。虽然从我眼前藏在海底，我必命蛇咬他们。" },
+        { verse: 4, text: "虽被仇敌掳去，我必命刀剑杀戮他们。我必向他们定住眼目。降祸不降福。" },
+        { verse: 5, text: "主万军之耶和华摸地，地就消化，凡住在地上的，都必悲哀。地必全然像尼罗河涨起，如同埃及河落下。" },
+        { verse: 6, text: "那在天上建造楼阁，在地上安定穹苍，命海水浇在地上的，耶和华是他的名。" },
+        { verse: 7, text: "耶和华说，以色列人哪，我岂不看你们如古实人吗？我岂不是领以色列人出埃及地，领非利士人出迦斐托，领亚兰人出吉珥吗？" },
+        { verse: 8, text: "主耶和华的眼目察看这有罪的国。必将这国从地上灭绝，却不将雅各家灭绝净尽。这是耶和华说的。" },
+        { verse: 9, text: "我必出令，将以色列家分散在列国中，好像用筛子筛谷，连一粒也不落在地上。" },
+        { verse: 10, text: "我民中的一切罪人说，灾祸必追不上我们，也迎不着我们。他们必死在刀下。" },
+        { verse: 11, text: "到那日，我必建立大卫倒塌的帐幕，堵住其中的破口，把那破坏的建立起来，重新修造，像古时一样。" },
+        { verse: 12, text: "使以色列人得以东所余剩的，和所有称为我名下的国。此乃行这事的耶和华说的。" },
+        { verse: 13, text: "耶和华说，日子将到，耕种的必接续收割的，踹葡萄的必接续撒种的。大山要滴下甜酒，小山都必流奶（原文作消化，见约珥书第三章十八节）。" },
+        { verse: 14, text: "我必使我民以色列被掳的归回，他们必重修荒废的城邑居住，栽种葡萄园，喝其中所出的酒；修造果木园，吃其中的果子。" },
+        { verse: 15, text: "我要将他们栽于本地，他们不再从我所赐给他们的地上拔出来。这是耶和华你的神说的。" },
+      ],
+    }
+  },
+};
+
+
+  </script>
+
+  
+<!-- 主脚本代码 -->
+<script>
+  // 这里的代码使用 bibleTitle、totalChapters 和 websites 变量
+  // 例如生成章节按钮使用 totalChapters 替代原来的 50
+  // 更新标题时使用 bibleTitle，而不是硬编码“阿摩司书”
+  
+  let currentChapter = 1;
+  const chapterContentEl = document.getElementById("chapter-content");
+  let chapterBtns; // 用于绑定章节按钮
+
+  // 更新当前章节显示
+  function updateChapter(chapter) {
+    currentChapter = chapter;
+    chapterContentEl.innerHTML = "";
+    const heading = document.createElement("div");
+    heading.className = "chapter-heading";
+    // 使用 bibleTitle 变量更新章节标题
+    heading.textContent = bibleTitle + " 第" + chapter + "章";
+    chapterContentEl.appendChild(heading);
+    // 显示当前章节经文数据（这里假设数据存储在 websites["01"].chapters）
+    const verses = websites["01"].chapters[chapter] || [];
+    verses.forEach(v => {
+      const p = document.createElement("p");
+      p.className = "xxx";
+      const spanNum = document.createElement("span");
+      spanNum.className = "xxx-number";
+      spanNum.textContent = v.verse;
+      p.appendChild(spanNum);
+      const textNode = document.createTextNode(" " + v.text);
+      p.appendChild(textNode);
+      chapterContentEl.appendChild(p);
+    });
+    if (chapterBtns) {
+      chapterBtns.forEach(btn => {
+        btn.classList.toggle("active", parseInt(btn.getAttribute("data-chapter")) === chapter);
+      });
+    }
+  }
+
+  // 生成章节按钮，数量根据 totalChapters 动态生成
+  function initChapterEvents() {
+    const container = document.querySelector(".chapter-buttons");
+    container.innerHTML = "";
+    for (let i = 1; i <= totalChapters; i++) {
+      const li = document.createElement("li");
+      const btn = document.createElement("button");
+      btn.className = "chapter-btn";
+      btn.setAttribute("data-chapter", i);
+      btn.textContent = i;
+      li.appendChild(btn);
+      container.appendChild(li);
+    }
+    chapterBtns = document.querySelectorAll(".chapter-btn");
+    chapterBtns.forEach(btn => {
+      btn.addEventListener("click", function () {
+        const chapter = parseInt(this.getAttribute("data-chapter"));
+        updateChapter(chapter);
+      });
+    });
+    updateChapter(currentChapter);
+  }
+
+  document.getElementById("prev-btn").addEventListener("click", function () {
+    if (currentChapter > 1) {
+      updateChapter(currentChapter - 1);
+    }
+  });
+  document.getElementById("next-btn").addEventListener("click", function () {
+    if (currentChapter < totalChapters) {
+      updateChapter(currentChapter + 1);
+    }
+  });
+  const increaseBtn = document.getElementById("increase-font");
+    const decreaseBtn = document.getElementById("decrease-font");
+    let currentFontSize = 16;
+    chapterContentEl.style.fontSize = currentFontSize + "px";
+    
+    increaseBtn.addEventListener("click", function() {
+      currentFontSize += 2;
+      chapterContentEl.style.fontSize = currentFontSize + "px";
+    });
+    decreaseBtn.addEventListener("click", function() {
+      if (currentFontSize > 12) {
+        currentFontSize -= 2;
+        chapterContentEl.style.fontSize = currentFontSize + "px";
+      }
+    });
+    
+    // 返回顶部按钮事件（平滑滚动）
+    document.getElementById("top-btn").addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // 夜间模式切换按钮事件
+    document.getElementById("mode-toggle").addEventListener("click", function() {
+      document.body.classList.toggle("night-mode");
+      // 切换图标
+      const icon = this.querySelector("i");
+      if(document.body.classList.contains("night-mode")){
+        icon.classList.remove("fa-moon");
+        icon.classList.add("fa-sun");
+      } else {
+        icon.classList.remove("fa-sun");
+        icon.classList.add("fa-moon");
+      }
+    });
+  // 其他代码保持不变...
+  document.addEventListener("DOMContentLoaded", initChapterEvents);
+</script>
+
+</html>

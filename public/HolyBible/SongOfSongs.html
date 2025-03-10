@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>圣经朗读界面</title>
+  <link rel="stylesheet" href="css/ebf.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="css/ebf.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* 基本样式 */
+    * {
+      box-sizing: border-box;
+    }
+
+
+
+    /* 夜间模式样式 */
+    body.night-mode {
+      background: #333;
+      color: #eee;
+    }
+
+    body.night-mode .header {
+      background-color: #222;
+    }
+
+    body.night-mode .nav-bar a {
+      color: #66ccff;
+    }
+
+    body.night-mode .chapter-content {
+      background-color: #444;
+      border-color: #555;
+    }
+
+    body.night-mode .back-btn {
+      background: linear-gradient(45deg, #555, #333);
+    }
+
+    body.night-mode .xxxxxx input {
+      background: linear-gradient(270deg, #006400, #0000ff);
+    }
+
+    /* ========== 顶栏 ========== */
+    .header {
+      width: 100%;
+      height: 250px;
+      background-color: #f0f8ff;
+      /* 淡蓝背景 */
+
+   
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: background 0.3s ease;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-left img.logo {
+      height: 60px;
+      margin-right: 10px;
+    }
+
+    .group-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    /* 改良后的返回按钮 */
+    .back-btn {
+      font-size: 16px;
+      padding: 8px 12px;
+      border: none;
+      background: linear-gradient(45deg, #6dd5ed, #2193b0);
+      color: #fff;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .header-middle {
+      text-align: center;
+      height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* 修改顶部标题 */
+    .header-middle .title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .header-middle .subtitle {
+      font-size: 20px;
+      color: #555;
+    }
+
+    .header-bottom {
+      text-align: center;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 搜索框采用绿色到蓝色的渐变，并添加动画 */
+    .xxxxxx input {
+      left: 50px;
+      width: 300px;
+  
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      padding: 0 15px;
+      font-size: 16px;
+      color: #333;
+
+      background-size: 400% 400%;
+      animation: gradientAnimation 8s ease infinite;
+      transition: transform 0.3s ease;
+    }
+@media (max-width: 991px) {
+  .header {
+    margin-left: 0;
+  }
+  
+}
+    .xxxxxx input:hover {
+      transform: scale(1.02);
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ========== 主体部分 ========== */
+    .content {
+     
+      padding: 20px;
+    }
+
+    .nav-bar {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .nav-bar a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007BFF;
+      font-size: 18px;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-bar a:hover {
+      transform: scale(1.05);
+    }
+
+    /* 章节导航区：50个按钮（左对齐） */
+    .chapter-navigation {
+      margin-bottom: 15px;
+    }
+
+    .chapter-buttons {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: flex-start;
+    }
+
+    .chapter-buttons li button:hover {
+      background-color: #007BFF;
+    }
+
+    .chapter-buttons li button {
+      width: 35px;
+      height: 35px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      text-align: center;
+      line-height: 35px;
+      transition: transform 0.3s ease;
+    }
+
+    .chapter-buttons li button:hover {
+      transform: scale(1.05);
+    }
+
+    .chapter-buttons li button.active {
+      background-color: #d0eaff;
+      border-color: #007BFF;
+      font-weight: bold;
+    }
+
+    /* 固定按钮：上一篇、下一篇、返回顶部（图标按钮） */
+    .prev-chapter-btn,
+    .next-chapter-btn,
+    .back-to-top {
+      position: fixed;
+      padding: 10px 15px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+.bible-body {
+  margin-left: 290px
+}
+@media (max-width: 991px) {
+  .bible-body {
+    margin-left: 0;
+  }
+}
+    .prev-chapter-btn:hover,
+    .next-chapter-btn:hover,
+    .back-to-top:hover {
+
+      transform: scale(1.1);
+    }
+
+    .prev-chapter-btn {
+      left: 20px;
+      bottom: 20px;
+    }
+
+    .next-chapter-btn {
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .back-to-top {
+      right: 20px;
+      bottom: 80px;
+    }
+
+    /* 字体控制区：左对齐，尺寸改为35px */
+    .font-controls {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .font-controls button {
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    p {
+    display: block;
+    /* 移除所有外边距 */
+    margin: 0; 
+    unicode-bidi: isolate;
+}
+    .font-controls button:hover {
+      transform: scale(1.1);
+    }
+
+    /* 经文内容展示区 */
+    .chapter-content {
+
+      padding: 15px;
+
+      font-size: 16px;
+
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .chapter-heading {
+      font-weight: bold;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .xxx {
+      margin-bottom: 10px;
+    }
+
+    .xxx .xxx-number {
+      color: blue;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sidebar-left" style="width: 290px;">
+    <img src="logo/ebfside.png" class="logo">
+    <div class="title">
+        <span>电子</span>
+        <span>圣经团契</span>
+    </div>
+    <p class="subtitle">生活在审判日里</p>
+    <div class="sadfds-container" id="sa d f d sContainer">
+        <input type="text" id="sadfdsInput" placeholder="搜索..." />
+        <button id="sadfdsButton">搜索</button>
+    </div>
+    <ul class="sidebar-list">
+        <li>
+            <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09"
+                class="sidebar-link">
+                <i class="fas fa-video"></i>
+                <span>Zoom</span>
+            </a>
+        </li>
+        <li>
+            <a href="ebfbiblestudy.html" class="sidebar-link">
+                <i class="fas fa-book-open"></i>
+                <span>圣经学习</span>
+            </a>
+        </li>
+        <li>
+            <a href="ebfbooks.html" class="sidebar-link">
+                <i class="fas fa-book"></i>
+                <span>书籍</span>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.newopenforum.org/" class="sidebar-link">
+                <i class="fas fa-comments"></i>
+                <span>圣经论坛</span>
+            </a>
+        </li>
+    </ul>
+    <div class="airtime-wrapper">
+        <div class="airtime-header">
+            <span class="text-blue">电子</span>圣经团契直播
+        </div>
+        <div class="airtime-player">
+            <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+    <div class="social-section">
+        <h3 class="social-title">
+            <span class="text-blue">电子</span>圣经团契社交媒体
+        </h3>
+        <div class="social-grid">
+            <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <span class="social-label">YouTube</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-tiktok"></i>
+                </div>
+                <span class="social-label">TikTok</span>
+            </a>
+
+            <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <span class="social-label">Facebook</span>
+            </a>
+        </div>
+        <div class="social-grid">
+            <a href="https://twitter.com/EBF2033" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <span class="social-label">Twitter</span>
+            </a>
+            <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-spotify"></i>
+                </div>
+                <span class="social-label">Spotify</span>
+            </a>
+            <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
+                <div class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <span class="social-label">Instagram</span>
+            </a>
+        </div>
+    </div>
+    <div class="contact-container" style="
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 320px;
+    margin: 40px auto;
+    padding: 25px;
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
+        <div class="contact-header" style="
+        background: #a7daff;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 20px;
+        text-align: center;">
+            <h2 style="
+            color: #1a3a5e;
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 600;
+        ">联系我们</h2>
+        </div>
+
+        <address style="
+        text-align: center;
+        font-style: normal;
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 20px;">
+            <p style="margin: 10px 0;">
+                <a href="mailto:htmlInfo@eBibleFellowship.org" style="
+                   color: #1e6bce;
+                   text-decoration: none;
+                   font-weight: 500;">
+                    Info@eBibleFellowship.org
+                </a>
+            </p>
+            <p style="margin: 10px 0;">P.O. Box 1393</p>
+            <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
+            <p style="margin: 10px 0;">USA</p>
+        </address>
+
+        <div class="copyright" style="
+        text-align: center;
+        color: #666;
+        font-size: 0.9em;
+        border-top: 1px solid #eee;
+        padding-top: 15px;">
+            © 2024 eBible Fellowship
+        </div>
+    </div>
+</div>
+  <!-- 顶栏 -->
+   <div class="bible-body">
+  <header class="header">
+    <div class="header-top">
+      <div class="header-left">
+        <img src="logo/ebfside.png" alt="Logo" class="logo">
+        <span class="group-text">电子圣经团契</span>
+      </div>
+      <div class="header-right">
+        <a href="../ebfbiblestudy.html"><button class="back-btn"><i class="fas fa-arrow-left"></i> 返回</button></a>
+        
+        <button id="mode-toggle" title="切换夜间模式"
+          style="font-size:16px; padding:8px; border:none; background:transparent; cursor:pointer;">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="header-middle">
+      <div class="title">圣经和合本</div>
+      <div class="subtitle" style="color: white;">雅歌</div>
+    </div>
+    <div class="header-bottom">
+      <div class="xxxxxx">
+        <input type="text" placeholder="搜索">
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <div class="content">
+    <div class="nav-bar">
+      <a href="#">首页</a>
+      <a href="#">圣经阅读</a>
+      <a href="#">雅歌</a>
+    </div>
+
+    <!-- 章节导航区：50个按钮（左对齐） -->
+    <div class="chapter-navigation">
+      <ul class="chapter-buttons">
+        <!-- 50个章节按钮由 JS 动态生成 -->
+      </ul>
+    </div>
+
+    <!-- 字体控制区（左对齐） -->
+    <div class="font-controls">
+      <button id="decrease-font" title="字体减小"><i class="fas fa-minus"></i></button>
+      <button id="increase-font" title="字体增大"><i class="fas fa-plus"></i></button>
+      <button id="BACKGROUND" title="字体减小"><i class="fa-solid fa-eye"></i></button>
+
+    </div>
+
+    <!-- 经文内容展示区 -->
+    <div class="chapter-content" id="chapter-content">
+      <!-- 默认显示雅歌第1章内容 -->
+
+    </div>
+
+    <!-- 固定按钮：上一篇、下一篇、返回顶部 -->
+    <button class="prev-chapter-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+    <button class="next-chapter-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+    <button class="back-to-top" id="top-btn"><i class="fas fa-arrow-up"></i></button>
+</div>
+  <script>
+const bibleTitle = "雅歌";
+const totalChapters = 8;
+const websites = {
+  "01": {
+    chapters: {
+      "1": [
+        { verse: 1, text: "所罗门的歌，是歌中的雅歌。" },
+        { verse: 2, text: "愿他用口与我亲嘴。因你的爱情比酒更美。" },
+        { verse: 3, text: "你的膏油馨香。你的名如同倒出来的香膏，所以众童女都爱你。" },
+        { verse: 4, text: "愿你吸引我，我们就快跑跟随你。王带我进了内室，我们必因你欢喜快乐。我们要称赞你的爱情，胜似称赞美酒。他们爱你是理所当然的。" },
+        { verse: 5, text: "耶路撒冷的众女子啊，我虽然黑，却是秀美，如同基达的帐棚，好像所罗门的幔子。" },
+        { verse: 6, text: "不要因日头把我晒黑了，就轻看我。我同母的弟兄向我发怒，他们使我看守葡萄园，我自己的葡萄园却没有看守。" },
+        { verse: 7, text: "我心所爱的啊，求你告诉我，你在何处牧羊，晌午在何处使羊歇卧。我何必在你同伴的羊群旁边，好像蒙着脸的人呢？" },
+        { verse: 8, text: "你这女子中极美丽的，你若不知道，只管跟随羊群的脚踪去，把你的山羊羔牧放在牧人帐棚的旁边。" },
+        { verse: 9, text: "我的佳偶，我将你比法老车上套的骏马。" },
+        { verse: 10, text: "你的两腮因发辫而秀美，你的颈项因珠串而华丽。" },
+        { verse: 11, text: "我们要为你编上金辫，镶上银钉。" },
+        { verse: 12, text: "王正坐席的时候，我的哪哒香膏发出香味。" },
+        { verse: 13, text: "我以我的良人为一袋没药，常在我怀中。" },
+        { verse: 14, text: "我以我的良人为一棵凤仙花，在隐基底葡萄园中。" },
+        { verse: 15, text: "我的佳偶，你甚美丽，你甚美丽，你的眼好像鸽子眼。" },
+        { verse: 16, text: "我的良人哪，你甚美丽可爱，我们以青草为床榻，" },
+        { verse: 17, text: "以香柏树为房屋的栋梁，以松树为椽子。" },
+      ],
+      "2": [
+        { verse: 1, text: "我是沙仑的玫瑰花（或作水仙花），是谷中的百合花。" },
+        { verse: 2, text: "我的佳偶在女子中，好像百合花在荆棘内。" },
+        { verse: 3, text: "我的良人在男子中，如同苹果树在树林中。我欢欢喜喜坐在他的荫下，尝他果子的滋味，觉得甘甜。" },
+        { verse: 4, text: "他带我入筵宴所，以爱为旗在我以上。" },
+        { verse: 5, text: "求你们给我葡萄干增补我力，给我苹果畅快我心，因我思爱成病。" },
+        { verse: 6, text: "他的左手在我头下，他的右手将我抱住。" },
+        { verse: 7, text: "耶路撒冷的众女子啊，我指着羚羊或田野的母鹿，嘱咐你们，不要惊动，不要叫醒我所亲爱的，等他自己情愿（不要叫醒云云或作不要激动爱情等它自发）。" },
+        { verse: 8, text: "听啊，是我良人的声音。看哪，他蹿山越岭而来。" },
+        { verse: 9, text: "我的良人好像羚羊，或像小鹿。他站在我们墙壁后，从窗户往里观看，从窗棂往里窥探。" },
+        { verse: 10, text: "我良人对我说，我的佳偶，我的美人，起来，与我同去。" },
+        { verse: 11, text: "因为冬天已往。雨水止住过去了。" },
+        { verse: 12, text: "地上百花开放。百鸟鸣叫的时候（或作修理葡萄树的时候）已经来到，斑鸠的声音在我们境内也听见了。" },
+        { verse: 13, text: "无花果树的果子渐渐成熟，葡萄树开花放香。我的佳偶，我的美人，起来，与我同去。" },
+        { verse: 14, text: "我的鸽子啊，你在磐石穴中，在陡岩的隐密处。求你容我得见你的面貌，得听你的声音。因为你的声音柔和，你的面貌秀美。" },
+        { verse: 15, text: "要给我们擒拿狐狸，就是毁坏葡萄园的小狐狸。因为我们的葡萄正在开花。" },
+        { verse: 16, text: "良人属我，我也属他。他在百合花中牧放群羊" },
+        { verse: 17, text: "我的良人哪，求你等到天起凉风，日影飞去的时候，你要转回，好像羚羊，或像小鹿在比特山上。" },
+      ],
+      "3": [
+        { verse: 1, text: "我夜间躺卧在床上，寻找我心所爱的。我寻找他，却寻不见。" },
+        { verse: 2, text: "我说，我要起来，游行城中，在街市上，在宽阔处，寻找我心所爱的。我寻找他，却寻不见。" },
+        { verse: 3, text: "城中巡逻看守的人遇见我。我问他们，你们看见我心所爱的没有。" },
+        { verse: 4, text: "我刚离开他们，就遇见我心所爱的。我拉住他，不容他走，领他入我母家，到怀我者的内室。" },
+        { verse: 5, text: "耶路撒冷的众女子啊，我指着羚羊，或田野的母鹿嘱咐你们，不要惊动，不要叫醒我所亲爱的，等他自己情愿（不要叫醒云云或作不要激动爱情等它自发）。" },
+        { verse: 6, text: "那从旷野上来，形状如烟柱，以没药和乳香并商人各样香粉薰的是谁呢？" },
+        { verse: 7, text: "看哪，是所罗门的轿。四围有六十个勇士，都是以色列中的勇士。" },
+        { verse: 8, text: "手都持刀，善于争战，腰间佩刀，防备夜间有惊慌。" },
+        { verse: 9, text: "所罗门王用利巴嫩木，为自己制造一乘华轿。" },
+        { verse: 10, text: "轿柱是用银做的，轿底是用金做的。坐垫是紫色的，其中所铺的乃耶路撒冷众女子的爱情。" },
+        { verse: 11, text: "锡安的众女子啊，你们出去观看所罗门王，头戴冠冕，就是在他婚筵的日子，心中喜乐的时候，他母亲给他戴上的。" },
+      ],
+      "4": [
+        { verse: 1, text: "我的佳偶，你甚美丽，你甚美丽。你的眼在帕子内好像鸽子眼。你的头发如同山羊群卧在基列山旁。" },
+        { verse: 2, text: "你的牙齿如新剪毛的一群母羊，洗净上来，个个都有双生，没有一只丧掉子的。" },
+        { verse: 3, text: "你的唇好像一条朱红线，你的嘴也秀美。你的两太阳在帕子内，如同一块石榴。" },
+        { verse: 4, text: "你的颈项好像大卫建造收藏军器的高台，其上悬挂一千盾牌，都是勇士的藤牌。" },
+        { verse: 5, text: "你的两乳好像百合花中吃草的一对小鹿，就是母鹿双生的。" },
+        { verse: 6, text: "我要往没药山和乳香冈去，直等到天起凉风，日影飞去的时候回来。" },
+        { verse: 7, text: "我的佳偶，你全然美丽，毫无瑕疵。" },
+        { verse: 8, text: "我的新妇，求你与我一同离开利巴嫩，与我一同离开利巴嫩。从亚玛拿顶，从示尼珥与黑门顶，从有狮子的洞，从有豹子的山往下观看。" },
+        { verse: 9, text: "我妹子，我新妇，你夺了我的心。你用眼一看，用你项上的一条金链，夺了我的心。" },
+        { verse: 10, text: "我妹子，我新妇，你的爱情何其美。你的爱情比酒更美。你膏油的香气胜过一切香品。" },
+        { verse: 11, text: "我新妇，你的嘴唇滴蜜。好像蜂房滴蜜。你的舌下有蜜，有奶。你衣服的香气如利巴嫩的香气。" },
+        { verse: 12, text: "我妹子，我新妇，乃是关锁的园，禁闭的井，封闭的泉源。" },
+        { verse: 13, text: "你园内所种的结了石榴，有佳美的果子，并凤仙花与哪哒树。" },
+        { verse: 14, text: "有哪哒和番红花，菖蒲和桂树，并各样乳香木，没药，沉香，与一切上等的果品。" },
+        { verse: 15, text: "你是园中的泉，活水的井，从利巴嫩流下来的溪水。" },
+        { verse: 16, text: "北风啊，兴起。南风啊，吹来。吹在我的园内，使其中的香气发出来。愿我的良人进入自己园里，吃他佳美的果子。" },
+      ],
+      "5": [
+        { verse: 1, text: "我妹子，我新妇，我进了我的园中，采了我的没药和香料，吃了我的蜜房和蜂蜜。喝了我的酒和奶。我的朋友们，请吃，我所亲爱的，请喝，且多多地喝。" },
+        { verse: 2, text: "我身睡卧，我心却醒。这是我良人的声音。他敲门，说，我的妹子，我的佳偶，我的鸽子，我的完全人，求你给我开门，因我的头满了露水，我的头发被夜露滴湿。" },
+        { verse: 3, text: "我回答说，我脱了衣裳，怎能再穿上呢？我洗了脚，怎能再玷污呢？" },
+        { verse: 4, text: "我的良人从门孔里伸进手来，我便因他动了心。" },
+        { verse: 5, text: "我起来，要给我良人开门。我的两手滴下没药，我的指头有没药汁滴在门闩上。" },
+        { verse: 6, text: "我给我的良人开了门。我的良人却已转身走了。他说话的时候，我神不守舍。我寻找他，竟寻不见。我呼叫他，他却不回答。" },
+        { verse: 7, text: "城中巡逻看守的人遇见我，打了我，伤了我。看守城墙的人夺去我的披肩。" },
+        { verse: 8, text: "耶路撒冷的众女子啊，我嘱咐你们。若遇见我的良人，要告诉他，我因思爱成病。" },
+        { verse: 9, text: "你这女子中极美丽的，你的良人，比别人的良人有何强处。你的良人，比别人的良人有何强处，你就这样嘱咐我们。" },
+        { verse: 10, text: "我的良人，白而且红，超乎万人之上。" },
+        { verse: 11, text: "他的头像至精的金子。他的头发厚密累垂，黑如乌鸦。" },
+        { verse: 12, text: "他的眼如溪水旁的鸽子眼，用奶洗净，安得合式。" },
+        { verse: 13, text: "他的两腮如香花畦，如香草台。他的嘴唇像百合花，且滴下没药汁。" },
+        { verse: 14, text: "他的两手好像金管，镶嵌水苍玉。他的身体如同雕刻的象牙，周围镶嵌蓝宝石。" },
+        { verse: 15, text: "他的腿好像白玉石柱，安在精金座上。他的形状如利巴嫩，且佳美如香柏树。" },
+        { verse: 16, text: "他的口极其甘甜。他全然可爱。耶路撒冷的众女子啊，这是我的良人，这是我的朋友。" },
+      ],
+      "6": [
+        { verse: 1, text: "你这女子中极美丽的，你的良人往何处去了。你的良人转向何处去了，我们好与你同去寻找他。" },
+        { verse: 2, text: "我的良人下入自己园中，到香花畦，在园内牧放群羊，采百合花。" },
+        { verse: 3, text: "我属我的良人，我的良人也属我。他在百合花中牧放群羊。" },
+        { verse: 4, text: "我的佳偶啊，你美丽如得撒，秀美如耶路撒冷，威武如展开旌旗的军队。" },
+        { verse: 5, text: "求你掉转眼目不看我，因你的眼目使我惊乱。你的头发如同山羊群卧在基列山旁。" },
+        { verse: 6, text: "你的牙齿如一群母羊，洗净上来。个个都有双生，没有一只丧掉子的。" },
+        { verse: 7, text: "你的两太阳在帕子内，如同一块石榴。" },
+        { verse: 8, text: "有六十王后八十妃嫔，并有无数的童女。" },
+        { verse: 9, text: "我的鸽子，我的完全人，只有这一个是她母亲独生的。是生养她者所宝爱的。众女子见了，就称她有福。王后妃嫔见了，也赞美她。" },
+        { verse: 10, text: "那向外观看，如晨光发现，美丽如月亮，皎洁如日头，威武如展开旌旗军队的是谁呢？" },
+        { verse: 11, text: "我下入核桃园，要看谷中青绿的植物，要看葡萄发芽没有，石榴开花没有。" },
+        { verse: 12, text: "不知不觉，我的心将我安置在我尊长的车中。" },
+        { verse: 13, text: "回来，回来，书拉密女。你回来，你回来，使我们得观看你。你们为何要观看书拉密女，像观看玛哈念跳舞的呢？" },
+      ],
+      "7": [
+        { verse: 1, text: "王女啊，你的脚在鞋中何其美好。你的大腿圆润，好像美玉，是巧匠的手做成的。" },
+        { verse: 2, text: "你的肚脐如圆杯，不缺调和的酒。你的腰如一堆麦子，周围有百合花。" },
+        { verse: 3, text: "你的两乳好像一对小鹿，就是母鹿双生的。" },
+        { verse: 4, text: "你的颈项如象牙台。你的眼目像希实本，巴特拉并门旁的水池。你的鼻子仿佛朝大马色的利巴嫩塔。" },
+        { verse: 5, text: "你的头在你身上好像迦密山。你头上的发是紫黑色。王的心因这下垂的发绺系住了。" },
+        { verse: 6, text: "我所爱的，你何其美好。何其可悦，使人欢畅喜乐。" },
+        { verse: 7, text: "你的身量好像棕树。你的两乳如同其上的果子，累累下垂。" },
+        { verse: 8, text: "我说，我要上这棕树，抓住枝子。愿你的两乳好像葡萄累累下垂，你鼻子的气味香如苹果。" },
+        { verse: 9, text: "你的口如上好的酒，女子说，为我的良人下咽舒畅，流入睡觉人的嘴中。" },
+        { verse: 10, text: "我属我的良人，他也恋慕我。" },
+        { verse: 11, text: "我的良人，来吧，你我可以往田间去。你我可以在村庄住宿。" },
+        { verse: 12, text: "我们早晨起来往葡萄园去，看看葡萄发芽开花没有，石榴放蕊没有。我在那里要将我的爱情给你。" },
+        { verse: 13, text: "风茄放香，在我们的门内有各样新陈佳美的果子。我的良人，这都是我为你存留的。" },
+      ],
+      "8": [
+        { verse: 1, text: "巴不得你像我的兄弟，像吃我母亲奶的兄弟。我在外头遇见你就与你亲嘴，谁也不轻看我。" },
+        { verse: 2, text: "我必引导你，领你进我母亲的家。我可以领受教训，也就使你喝石榴汁酿的香酒。" },
+        { verse: 3, text: "他的左手必在我头下，他的右手必将我抱住。" },
+        { verse: 4, text: "耶路撒冷的众女子啊，我嘱咐你们，不要惊动，不要叫醒我所亲爱的，等他自己情愿（不要叫醒云云或作不要激动爱情等它自发）。" },
+        { verse: 5, text: "那靠着良人从旷野上来的，是谁呢？我在苹果树下叫醒你。你母亲在那里为你劬劳，生养你的在那里为你劬劳。" },
+        { verse: 6, text: "求你将我放在你心上如印记，带在你臂上如戳记。因为爱情如死之坚强。嫉恨如阴间之残忍。所发的电光，是火焰的电光，是耶和华的烈焰。" },
+        { verse: 7, text: "爱情众水不能息灭，大水也不能淹没。若有人拿家中所有的财宝要换爱情，就全被藐视。" },
+        { verse: 8, text: "我们有一小妹，她的两乳尚未长成。人来提亲的日子，我们当为她怎样办理。" },
+        { verse: 9, text: "她若是墙，我们要在其上建造银塔。她若是门，我们要用香柏木板围护她。" },
+        { verse: 10, text: "我是墙，我两乳像其上的楼。那时，我在他眼中像得平安的人。" },
+        { verse: 11, text: "所罗门在巴力哈们有一葡萄园。他将这葡萄园交给看守的人，为其中的果子，必交一千舍客勒银子。" },
+        { verse: 12, text: "我自己的葡萄园在我面前。所罗门哪，一千舍客勒归你，二百舍客勒归看守果子的人。" },
+        { verse: 13, text: "你这住在园中的，同伴都要听你的声音，求你使我也得听见。" },
+        { verse: 14, text: "我的良人哪，求你快来。如羚羊或小鹿在香草山上。" },
+      ],
+    }
+  },
+};
+
+  </script>
+
+  
+<!-- 主脚本代码 -->
+<script>
+  // 这里的代码使用 bibleTitle、totalChapters 和 websites 变量
+  // 例如生成章节按钮使用 totalChapters 替代原来的 50
+  // 更新标题时使用 bibleTitle，而不是硬编码“雅歌”
+  
+  let currentChapter = 1;
+  const chapterContentEl = document.getElementById("chapter-content");
+  let chapterBtns; // 用于绑定章节按钮
+
+  // 更新当前章节显示
+  function updateChapter(chapter) {
+    currentChapter = chapter;
+    chapterContentEl.innerHTML = "";
+    const heading = document.createElement("div");
+    heading.className = "chapter-heading";
+    // 使用 bibleTitle 变量更新章节标题
+    heading.textContent = bibleTitle + " 第" + chapter + "章";
+    chapterContentEl.appendChild(heading);
+    // 显示当前章节经文数据（这里假设数据存储在 websites["01"].chapters）
+    const verses = websites["01"].chapters[chapter] || [];
+    verses.forEach(v => {
+      const p = document.createElement("p");
+      p.className = "xxx";
+      const spanNum = document.createElement("span");
+      spanNum.className = "xxx-number";
+      spanNum.textContent = v.verse;
+      p.appendChild(spanNum);
+      const textNode = document.createTextNode(" " + v.text);
+      p.appendChild(textNode);
+      chapterContentEl.appendChild(p);
+    });
+    if (chapterBtns) {
+      chapterBtns.forEach(btn => {
+        btn.classList.toggle("active", parseInt(btn.getAttribute("data-chapter")) === chapter);
+      });
+    }
+  }
+
+  // 生成章节按钮，数量根据 totalChapters 动态生成
+  function initChapterEvents() {
+    const container = document.querySelector(".chapter-buttons");
+    container.innerHTML = "";
+    for (let i = 1; i <= totalChapters; i++) {
+      const li = document.createElement("li");
+      const btn = document.createElement("button");
+      btn.className = "chapter-btn";
+      btn.setAttribute("data-chapter", i);
+      btn.textContent = i;
+      li.appendChild(btn);
+      container.appendChild(li);
+    }
+    chapterBtns = document.querySelectorAll(".chapter-btn");
+    chapterBtns.forEach(btn => {
+      btn.addEventListener("click", function () {
+        const chapter = parseInt(this.getAttribute("data-chapter"));
+        updateChapter(chapter);
+      });
+    });
+    updateChapter(currentChapter);
+  }
+
+  document.getElementById("prev-btn").addEventListener("click", function () {
+    if (currentChapter > 1) {
+      updateChapter(currentChapter - 1);
+    }
+  });
+  document.getElementById("next-btn").addEventListener("click", function () {
+    if (currentChapter < totalChapters) {
+      updateChapter(currentChapter + 1);
+    }
+  });
+  const increaseBtn = document.getElementById("increase-font");
+    const decreaseBtn = document.getElementById("decrease-font");
+    let currentFontSize = 16;
+    chapterContentEl.style.fontSize = currentFontSize + "px";
+    
+    increaseBtn.addEventListener("click", function() {
+      currentFontSize += 2;
+      chapterContentEl.style.fontSize = currentFontSize + "px";
+    });
+    decreaseBtn.addEventListener("click", function() {
+      if (currentFontSize > 12) {
+        currentFontSize -= 2;
+        chapterContentEl.style.fontSize = currentFontSize + "px";
+      }
+    });
+    
+    // 返回顶部按钮事件（平滑滚动）
+    document.getElementById("top-btn").addEventListener("click", function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // 夜间模式切换按钮事件
+    document.getElementById("mode-toggle").addEventListener("click", function() {
+      document.body.classList.toggle("night-mode");
+      // 切换图标
+      const icon = this.querySelector("i");
+      if(document.body.classList.contains("night-mode")){
+        icon.classList.remove("fa-moon");
+        icon.classList.add("fa-sun");
+      } else {
+        icon.classList.remove("fa-sun");
+        icon.classList.add("fa-moon");
+      }
+    });
+  // 其他代码保持不变...
+  document.addEventListener("DOMContentLoaded", initChapterEvents);
+</script>
+
+</html>
