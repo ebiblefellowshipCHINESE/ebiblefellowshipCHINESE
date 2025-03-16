@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放器 - 电子圣经团契</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0080ff;
+            --secondary: #0099ff;
+            --accent: #145eff;
+            --background: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --shadow: rgba(44, 62, 80, 0.15);
+            --progress: #008cff;
+            --progress-bg: #dbdbdb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow);
+            z-index: 1000;
+        }
+
+        .top-bar .branding {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .top-bar .video-name {
+            font-size: 1.2rem;
+            color: #ecf0f1;
+            margin-bottom: 0.75rem;
+        }
+
+        .top-bar .back-btn {
+            background: #fff;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar .back-btn:hover {
+            background: #ecf0f1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            width: 800px;
+            padding: 1rem;
+            margin-top: 180px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 比例 */
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .video-element {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .controls-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .player-container:hover .controls-container {
+            opacity: 1;
+        }
+
+        .progress-container {
+            background: var(--progress-bg);
+            border-radius: 5px;
+            height: 8px;
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress {
+            background: var(--progress);
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 140, 255, 0.4);
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .control-btn.active {
+            background: var(--accent);
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-bar {
+            background: var(--progress-bg);
+            height: 4px;
+            width: 100px;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .volume-progress {
+            background: var(--secondary);
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
+
+        .speed-container {
+            position: relative;
+        }
+
+        .speed-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .speed-btn:hover {
+            background: var(--primary);
+        }
+
+        /* 全屏样式优化 */
+        .player-container:fullscreen {
+            width: 100%;
+            height: 100%;
+            margin-top: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        .player-container:fullscreen .video-wrapper {
+            padding-top: 0;
+            height: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .player-container {
+                width: 90%;
+                padding: 0.5rem;
+                margin-top: 160px;
+            }
+            .control-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            .volume-bar {
+                width: 80px;
+            }
+            .top-bar .branding {
+                font-size: 1.5rem;
+            }
+            .top-bar .video-name {
+                font-size: 1rem;
+            }
+            .top-bar .back-btn {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="branding">电子圣经团契</div>
+        <div class="video-name" id="videoName">视频标题</div>
+        <button class="back-btn" onclick="history.back()">返回</button>
+    </div>
+
+    <div class="player-container">
+        <div class="video-wrapper">
+            <video class="video-element" id="videoPlayer">
+                <source id="videoSource" src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
+        </div>
+        <div class="controls-container">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="time">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            <div class="controls">
+                <div class="left-controls" style="display: flex; gap: 1rem;">
+                    <button class="control-btn" id="rewindBtn" title="后退10秒">
+                        <i class="fas fa-backward"></i>
+                    </button>
+                    <button class="control-btn" id="playPauseBtn" title="播放/暂停">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="forwardBtn" title="快进10秒">
+                        <i class="fas fa-forward"></i>
+                    </button>
+                    <div class="volume-container">
+                        <i class="fas fa-volume-up" id="volumeIcon"></i>
+                        <div class="volume-bar" id="volumeBar">
+                            <div class="volume-progress" id="volumeProgress"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-controls" style="display: flex; gap: 1rem;">
+                    <div class="speed-container">
+                        <button class="speed-btn" id="speedBtn">1x</button>
+                    </div>
+                    <button class="control-btn" id="fullscreenBtn" title="全屏">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoPath = urlParams.get('path');
+        const videoName = urlParams.get('file') || '未知视频';
+        const defaultVideo = 'https://www.w3schools.com/html/mov_bbb.mp4';
+
+        // 初始化视频和标题
+        const video = document.getElementById('videoPlayer');
+        const videoSource = document.getElementById('videoSource');
+        const videoNameEl = document.getElementById('videoName');
+        videoSource.src = videoPath ? `/${videoPath}` : defaultVideo;
+        video.load();
+        videoNameEl.textContent = videoName;
+        document.title = `播放 ${videoName} - 电子圣经团契`;
+
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const rewindBtn = document.getElementById('rewindBtn');
+        const forwardBtn = document.getElementById('forwardBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeBar = document.getElementById('volumeBar');
+        const volumeProgress = document.getElementById('volumeProgress');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const speedBtn = document.getElementById('speedBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+        let isPlaying = false;
+        let isDragging = false;
+        let playbackSpeed = 1;
+
+        // 初始化视频事件
+        video.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(video.duration);
+            progress.style.width = '0%';
+        });
+
+        video.addEventListener('timeupdate', () => {
+            if (!isDragging) {
+                const percentage = (video.currentTime / video.duration) * 100;
+                progress.style.width = `${percentage}%`;
+                currentTimeEl.textContent = formatTime(video.currentTime);
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            isPlaying = false;
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        });
+
+        // 播放/暂停
+        playPauseBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                video.play().catch(err => {
+                    console.error(`播放失败：${err.message}`);
+                });
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // 快进/后退
+        rewindBtn.addEventListener('click', () => {
+            video.currentTime = Math.max(0, video.currentTime - 10);
+        });
+
+        forwardBtn.addEventListener('click', () => {
+            video.currentTime = Math.min(video.duration, video.currentTime + 10);
+        });
+
+        // 进度条控制
+        function updateProgress(e) {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = video.duration || 0;
+            const newTime = (clickX / width) * duration;
+            video.currentTime = newTime;
+            const percentage = (newTime / duration) * 100;
+            progress.style.width = `${percentage}%`;
+            currentTimeEl.textContent = formatTime(newTime);
+            // 如果正在播放，调整后继续播放
+            if (isPlaying) {
+                video.play().catch(err => {
+                    console.error(`播放失败：${err.message}`);
+                });
+            }
+        }
+
+        progressContainer.addEventListener('click', updateProgress);
+
+        progressContainer.addEventListener('mousedown', () => {
+            isDragging = true;
+            video.pause(); // 拖动时暂停，避免冲突
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const rect = progressContainer.getBoundingClientRect();
+                const clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                const duration = video.duration || 0;
+                const newTime = (clickX / rect.width) * duration;
+                video.currentTime = newTime;
+                const percentage = (newTime / duration) * 100;
+                progress.style.width = `${percentage}%`;
+                currentTimeEl.textContent = formatTime(newTime);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging && isPlaying) {
+                video.play().catch(err => {
+                    console.error(`播放失败：${err.message}`);
+                });
+            }
+            isDragging = false;
+        });
+
+        // 音量控制
+        volumeBar.addEventListener('click', (e) => {
+            const width = volumeBar.clientWidth;
+            const clickX = e.offsetX;
+            const volume = clickX / width;
+            video.volume = volume;
+            volumeProgress.style.width = `${volume * 100}%`;
+            updateVolumeIcon(volume);
+        });
+
+        volumeIcon.addEventListener('click', () => {
+            if (video.volume > 0) {
+                video.volume = 0;
+                volumeProgress.style.width = '0%';
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else {
+                video.volume = 1;
+                volumeProgress.style.width = '100%';
+                volumeIcon.className = 'fas fa-volume-up';
+            }
+        });
+
+        // 播放速度
+        speedBtn.addEventListener('click', () => {
+            playbackSpeed = playbackSpeed === 1 ? 1.5 : playbackSpeed === 1.5 ? 2 : 1;
+            video.playbackRate = playbackSpeed;
+            speedBtn.textContent = `${playbackSpeed}x`;
+        });
+
+        // 全屏
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.querySelector('.player-container').requestFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        });
+
+        // 格式化时间
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // 更新音量图标
+        function updateVolumeIcon(volume) {
+            if (volume === 0) {
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else if (volume < 0.5) {
+                volumeIcon.className = 'fas fa-volume-down';
+            } else {
+                volumeIcon.className = 'fas fa-volume-up';
+            }
+        }
+    </script>
+</body>
+</html>

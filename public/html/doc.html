@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>预览 Word 文件 - 电子圣经团契</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0084ff; /* 柔和紫色 */
+            --secondary: #c8e2ff; /* 浅紫色 */
+            --accent: #d6e8ff; /* 淡紫色 */
+            --background: #f8f9fa; /* 浅灰背景 */
+            --card-bg: #ffffff;
+            --text: #2d3748; /* 深灰文字 */
+            --shadow: rgba(45, 55, 72, 0.15);
+            --border: #e2e8f0;
+            --link-bg: #edf2f7;
+            --link-hover: #a7d0ff;
+            --night-bg: #0c2a5f;
+            --night-text: #e2e8f0;
+            --night-body: #4a5568;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e2e8f0); /* 渐变背景 */
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            font-size: 1.2rem;
+            overflow-y: auto;
+            min-height: 100vh;
+            transition: background-color 0.4s ease;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px var(--shadow);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            animation: slideDown 0.8s ease-in-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #ffffff;
+            font-size: 1.7rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+        .logo:hover {
+            transform: scale(1.02);
+        }
+        .logo:hover img {
+            transform: rotate(15deg) scale(1.2);
+        }
+        .controls-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 -5px 15px var(--shadow);
+            z-index: 1000;
+            border-top: 1px solid var(--border);
+            animation: slideUp 0.8s ease-in-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .controls {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: nowrap;
+        }
+        .btn {
+            background: var(--accent);
+            color: var(--text);
+            border: none;
+            padding: 0.8rem;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-6px) scale(1.1);
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+        .btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 6px 15px var(--shadow);
+        }
+        .btn-text {
+            color: #ffffff;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: color 0.4s ease;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 100px 25px 90px;
+            min-height: calc(100vh - 190px);
+            transition: all 0.4s ease;
+        }
+        #documentContent {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px var(--shadow);
+            animation: fadeUp 0.8s ease-in-out;
+            overflow-wrap: break-word;
+            transition: font-size 0.4s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #documentContent h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin: 1.8rem 0 1rem;
+            transition: color 0.4s ease;
+        }
+        #documentContent h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin: 1.5rem 0 0.8rem;
+            transition: color 0.4s ease;
+        }
+        #documentContent h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 1.2rem 0 0.6rem;
+            transition: color 0.4s ease;
+        }
+        #documentContent p {
+            margin: 1rem 0;
+            font-size: inherit;
+            transition: font-size 0.4s ease;
+        }
+        #documentContent ul {
+            padding-left: 2.5rem;
+            margin: 1rem 0;
+        }
+        #documentContent ol {
+            padding-left: 2.5rem;
+            margin: 1rem 0;
+        }
+        #documentContent li {
+            margin: 0.6rem 0;
+            font-size: inherit;
+            transition: font-size 0.4s ease;
+        }
+        #documentContent a {
+            background: var(--link-bg);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 18px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.4s ease;
+        }
+        #documentContent a:hover {
+            background: var(--link-hover);
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+        #documentContent.night-mode a {
+            background: #4a5568;
+            color: var(--night-text);
+        }
+        #documentContent.night-mode a:hover {
+            background: var(--secondary);
+            color: #ffffff;
+        }
+        .error {
+            color: #e53e3e;
+            text-align: center;
+            font-size: 1.3rem;
+            padding: 2rem;
+            background: rgba(229, 115, 115, 0.1);
+            border-radius: 15px;
+            margin: 1.5rem 0;
+        }
+        .loading {
+            text-align: center;
+            font-size: 1.6rem;
+            color: var(--primary);
+            animation: pulse 1.6s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.5; transform: scale(0.9); }
+        }
+        .progress-bar {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+        .progress {
+            width: 0;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.4s ease;
+        }
+        body::-webkit-scrollbar {
+            width: 10px;
+        }
+        body::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+        body::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        body.night-mode::-webkit-scrollbar-track {
+            background: var(--night-body);
+        }
+        body.night-mode::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+        }
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+            .controls-bar {
+                padding: 1rem;
+            }
+            .controls {
+                gap: 1.5rem;
+            }
+            .container {
+                padding: 80px 20px 80px;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .logo img {
+                width: 40px;
+                height: 40px;
+            }
+            .btn {
+                width: 45px;
+                height: 45px;
+                padding: 0.7rem;
+            }
+            #documentContent {
+                padding: 2rem;
+            }
+            #documentContent h1 {
+                font-size: 2rem;
+            }
+            #documentContent h2 {
+                font-size: 1.6rem;
+            }
+            #documentContent h3 {
+                font-size: 1.4rem;
+            }
+            .progress-bar {
+                width: 80%;
+            }
+        }
+        @media (max-width: 480px) {
+            .header {
+                padding: 0.8rem;
+            }
+            .controls-bar {
+                padding: 0.8rem;
+            }
+            .controls {
+                gap: 1rem;
+            }
+            .container {
+                padding: 70px 15px 70px;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+            .logo img {
+                width: 35px;
+                height: 35px;
+            }
+            .btn {
+                width: 40px;
+                height: 40px;
+                padding: 0.6rem;
+            }
+            .btn-text {
+                font-size: 0.8rem;
+            }
+            #documentContent {
+                padding: 1.5rem;
+            }
+            #documentContent h1 {
+                font-size: 1.8rem;
+            }
+            #documentContent h2 {
+                font-size: 1.5rem;
+            }
+            #documentContent h3 {
+                font-size: 1.3rem;
+            }
+            .progress-bar {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="btn" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <a href="#" class="logo">
+            <img src="ebfside.png" alt="Logo">
+            <span>电子圣经团契</span>
+        </a>
+        <div style="width: 50px;"></div>
+    </div>
+    <div class="container">
+        <div id="documentContent" class="loading">
+            加载中...
+        </div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="controls-bar">
+        <div class="controls">
+            <button class="btn" onclick="adjustFontSize(1.2)">
+                <i class="fas fa-search-plus"></i>
+            </button>
+            <button class="btn" onclick="adjustFontSize(0.833)">
+                <i class="fas fa-search-minus"></i>
+            </button>
+            <button class="btn" id="nightModeBtn" onclick="toggleNightMode()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="btn" onclick="scrollToTop()">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </div>
+        <div class="controls">
+            <span class="btn-text">放大</span>
+            <span class="btn-text">缩小</span>
+            <span class="btn-text">夜间模式</span>
+            <span class="btn-text">顶部</span>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const filePath = urlParams.get('path');
+        const fileName = urlParams.get('file') || '未知文件';
+        document.title = `预览 ${fileName} - 电子圣经团契`;
+
+        async function loadDocxFile() {
+            const contentDiv = document.getElementById('documentContent');
+            if (!filePath) {
+                contentDiv.innerHTML = '<p class="error">错误：未提供文件路径</p>';
+                contentDiv.classList.remove('loading');
+                return;
+            }
+            try {
+                const response = await fetch(`/${filePath}`);
+                if (!response.ok) {
+                    throw new Error(`无法加载文件：${response.statusText}`);
+                }
+                const arrayBuffer = await response.arrayBuffer();
+                const result = await mammoth.convertToHtml({ arrayBuffer });
+                contentDiv.innerHTML = result.value || '<p>文件内容为空</p>';
+                contentDiv.classList.remove('loading');
+                updateProgress();
+            } catch (error) {
+                contentDiv.innerHTML = `<p class="error">加载失败：${error.message}（可能是加密文件）</p>`;
+                contentDiv.classList.remove('loading');
+            }
+        }
+
+        function adjustFontSize(factor) {
+            const contentDiv = document.getElementById('documentContent');
+            const currentSize = parseFloat(window.getComputedStyle(contentDiv).fontSize);
+            const newSize = Math.max(12, Math.min(36, currentSize * factor));
+            contentDiv.style.fontSize = `${newSize}px`;
+            contentDiv.querySelectorAll('p, li, h1, h2, h3').forEach(el => {
+                el.style.fontSize = 'inherit';
+            });
+        }
+
+        function toggleNightMode() {
+            const contentDiv = document.getElementById('documentContent');
+            const body = document.body;
+            const nightBtn = document.getElementById('nightModeBtn');
+            const isNight = body.classList.contains('night-mode');
+            if (isNight) {
+                body.classList.remove('night-mode');
+                contentDiv.classList.remove('night-mode');
+                contentDiv.style.backgroundColor = '';
+                contentDiv.style.color = '';
+                contentDiv.querySelectorAll('h1, h2, h3').forEach(el => {
+                    el.style.color = '';
+                });
+                nightBtn.classList.remove('active');
+                nightBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                body.classList.add('night-mode');
+                contentDiv.classList.add('night-mode');
+                contentDiv.style.backgroundColor = 'var(--night-bg)';
+                contentDiv.style.color = 'var(--night-text)';
+                contentDiv.querySelectorAll('h1, h2, h3').forEach(el => {
+                    el.style.color = 'var(--secondary)';
+                });
+                nightBtn.classList.add('active');
+                nightBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = docHeight ? (scrollTop / docHeight) * 100 : 0;
+            progress.style.width = `${scrollPercent}%`;
+        }
+
+        window.addEventListener('load', loadDocxFile);
+        window.addEventListener('scroll', updateProgress);
+    </script>
+</body>
+</html>

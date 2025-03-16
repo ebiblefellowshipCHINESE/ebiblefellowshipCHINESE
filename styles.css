@@ -1,0 +1,52 @@
+.bible-timeline {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.video-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.video-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.video-btn {
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.video-btn:hover {
+    background-color: #357abd;
+}
+
+.rounded-video {
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* 桌面端样式 */
+@media screen and (min-width: 768px) {
+    .video-container {
+        margin-left: 290px;
+    }
+}
+
+/* 移动端样式 */
+@media screen and (max-width: 767px) {
+    .video-container {
+        margin-left: 0;
+        margin-right: 80px;
+    }
+}

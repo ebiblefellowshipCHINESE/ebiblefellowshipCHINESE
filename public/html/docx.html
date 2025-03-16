@@ -2,15 +2,15 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>预览 Word 文件 - 电子圣经团契</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0084ff; /* 柔和紫色 */
-            --secondary: #c8e2ff; /* 浅紫色 */
-            --accent: #d6e8ff; /* 淡紫色 */
+            --primary: #0084ff; /* 柔和蓝色 */
+            --secondary: #c8e2ff; /* 浅蓝色 */
+            --accent: #d6e8ff; /* 淡蓝色 */
             --background: #f8f9fa; /* 浅灰背景 */
             --card-bg: #ffffff;
             --text: #2d3748; /* 深灰文字 */
@@ -26,16 +26,17 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e2e8f0); /* 渐变背景 */
+            font-family: 'Times New Roman', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e2e8f0);
             color: var(--text);
             margin: 0;
             padding: 0;
-            line-height: 1.8;
+            line-height: 1.6;
             font-size: 1.2rem;
             overflow-y: auto;
             min-height: 100vh;
             transition: background-color 0.4s ease;
+            touch-action: auto; /* 允许滚动 */
         }
         .header {
             position: fixed;
@@ -51,6 +52,10 @@
             z-index: 1000;
             border-bottom: 1px solid var(--border);
             animation: slideDown 0.8s ease-in-out;
+            transition: transform 0.3s ease;
+        }
+        .header.hidden {
+            transform: translateY(-100%);
         }
         @keyframes slideDown {
             from { transform: translateY(-100%); opacity: 0; }
@@ -93,6 +98,10 @@
             z-index: 1000;
             border-top: 1px solid var(--border);
             animation: slideUp 0.8s ease-in-out;
+            transition: transform 0.3s ease;
+        }
+        .controls-bar.hidden {
+            transform: translateY(100%);
         }
         @keyframes slideUp {
             from { transform: translateY(100%); opacity: 0; }
@@ -100,34 +109,29 @@
         }
         .controls {
             display: flex;
-            gap: 2rem;
-            flex-wrap: nowrap;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 600px;
         }
         .btn {
-            background: var(--accent);
-            color: var(--text);
+            background: transparent;
             border: none;
             padding: 0.8rem;
             border-radius: 50%;
-            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             width: 50px;
             height: 50px;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 12px var(--shadow);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .btn:hover {
-            background: var(--secondary);
             transform: translateY(-6px) scale(1.1);
-            box-shadow: 0 10px 20px var(--shadow);
         }
-        .btn.active {
-            background: var(--primary);
-            color: #ffffff;
-            box-shadow: 0 6px 15px var(--shadow);
+        .btn i {
+            font-size: 1.2rem;
+            color: #3C3B6E; /* 美国国旗蓝色 */
         }
         .btn-text {
             color: #ffffff;
@@ -144,7 +148,7 @@
         }
         #documentContent {
             background: var(--card-bg);
-            padding: 3rem;
+            padding: 3rem 5rem;
             border-radius: 25px;
             box-shadow: 0 10px 30px var(--shadow);
             animation: fadeUp 0.8s ease-in-out;
@@ -156,62 +160,54 @@
             to { opacity: 1; transform: translateY(0); }
         }
         #documentContent h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             color: var(--primary);
-            margin: 1.8rem 0 1rem;
+            margin: 2rem 0 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
             transition: color 0.4s ease;
         }
         #documentContent h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 1.8rem 0 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.3rem;
+            transition: color 0.4s ease;
+        }
+        #documentContent h3 {
+            font-size: 1.6rem;
             color: var(--primary);
             margin: 1.5rem 0 0.8rem;
             transition: color 0.4s ease;
         }
-        #documentContent h3 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin: 1.2rem 0 0.6rem;
-            transition: color 0.4s ease;
-        }
         #documentContent p {
-            margin: 1rem 0;
+            margin: 1.2rem 0;
             font-size: inherit;
             transition: font-size 0.4s ease;
         }
-        #documentContent ul {
-            padding-left: 2.5rem;
-            margin: 1rem 0;
-        }
-        #documentContent ol {
-            padding-left: 2.5rem;
-            margin: 1rem 0;
+        #documentContent ul, #documentContent ol {
+            padding-left: 3rem;
+            margin: 1.2rem 0;
         }
         #documentContent li {
-            margin: 0.6rem 0;
+            margin: 0.8rem 0;
             font-size: inherit;
             transition: font-size 0.4s ease;
         }
         #documentContent a {
-            background: var(--link-bg);
             color: var(--primary);
-            padding: 0.5rem 1.2rem;
-            border-radius: 18px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.4s ease;
+            text-decoration: underline;
+            transition: color 0.4s ease;
         }
         #documentContent a:hover {
-            background: var(--link-hover);
-            color: #ffffff;
-            transform: scale(1.05);
+            color: var(--link-hover);
         }
         #documentContent.night-mode a {
-            background: #4a5568;
-            color: var(--night-text);
+            color: var(--secondary);
         }
         #documentContent.night-mode a:hover {
-            background: var(--secondary);
-            color: #ffffff;
+            color: var(--accent);
         }
         .error {
             color: #e53e3e;
@@ -252,6 +248,19 @@
             background: var(--primary);
             transition: width 0.4s ease;
         }
+        .scale-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            z-index: 2000;
+            display: none;
+        }
         body::-webkit-scrollbar {
             width: 10px;
         }
@@ -269,89 +278,31 @@
             background: var(--secondary);
         }
         @media (max-width: 768px) {
-            .header {
-                padding: 1rem;
-            }
-            .controls-bar {
-                padding: 1rem;
-            }
-            .controls {
-                gap: 1.5rem;
-            }
-            .container {
-                padding: 80px 20px 80px;
-            }
-            .logo {
-                font-size: 1.5rem;
-            }
-            .logo img {
-                width: 40px;
-                height: 40px;
-            }
-            .btn {
-                width: 45px;
-                height: 45px;
-                padding: 0.7rem;
-            }
-            #documentContent {
-                padding: 2rem;
-            }
-            #documentContent h1 {
-                font-size: 2rem;
-            }
-            #documentContent h2 {
-                font-size: 1.6rem;
-            }
-            #documentContent h3 {
-                font-size: 1.4rem;
-            }
-            .progress-bar {
-                width: 80%;
-            }
+            .header { padding: 1rem; }
+            .controls-bar { padding: 1rem; }
+            .container { padding: 80px 20px 80px; }
+            .logo { font-size: 1.5rem; }
+            .logo img { width: 40px; height: 40px; }
+            .btn { width: 45px; height: 45px; padding: 0.7rem; }
+            #documentContent { padding: 2rem 3rem; }
+            #documentContent h1 { font-size: 2.2rem; }
+            #documentContent h2 { font-size: 1.8rem; }
+            #documentContent h3 { font-size: 1.5rem; }
+            .progress-bar { width: 80%; }
         }
         @media (max-width: 480px) {
-            .header {
-                padding: 0.8rem;
-            }
-            .controls-bar {
-                padding: 0.8rem;
-            }
-            .controls {
-                gap: 1rem;
-            }
-            .container {
-                padding: 70px 15px 70px;
-            }
-            .logo {
-                font-size: 1.3rem;
-            }
-            .logo img {
-                width: 35px;
-                height: 35px;
-            }
-            .btn {
-                width: 40px;
-                height: 40px;
-                padding: 0.6rem;
-            }
-            .btn-text {
-                font-size: 0.8rem;
-            }
-            #documentContent {
-                padding: 1.5rem;
-            }
-            #documentContent h1 {
-                font-size: 1.8rem;
-            }
-            #documentContent h2 {
-                font-size: 1.5rem;
-            }
-            #documentContent h3 {
-                font-size: 1.3rem;
-            }
-            .progress-bar {
-                width: 90%;
-            }
+            .header { padding: 0.8rem; }
+            .controls-bar { padding: 0.8rem; }
+            .container { padding: 70px 15px 70px; }
+            .logo { font-size: 1.3rem; }
+            .logo img { width: 35px; height: 35px; }
+            .btn { width: 40px; height: 40px; padding: 0.6rem; }
+            .btn-text { font-size: 0.8rem; }
+            #documentContent { padding: 1.5rem 2rem; }
+            #documentContent h1 { font-size: 2rem; }
+            #documentContent h2 { font-size: 1.6rem; }
+            #documentContent h3 { font-size: 1.4rem; }
+            .progress-bar { width: 90%; }
         }
     </style>
 </head>
@@ -360,9 +311,9 @@
         <button class="btn" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <a href="#" class="logo">
+        <a href="#" class="logo" id="logoTitle">
             <img src="ebfside.png" alt="Logo">
-            <span>电子圣经团契</span>
+            <span id="documentTitle">电子圣经团契</span>
         </a>
         <div style="width: 50px;"></div>
     </div>
@@ -396,11 +347,13 @@
             <span class="btn-text">顶部</span>
         </div>
     </div>
+    <div id="scaleIndicator" class="scale-indicator"></div>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const filePath = urlParams.get('path');
         const fileName = urlParams.get('file') || '未知文件';
         document.title = `预览 ${fileName} - 电子圣经团契`;
+        document.getElementById('documentTitle').textContent = fileName;
 
         async function loadDocxFile() {
             const contentDiv = document.getElementById('documentContent');
@@ -425,18 +378,67 @@
             }
         }
 
+        let initialDistance = 0;
+        let initialFontSize = 16; // 默认字体大小 16px
+        const contentDiv = document.getElementById('documentContent');
+        const scaleIndicator = document.getElementById('scaleIndicator');
+
+        function getDistance(touches) {
+            const dx = touches[0].pageX - touches[1].pageX;
+            const dy = touches[0].pageY - touches[1].pageY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        contentDiv.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                initialDistance = getDistance(e.touches);
+                initialFontSize = parseFloat(window.getComputedStyle(contentDiv).fontSize);
+            }
+        });
+
+        contentDiv.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const currentDistance = getDistance(e.touches);
+                const scale = currentDistance / initialDistance;
+                let newSize = initialFontSize * scale;
+                newSize = Math.max(12, Math.min(36, newSize)); // 限制在 12px - 36px
+                contentDiv.style.fontSize = `${newSize}px`;
+                contentDiv.querySelectorAll('p, li, h1, h2, h3').forEach(el => {
+                    el.style.fontSize = 'inherit';
+                });
+
+                const percentage = Math.round((newSize / 16) * 100); // 以 16px 为基准
+                scaleIndicator.textContent = `${percentage}%`;
+                scaleIndicator.style.display = 'block';
+            }
+        });
+
+        contentDiv.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                setTimeout(() => {
+                    scaleIndicator.style.display = 'none';
+                }, 1000); // 1秒后隐藏
+            }
+        });
+
         function adjustFontSize(factor) {
-            const contentDiv = document.getElementById('documentContent');
             const currentSize = parseFloat(window.getComputedStyle(contentDiv).fontSize);
             const newSize = Math.max(12, Math.min(36, currentSize * factor));
             contentDiv.style.fontSize = `${newSize}px`;
             contentDiv.querySelectorAll('p, li, h1, h2, h3').forEach(el => {
                 el.style.fontSize = 'inherit';
             });
+            const percentage = Math.round((newSize / 16) * 100);
+            scaleIndicator.textContent = `${percentage}%`;
+            scaleIndicator.style.display = 'block';
+            setTimeout(() => {
+                scaleIndicator.style.display = 'none';
+            }, 1000);
         }
 
         function toggleNightMode() {
-            const contentDiv = document.getElementById('documentContent');
             const body = document.body;
             const nightBtn = document.getElementById('nightModeBtn');
             const isNight = body.classList.contains('night-mode');
@@ -475,8 +477,23 @@
             progress.style.width = `${scrollPercent}%`;
         }
 
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const header = document.querySelector('.header');
+            const controlsBar = document.querySelector('.controls-bar');
+            if (scrollTop > lastScrollTop) {
+                header.classList.add('hidden');
+                controlsBar.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+                controlsBar.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop;
+            updateProgress();
+        });
+
         window.addEventListener('load', loadDocxFile);
-        window.addEventListener('scroll', updateProgress);
     </script>
 </body>
 </html>

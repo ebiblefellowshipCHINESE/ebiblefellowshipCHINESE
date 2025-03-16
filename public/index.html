@@ -10,10 +10,11 @@
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/ebf.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
     <script src="js/index.js"></script>
     <SCRIpt src="js/airtime.js"></SCRIpt>
-    <script src="js/daybible.js"></script>
+   
     <script src="js/time.js"></script>
     <script src="js/zooms.JS"></script>
     <script src="js/timevideo.js"></script>
@@ -381,8 +382,9 @@
     </h1>
     <p class="forum-subtitle">现场互动式圣经问答节目</p>
     <div class="button-container">
-        <a href="https://NewOpenForum.org" class="forum-button forum-b">立即访问 NewOpenForum.org</a>
+        <a href="https://NewOpenForum.org" class="forum-button forum-b" style="font-family: Arial, Helvetica, sans-serif;">立即访问 NewOpenForum.org</a>
     </div>
+   
     <div class="BIBLE-EVERYDAY">
         <div class="bible-box">
             <!-- Logo -->
@@ -399,29 +401,20 @@
             <div class="reference" id="reference"></div>
         </div>
     </div>
-    </div>
+    <script src="js/daybible.js"></script>
+
     <br>
-    <div class="random-container">
-        <h1 class="big-heading">圣经历史年代表介绍</h1>
-
-        <div class="btn-box-thingy">
-            <button class="btn-lil-thing" onclick="changeVideo('Video/CN BTH.mp4')" title="查看部分 1">部分 1</button>
-            <button class="btn-lil-thing" onclick="changeVideo('video2.mp4')" title="查看部分 2">部分 2</button>
-            <button class="btn-lil-thing" onclick="changeVideo('video3.mp4')" title="查看部分 3">部分 3</button>
-            <button class="btn-lil-thing" onclick="changeVideo('video4.mp4')" title="查看部分 4">部分 4</button>
-        </div>
-
-        <div class="toggle-box" id="toggleContent">
-            <video id="videoPlayer" class="some-video-thing" controls>
-                <source src="Video/CN BTH.mp4" type="video/mp4">
+    <div class="video-switcher">
+        <header>
+            <h2>圣经历史年代表</h2>
+        </header>
+        <
+        <footer>
+            <video id="videoPlayer" class="responsive-video" controls>
+                <source src="video/timeline.mp4" type="video/mp4">
                 您的浏览器不支持视频标签。
             </video>
-
-            <div class="description-box" id="videoDescription">
-                <!-- 这里可以动态显示视频描述 -->
-                观看部分 1 的历史内容。
-            </div>
-        </div>
+        </footer>
     </div>
     <div class="center-container">
         <h1>来自圣经论坛的问题记录</h1>
@@ -579,24 +572,8 @@
         <div class="titl-bibli">
             <h1 class="rtistic-title">圣经历史年代表</h1>
     </div>
-    <div class="container">
-        <!-- 标题 -->
-        <div class="video-title">关于历史时间线</div>
 
-        <!-- 播放/折叠按钮 -->
-        <button class="toggle-button" onclick="toggleVideo()">收起视频</button>
-        <a href="biblitimeline.html"><button class="toggle-button">进入网站</button></a>
-        <a href="biblitimeline.html"><button class="toggle-button">进入表格</button></a>
 
-        
-
-        <!-- 视频容器（默认显示） -->
-        <div class="video-container" id="videoContainer">
-            <video id="myVideo" controls poster="poster.jpg">
-                <source src="Video/timeline.mp4" type="video/mp4">
-                你的浏览器不支持视频播放。
-            </video>
-        </div>
     </div>
         <p style="color: #000000;font-weight: 600;font-size: 24px;">看看圣经中发现的圣经历史时间表，从创世之日到时间的终结，由已故的哈罗德·康平 （Harold
             Camping） 发现，正如上帝允许他的那样，在末世时解封了他的话语。这个交互式图表将显示关键的圣经事件，例如创建日期、洪水发生的时间、出埃及、所罗门圣殿地基的奠基等。
@@ -645,29 +622,12 @@
             <div class="box" style="width: 13.0392px;"></div>
             <div class="box" style="width: 13.0392px;"></div>
             <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="enter-message">进入</div>
+            <br>
+           
             </div>
+            <span>    </span>
+            <span>    </span>
+            <div class="enter-message"><a  style="color: white;" href="timeline.html">    <<<<<<进入</a></div>
     </div>
     <!--
     <div class="dsfdsafasd">
@@ -804,12 +764,12 @@
     </div>
   </div>
   
-<div class="welcom">
+<div class="welcom" style="font-family: Arial, Helvetica, sans-serif;">
     <h1>欢迎来到</h1>
     <h1 style="font-size: 36px"><span style="color: rgb(0, 140, 255);">e</span>Bible Fellowship</h1>
     <p style="font-size: 18px;">我们是一个独立的基督教组织<br>未与任何教会或事工隶属。</p>
 </div>
-<div class="conteadssiner">
+<div class="conteadssiner"style="font-family: Arial, Helvetica, sans-serif;">
     <div class="fdsg">
       <h1>关于我们</h1>
       <p>

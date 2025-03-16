@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MP3 播放器 - 电子圣经团契</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0080ff;
+            --secondary: #0099ff;
+            --accent: #145eff;
+            --background: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --shadow: rgba(44, 62, 80, 0.15);
+            --progress: #008cff;
+            --progress-bg: #dbdbdb; /* 进度条底色 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow);
+            z-index: 1000;
+        }
+
+        .top-bar .branding {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .top-bar .audio-name {
+            font-size: 1.2rem;
+            color: #ecf0f1;
+            margin-bottom: 0.75rem;
+        }
+
+        .top-bar .back-btn {
+            background: #fff;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            color: var(--secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .top-bar .back-btn:hover {
+            background: #ecf0f1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            width: 400px;
+            padding: 2rem;
+            margin-top: 180px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .cover {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            background: var(--border);
+        }
+
+        .title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            background: var(--progress-bg); /* 未播放时的底色 */
+            border-radius: 5px;
+            height: 8px; /* 略微增高以提升美观 */
+            width: 100%;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 内阴影增加质感 */
+        }
+
+        .progress {
+            background: var(--progress);
+            height: 100%;
+            width: 0; /* 初始宽度为0，但颜色可见 */
+            border-radius: 5px;
+            transition: width 0.2s ease; /* 平滑过渡 */
+            box-shadow: 0 2px 5px rgba(0, 140, 255, 0.4); /* 进度条轻微发光，匹配蓝色主题 */
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .control-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .control-btn.active {
+            background: var(--accent);
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .volume-icon {
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .volume-bar {
+            background: var(--progress-bg);
+            height: 4px;
+            width: 100px;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .volume-progress {
+            background: var(--secondary);
+            height: 100%;
+            width: 100%;
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-size: 1.2rem;
+            padding: 1rem;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .player-container {
+                width: 90%;
+                padding: 1.5rem;
+                margin-top: 160px;
+            }
+            .cover {
+                height: 200px;
+            }
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .volume-bar {
+                width: 80px;
+            }
+            .top-bar .branding {
+                font-size: 1.5rem;
+            }
+            .top-bar .audio-name {
+                font-size: 1rem;
+            }
+            .top-bar .back-btn {
+                padding: 0.4rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="branding">电子圣经团契</div>
+        <div class="audio-name" id="audioName">音频标题</div>
+        <button class="back-btn" onclick="history.back()">返回</button>
+    </div>
+
+    <div class="player-container">
+        <img src="song.jpg" alt="封面" class="cover">
+        <h2 class="title" id="audioTitle">音频标题</h2>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress" id="progress"></div>
+        </div>
+        <div class="time">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+        </div>
+        <div class="controls">
+            <button class="control-btn" id="shuffleBtn" title="随机播放">
+                <i class="fas fa-random"></i>
+            </button>
+            <button class="control-btn" id="prevBtn" title="上一首">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-btn" id="playPauseBtn" title="播放/暂停">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="control-btn" id="nextBtn" title="下一首">
+                <i class="fas fa-step-forward"></i>
+            </button>
+            <button class="control-btn" id="loopBtn" title="循环播放">
+                <i class="fas fa-redo"></i>
+            </button>
+        </div>
+        <div class="volume-container">
+            <i class="fas fa-volume-up volume-icon" id="volumeIcon"></i>
+            <div class="volume-bar" id="volumeBar">
+                <div class="volume-progress" id="volumeProgress"></div>
+            </div>
+        </div>
+        <div id="errorMessage" class="error" style="display: none;"></div>
+    </div>
+
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const audioPath = urlParams.get('path');
+        const audioName = urlParams.get('file') || '未知音频';
+        const defaultAudio = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+
+        // 初始化音频对象
+        const audio = new Audio(audioPath ? `/${audioPath}` : defaultAudio);
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const loopBtn = document.getElementById('loopBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeBar = document.getElementById('volumeBar');
+        const volumeProgress = document.getElementById('volumeProgress');
+        const volumeIcon = document.getElementById('volumeIcon');
+        const audioTitle = document.getElementById('audioTitle');
+        const audioNameEl = document.getElementById('audioName');
+        const errorMessage = document.getElementById('errorMessage');
+
+        let isPlaying = false;
+        let isLooping = false;
+        let isShuffling = false;
+
+        // 设置标题
+        audioTitle.textContent = audioName;
+        audioNameEl.textContent = audioName;
+        document.title = `播放 ${audioName} - 电子圣经团契`;
+
+        // 初始化音频事件
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+            progress.style.width = '0%';
+            errorMessage.style.display = 'none';
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if (!isDragging) { // 仅在未拖动时自动更新，避免冲突
+                const percentage = (audio.currentTime / audio.duration) * 100;
+                progress.style.width = `${percentage}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            if (isLooping) {
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                nextTrack();
+            }
+        });
+
+        audio.addEventListener('error', (e) => {
+            errorMessage.textContent = '音频加载失败，请检查文件路径';
+            errorMessage.style.display = 'block';
+            playPauseBtn.disabled = true;
+        });
+
+        // 播放/暂停
+        playPauseBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                audio.play().catch(err => {
+                    errorMessage.textContent = `播放失败：${err.message}`;
+                    errorMessage.style.display = 'block';
+                });
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // 进度条点击与拖动
+        function updateProgress(e) {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration || 0;
+            const newTime = (clickX / width) * duration;
+            audio.currentTime = newTime;
+            const percentage = (newTime / duration) * 100;
+            progress.style.width = `${percentage}%`; // 立即更新进度条
+            currentTimeEl.textContent = formatTime(newTime); // 立即更新时间
+        }
+
+        progressContainer.addEventListener('click', updateProgress);
+
+        // 添加拖动功能
+        let isDragging = false;
+        progressContainer.addEventListener('mousedown', () => {
+            isDragging = true;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                const rect = progressContainer.getBoundingClientRect();
+                const clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width)); // 限制在进度条范围内
+                const duration = audio.duration || 0;
+                const newTime = (clickX / rect.width) * duration;
+                audio.currentTime = newTime;
+                const percentage = (newTime / duration) * 100;
+                progress.style.width = `${percentage}%`; // 实时更新进度条
+                currentTimeEl.textContent = formatTime(newTime); // 实时更新时间
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging && isPlaying) {
+                audio.play().catch(err => {
+                    errorMessage.textContent = `播放失败：${err.message}`;
+                    errorMessage.style.display = 'block';
+                });
+            }
+            isDragging = false;
+        });
+
+        // 音量控制
+        volumeBar.addEventListener('click', (e) => {
+            const width = volumeBar.clientWidth;
+            const clickX = e.offsetX;
+            const volume = clickX / width;
+            audio.volume = volume;
+            volumeProgress.style.width = `${volume * 100}%`;
+            updateVolumeIcon(volume);
+        });
+
+        volumeIcon.addEventListener('click', () => {
+            if (audio.volume > 0) {
+                audio.volume = 0;
+                volumeProgress.style.width = '0%';
+                volumeIcon.className = 'fas fa-volume-mute volume-icon';
+            } else {
+                audio.volume = 1;
+                volumeProgress.style.width = '100%';
+                volumeIcon.className = 'fas fa-volume-up volume-icon';
+            }
+        });
+
+        // 循环播放
+        loopBtn.addEventListener('click', () => {
+            isLooping = !isLooping;
+            loopBtn.classList.toggle('active', isLooping);
+        });
+
+        // 随机播放
+        shuffleBtn.addEventListener('click', () => {
+            isShuffling = !isShuffling;
+            shuffleBtn.classList.toggle('active', isShuffling);
+        });
+
+        // 上一首/下一首（示例功能）
+        prevBtn.addEventListener('click', () => alert('上一首功能待实现'));
+        nextBtn.addEventListener('click', () => alert('下一首功能待实现'));
+
+        // 格式化时间
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // 更新音量图标
+        function updateVolumeIcon(volume) {
+            if (volume === 0) {
+                volumeIcon.className = 'fas fa-volume-mute volume-icon';
+            } else if (volume < 0.5) {
+                volumeIcon.className = 'fas fa-volume-down volume-icon';
+            } else {
+                volumeIcon.className = 'fas fa-volume-up volume-icon';
+            }
+        }
+
+        // 示例下一首逻辑（可扩展）
+        function nextTrack() {
+            if (isShuffling) {
+                alert('随机播放下一首待实现');
+            } else {
+                alert('顺序播放下一首待实现');
+            }
+        }
+    </script>
+</body>
+</html>
