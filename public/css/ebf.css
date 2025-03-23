@@ -7,17 +7,147 @@ body {
     display: flex;
     justify-content: center;
 }
+:        :root {
+    --progress-height: 8px;
+    --control-height: 60px;
+    --accent-color: #ff3d3d;
+}
 
+/* 只针对播放器居中 */
+.sdjfhk {
+    position: relative;
+    width: 900px; /* 可调整 */
+    max-width: 95vw;
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #000;
+}
 
-/* 标题样式 */
-.video-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
+.kjasdhf {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 比例 */
+}
+
+#video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.asdjklh {
+    position: absolute;
+    bottom: var(--control-height);
+    width: 100%;
+    height: var(--progress-height);
+    background: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.asdjklh:hover {
+    transform: scaleY(1.5);
+}
+
+.jklhfas {
+    height: 100%;
+    width: 0;
+    background: var(--accent-color);
+    position: relative;
+    transition: width 0.1s linear;
+}
+
+.lkjhfd {
+    position: absolute;
+    right: -8px;
+    top: -6px;
+    width: 16px;
+    height: 16px;
+    background: var(--accent-color);
+    border-radius: 50%;
     opacity: 0;
-    transform: translateY(-10px);
-    animation: fadeIn 0.8s forwards;
+    transform: scale(0);
+    transition: 0.2s ease;
+}
+
+.asdjklh:hover .lkjhfd {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.fdasjkl {
+    position: absolute;
+    bottom: 20px;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0.2s ease;
+}
+
+.asdjklh:hover .fdasjkl {
+    opacity: 1;
+}
+
+.hgfdsak {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--control-height);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.sdjfhk:hover .hgfdsak,
+.sdjfhk:hover .asdjklh {
+    opacity: 1;
+}
+
+.qwerjkl {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.2s ease;
+    border-radius: 4px;
+}
+
+.qwerjkl:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.zxcfghj {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    margin: 0 15px;
+    font-family: Arial, sans-serif;
+}
+
+.bnmvghj {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.bnmvghj input[type="range"] {
+    width: 100px;
+    height: 6px;
+    accent-color: var(--accent-color);
 }
 
 .random-container {
@@ -199,12 +329,12 @@ article .card-title {
   /* 语音识别底部栏 */
   .voice-panel {
     position: relative;
-    width: 100%;
-    background: #fff;
-    padding: 20px;
-    box-sizing: border-box;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    width: 900px; /* 可根据需要调整 */
+    max-width: 95vw; /* 限制最大宽度，适配小屏幕 */
+    margin: 0 auto; /* 水平居中 */
+    top: 50%; /* 垂直居中 */
+    transform: translateY(-50%); /* 偏移调整垂直居中 */
+    background: #000; /* 保持黑色背景 */
   }
   
   /* 识别结果展示 */
