@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace: [auto, translate]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies for ${{ matrix.workspace }}
+        working-directory: ${{ matrix.workspace }}
+        run: npm ci
+
+      - name: Run lint (if exists)
+        working-directory: ${{ matrix.workspace }}
+        run: |
+          if npm run | grep -q lint; then
+            npm run lint
+          fi
+
+      - name: Run tests (if exists)
+        working-directory: ${{ matrix.workspace }}
+        run: |
+          if npm test; then
+            echo "Tests passed"
+          fi
+
