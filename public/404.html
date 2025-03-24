@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - 页面未找到</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .card {
+    background: rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: fadeIn 1s ease-out;
+    max-width: 90%;
+  }
+  .icon { font-size: 6rem; animation: float 3s ease-in-out infinite; margin-bottom: 16px; }
+  h1 { font-size: 4rem; color: #333; margin-bottom: 16px; }
+  p { font-size: 1.25rem; color: #555; margin-bottom: 32px; }
+  .buttons > a {
+    display: inline-block;
+    margin: 0 8px;
+    padding: 14px 32px;
+    border-radius: 50px;
+    background: #66a6ff;
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: transform .2s, background .2s;
+  }
+  .buttons > a:hover { background: #558ce3; transform: scale(1.05); }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+  <div class="card" id="message-card">
+    <div class="icon">📖</div>
+    <h1 id="title">404</h1>
+    <p id="message">很抱歉，你访问的页面不存在。</p>
+    <div class="buttons" id="actions">
+      <a href="/" class="button">返回首页</a>
+    </div>
+  </div>
+
+  <script>
+    const referrer = document.referrer;
+    const titleEl = document.getElementById('title');
+    const messageEl = document.getElementById('message');
+    const actionsEl = document.getElementById('actions');
+
+    if (referrer) {
+      titleEl.textContent = '哎呀，开发者好像出现了问题';
+      messageEl.innerHTML = '请访问 <a href="https://www.example.com" target="_blank" rel="noopener">example.com</a> 向开发者反馈此问题。';
+      actionsEl.innerHTML = `
+        <a href="javascript:history.back()" class="button">返回上一页</a>
+        <a href="/" class="button">返回首页</a>
+      `;
+    }
+  </script>
+</body>
+</html>
