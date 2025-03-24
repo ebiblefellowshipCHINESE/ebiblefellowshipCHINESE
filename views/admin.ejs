@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员仪表板</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #2d2d3d;
+            padding: 2rem 1.5rem;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .branding {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #404050;
+        }
+
+        .branding h2 {
+            color: #4a90e2;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            color: #a0a0a0;
+            font-size: 0.95rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.8rem 0;
+        }
+
+        .nav-link {
+            color: #b0b0b0;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #383848;
+            color: #4a90e2;
+            transform: translateX(8px);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background: #1e1e2e;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #f0f0f0;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ff5252, #d32f2f);
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(211,47,47,0.3);
+            background: linear-gradient(135deg, #ff6b6b, #e53935);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .dashboard-card {
+            background: #2d2d3d;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            border-bottom: 1px solid #404050;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h3 {
+            color: #4a90e2;
+            font-size: 1.4rem;
+        }
+
+        .log-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #252535;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            scrollbar-width: thin;
+            scrollbar-color: #4a90e2 #383848;
+        }
+
+        .log-entry {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #404050;
+            color: #a0a0a0;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #b0b0b0;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: #383848;
+            border: 1px solid #404050;
+            border-radius: 6px;
+            color: #e0e0e0;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+            outline: none;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            background: linear-gradient(135deg, #5aa1e8, #4682b4);
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            .main-content {
+                padding: 1.5rem;
+            }
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="branding">
+            <h2><%= blessing %></h2>
+            <p class="user-info">欢迎回来, <%= username %></p>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#access-log" class="nav-link active">📊 访问信息</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#ban-info" class="nav-link">🛡️ IP管理</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#file-upload" class="nav-link">📁 文件管理</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#account-mgmt" class="nav-link">👤 账户管理</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>系统控制面板</h1>
+            <button class="logout-btn" onclick="location.href='/logout'">登出系统</button>
+        </div>
+
+        <div class="content-section active" id="access-log">
+            <div class="grid-2col">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>实时访问日志</h3>
+                    </div>
+                    <div class="log-container">
+                        <% if (accessLog && accessLog.trim()) { %>
+                            <% accessLog.split('\n').forEach(line => { %>
+                                <div class="log-entry"><%= line %></div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="log-entry">暂无访问记录</div>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>服务器状态</h3>
+                    </div>
+                    <div class="form-group">
+                        <p>当前时间：<%= new Date().toLocaleString() %></p>
+                        <p>在线用户：<%= onlineUsersCount || '0' %></p>
+                        <p>运行状态：<span style="color:#4CAF50;">● 正常</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="ban-info">
+            <div class="grid-2col">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>IP封禁管理</h3>
+                    </div>
+                    <form action="/ban" method="post">
+                        <div class="form-group">
+                            <label class="form-label">输入IP地址</label>
+                            <input type="text" name="ip" class="form-control" placeholder="192.168.1.1" required>
+                        </div>
+                        <button type="submit" class="submit-btn">立即封禁</button>
+                    </form>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>当前封禁列表</h3>
+                    </div>
+                    <div class="log-container">
+                        <% if (banInfo && banInfo.trim()) { %>
+                            <% banInfo.split('\n').forEach(line => { %>
+                                <div class="log-entry"><%= line %></div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="log-entry">无封禁记录</div>
+                        <% } %>
+                    </div>
+                    <form action="/unban" method="post" style="margin-top:1rem;">
+                        <div class="form-group">
+                            <input type="text" name="ip" class="form-control" placeholder="输入解除封禁的IP" required>
+                        </div>
+                        <button type="submit" class="submit-btn">解除封禁</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="file-upload">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3>文件上传管理</h3>
+                </div>
+                <form action="/upload-file" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label">选择上传文件</label>
+                        <input type="file" name="uploadFile" class="form-control" required>
+                    </div>
+                    <button type="submit" class="submit-btn">开始上传</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="content-section" id="account-mgmt">
+            <div class="grid-2col">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>创建新账户</h3>
+                    </div>
+                    <form action="/create-account" method="post">
+                        <div class="form-group">
+                            <label class="form-label">用户名</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">密码</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">账户类型</label>
+                            <select name="role" class="form-control">
+                                <option value="admin">管理员</option>
+                                <option value="translator">译者</option>
+                                <option value="uploader">上传者</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">创建账户</button>
+                    </form>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3>密码管理</h3>
+                    </div>
+                    <form action="/update-password" method="post">
+                        <div class="form-group">
+                            <label class="form-label">用户名</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">新密码</label>
+                            <input type="password" name="newPassword" class="form-control" required>
+                        </div>
+                        <button type="submit" class="submit-btn">更新密码</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 选项卡切换功能（添加防抖优化）
+    let debounceTimeout;
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+                const target = this.getAttribute('href').substring(1);
+                document.getElementById(target).classList.add('active');
+            }, 100);
+        });
+    });
+
+    // 自动滚动日志到底部
+    const logContainers = document.querySelectorAll('.log-container');
+    logContainers.forEach(container => {
+        container.scrollTop = container.scrollHeight;
+    });
+</script>
+</body>
+</html>
