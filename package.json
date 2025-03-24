@@ -1,0 +1,23 @@
+{
+  "name": "ebiblefellowshipchinese",
+  "version": "1.0.0",
+  "description": "<!-- **ebiblefellowshipCHINESE/ebiblefellowshipCHINESE** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ebiblefellowshipCHINESE/ebiblefellowshipCHINESE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ebiblefellowshipCHINESE/ebiblefellowshipCHINESE/issues"
+  },
+  "homepage": "https://github.com/ebiblefellowshipCHINESE/ebiblefellowshipCHINESE#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
