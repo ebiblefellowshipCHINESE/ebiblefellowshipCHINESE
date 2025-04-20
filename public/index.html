@@ -123,13 +123,9 @@
                     <span class="social-label">Facebook</span>
                 </a>
             </div>
+            
             <div class="social-grid">
-                <a href="https://twitter.com/EBF2033" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <span class="social-label">Twitter</span>
-                </a>
+              
                 <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
                     <div class="social-icon">
                         <i class="fab fa-spotify"></i>
@@ -417,10 +413,7 @@
     <script src="js/daybible.js"></script>
 
     <br>
-    <h1 style="color: #0084ff;">圣经历史年代表部分</h1>
-    <div class="video-container" style="position: relative; width: 100%; max-width: calc(100% - 580px); height: 0; padding-bottom: 75%; margin: 0 auto; box-sizing: border-box;">
-        <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/cjiww4?loop=0" style="border: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);"></iframe>
-      </div>
+
     <div class="center-container">
         <h1>来自圣经论坛的问题记录</h1>
         <a href="biblequestion.html" class="query-button">圣经问题查询（beta）</a>
@@ -485,91 +478,93 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     </head>
     
-    <div class="form-container" style="max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
-        <div class="form-title" style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 10px;">📅 圣经论坛预约</div>
-        <div class="form-subtitle" style="font-size: 14px; text-align: center; color: #666;">请填写以下信息，我们将在 3 日内通过邮箱通知您。</div>
-        
-        <form id="contactForm" action="https://formspree.io/f/xldgnjgy" method="POST">
-            <!-- 母语 -->
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="language" style="display: block; font-weight: bold;">您的母语</label>
-                <select id="language" name="language" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                    <option value="chinese">中文</option>
-                    <option value="english">English</option>
-                    <option value="other">其他</option>
-                </select>
+    <div class="bible-question-form-container">
+        <div class="form-header-title">提出你对圣经的疑惑</div>
+        <div class="form-header-subtitle">请填写疑问和联系方式，我们将在 3 日内为您解答。</div>
+
+        <form id="bibleQuestionForm" action="https://formspree.io/f/xldgnjgy" method="POST">
+
+            <div class="input-group">
+                <label for="question" class="form-label">
+                    <i class="fa-solid fa-question-circle fa-fw"></i>您的问题
+                </label>
+                <textarea id="question" name="question" rows="5" required class="form-control" placeholder="请在此处详细描述您关于圣经的疑问..."></textarea>
             </div>
-    
-            <!-- 问题 -->
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="question" style="display: block; font-weight: bold;">您的问题</label>
-                <textarea id="question" name="question" rows="4" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+
+            <div class="input-group">
+                <label for="email" class="form-label">
+                    <i class="fa-solid fa-envelope fa-fw"></i>您的QQ邮箱
+                </label>
+                <input type="email" id="email" name="email" placeholder="例如: 12345678@qq.com" required pattern="^[a-zA-Z0-9_.+-]+@qq\.com$" class="form-control">
+                 <small>我们将通过此邮箱回复您。</small>
             </div>
-    
-            <!-- 邮箱 -->
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="email" style="display: block; font-weight: bold;">您的邮箱 (qq+@qq.com)</label>
-                <input type="email" id="email" name="email" placeholder="例如：qq+@qq.com" required pattern="^[a-zA-Z0-9_.+-]+@qq\.com$" 
-                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+            <div class="input-group">
+                <label for="name" class="form-label">
+                    <i class="fa-solid fa-user fa-fw"></i>您的称呼
+                </label>
+                <input type="text" id="name" name="name" required class="form-control" placeholder="我们如何称呼您？">
             </div>
-    
-            <!-- 名字 -->
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="name" style="display: block; font-weight: bold;">您的名字</label>
-                <input type="text" id="name" name="name" required 
-                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-    
-            <!-- 预约时间 -->
-            <div class="form-group" style="margin-bottom: 10px;">
-                <label for="appointment_time" style="display: block; font-weight: bold;">预约时间</label>
-                <input type="text" id="appointment_time" name="appointment_time" required
-                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-            </div>
-    
-            <button type="submit" class="form-submit" 
-                    style="width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                提交
+
+            <button type="submit" class="submit-button">
+                <i class="fa-solid fa-paper-plane"></i>
+                提交问题
             </button>
         </form>
-    
-        <!-- 表单提交后显示的提示消息 -->
-        <div id="formMessage" class="form-message" style="display:none; text-align: center; margin-top: 10px; color: green;">
+
+        <div id="formMessage" class="form-status-message success">
             <p>您的表单已提交，我们将在 3 日内通过邮箱通知您。</p>
         </div>
     </div>
-    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            flatpickr("#appointment_time", {
-                locale: "zh", // 设置中文
-                dateFormat: "Y-m-d H:i", // 设置日期时间格式
-                enableTime: true, // 启用时间选择
-                time_24hr: true, // 使用24小时制
-                minDate: "today", // 限制只能选择今天及以后的日期
-            });
-        });
-    
-        document.getElementById("contactForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // 阻止默认提交行为
-            
-            let form = event.target;
-            let formData = new FormData(form);
-    
-            fetch("https://formspree.io/f/xldgnjgy", {
-                method: "POST",
+          const form = document.getElementById('bibleQuestionForm');
+        const formMessage = document.getElementById('formMessage');
+
+        form.addEventListener('submit', function(event) {
+             // If you want basic Formspree handling (redirects to their page on success),
+             // simply let the form submit normally. Remove this entire script or comment it out.
+
+             // If you want to handle submission with JavaScript (AJAX) without page reload:
+             event.preventDefault(); // Stop normal submission
+
+            // --- Start AJAX Submission Logic ---
+            const formData = new FormData(form);
+            const submitButton = form.querySelector('.submit-button');
+            const buttonText = submitButton.innerHTML; // Store original button content
+            submitButton.disabled = true; // Disable button
+            submitButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 处理中...`; // Show loading state
+
+            fetch(form.action, {
+                method: 'POST',
                 body: formData,
-                headers: { "Accept": "application/json" }
-            }).then(response => {
-                if (response.ok) {
-                    document.getElementById("formMessage").style.display = "block";
-                    form.reset();
-                } else {
-                    alert("提交失败，请稍后重试。");
+                headers: {
+                    'Accept': 'application/json'
                 }
-            }).catch(error => {
-                alert("网络错误，请检查您的连接。");
-            });
+            })
+            .then(response => {
+                formMessage.style.display = 'block'; // Show the message area
+                if (response.ok) {
+                    formMessage.className = 'form-status-message success'; // Reset classes and add success
+                    formMessage.querySelector('p').textContent = '提交成功！我们将在 3 日内通过邮箱回复您。';
+                    form.reset(); // Clear the form
+                } else {
+                    return response.json().then(data => {
+                         throw new Error(data.errors ? data.errors.map(e => e.message).join(', ') : '提交失败，请稍后重试。');
+                     });
+                }
+            })
+            .catch(error => {
+                formMessage.style.display = 'block'; // Show the message area
+                formMessage.className = 'form-status-message error'; // Reset classes and add error
+                formMessage.querySelector('p').textContent = `错误: ${error.message || '网络问题，无法提交。'}`;
+            })
+            .finally(() => {
+                 // Restore button state regardless of success/error
+                 submitButton.disabled = false;
+                 submitButton.innerHTML = buttonText; // Restore original button text/icon
+             });
+             // --- End AJAX Submission Logic ---
+
         });
     </script>
     
@@ -716,51 +711,65 @@
 <h1 style="color: #666;text-align: center;">巴比伦倾倒了</h1>
 <iframe src="https://streamable.com/e/ewst7x?loop=0" allowfullscreen style="width: 90vw; max-width: calc(100vw - 250px - 290px); min-width: 320px; aspect-ratio: 16 / 9; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: block; margin: 20px auto; @media (max-width: 767px) { width: calc(100vw - 40px); max-width: calc(100vw - 40px); min-width: calc(100vw - 40px); }"></iframe>
 
+<div class="about-us-section">
+    <h2>关于我们</h2>
 
-<div class="welcom" style="font-family: Arial, Helvetica, sans-serif;">
-    <h1>欢迎来到</h1>
-    <h1 style="font-size: 36px"><span style="color: rgb(0, 140, 255);">e</span>Bible Fellowship</h1>
-    <p style="font-size: 18px;">我们是一个独立的基督教组织<br>未与任何教会或事工隶属。</p>
-</div>
-<div class="conteadssiner"style="font-family: Arial, Helvetica, sans-serif;">
-    <div class="fdsg">
-      <h1>关于我们</h1>
-      <p>
-        <span class="highlight-text">电子</span>圣经团契这个名字有以下几个原因：
-      </p>
-      <p>
-        <span class="highlight-bold">电子：</span>
-        我们相信主通过电子媒介（如广播、互联网等）在极大的程度上拯救了许多来自教会和世界其他团体之外的人。如今我们的任务是“喂养祂的羊”，以便所有神所拯救的人都能通过福音得以建造。
-      </p>
-      <p>
-        <span class="highlight-bold">圣经：</span>
-        圣经是我们的权威。任何人类所制定的信条、教义或声明都无法凌驾于圣经之上。我们正处在一个时代，在这个时代中，圣经被神极大地尊崇，神的话语是至高无上的。
-      </p>
-      <p>
-        <span class="highlight-bold">团契：</span>
-        我们是一群信徒的团契，渴望通过神的话语与神建立团契。圣经教导我们，教会时代已经结束，因此我们与任何教会或教派没有任何隶属或认同。感谢您的访问。
-      </p>
-      <p>
-        约翰一书 1:3  “我们所看见、所听见的，宣告给你们，使你们也与我们有团契，我们乃是与父、并与祂儿子耶稣基督有团契。”
-      </p>
+    <p class="intro-paragraph">
+        「电子圣经团契」这个名字承载着我们的核心信念：
+    </p>
+
+    <div class="keyword-paragraph">
+        <p>
+            <strong class="keyword">电子：</strong>
+            我们相信主通过电子媒介（如广播、互联网等）在极大的程度上拯救了许多来自教会和世界其他团体之外的人。如今我们的任务是<em class="emphasis">“喂养祂的羊”</em>，以便所有神所拯救的人都能通过福音得以建造。
+        </p>
     </div>
-  </div>
-  <div class="form-container">
+
+    <div class="keyword-paragraph">
+        <p>
+            <strong class="keyword">圣经：</strong>
+            圣经是我们的<strong class="authority-emphasis">唯一权威</strong>。任何人类所制定的信条、教义或声明都无法凌驾于圣经之上。我们正处在一个时代，在这个时代中，圣经被神极大地尊崇，神的话语是至高无上的。
+        </p>
+    </div>
+
+    <div class="keyword-paragraph">
+        <p>
+            <strong class="keyword">团契：</strong>
+            我们是一群信徒的团契，渴望通过神的话语与神建立团契。圣经教导我们，教会时代已经结束，因此我们与任何教会或教派没有任何隶属或认同。
+        </p>
+    </div>
+
+    <p class="closing-paragraph">
+        感谢您的访问。
+    </p>
+
+    <blockquote>
+        <p>“我们所看见、所听见的，宣告给你们，使你们也与我们有团契，我们乃是与父、并与祂儿子耶稣基督有团契。”</p>
+        <footer>— 约翰一书 1:3</footer>
+    </blockquote>
+</div>
     <h2>联系我们</h2>
   
     <form action="https://formspree.io/f/xldgnjgy" method="POST">
-      <label for="name">您的名字：</label>
-      <input type="text" id="name" name="name" required><br><br>
-
-      <label for="email">您的邮箱：</label>
-      <input type="email" id="email" name="email" required><br><br>
-
-      <label for="message">您的问题：</label><br>
-      <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-
-      <button type="submit" class="subit">提交</button>
+        <div class="input-group">
+            <label for="name">您的名字</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+    
+        <div class="input-group">
+            <label for="email">您的邮箱</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+    
+        <div class="input-group">
+            <label for="message">您的问题</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
+    
+        <button type="submit" class="subit">
+            <span>立即提交</span>
+        </button>
     </form>
-  </div>
 </body>
 
 <script>

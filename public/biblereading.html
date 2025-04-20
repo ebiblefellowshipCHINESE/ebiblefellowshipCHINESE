@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bible Reading - Electronic Bible Fellowship</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+    <title>电子圣经团契-圣经朗读</title>
+    <link rel="stylesheet" href="APlayer.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
             --background-color: #f8f9fa;
+        }
+        .aplayer-pic {
+            background-image:url('picture/song.png') !important
         }
 
         body {
@@ -199,14 +202,16 @@
 </head>
 <body>
     <header class="header">
-        <h1>📖 圣经阅读系统</h1>
-        <p>电子圣经团契 - 聆听上帝的话语</p>
+        <img src="logo/ebfside.png" alt="" width="100px">
+        <h1>电子圣经团契</h1>
+        <p>电子圣经团契 - 圣经阅读</p>
     </header>
     
     <nav class="nav">
         <button class="nav-button" onclick="history.back()">
             <i class="fas fa-home"></i> 首页
         </button>
+        
         <button class="nav-button" onclick="showBookSelector()">
             <i class="fas fa-book"></i> 选择书卷
         </button>
@@ -214,9 +219,7 @@
             <i class="fas fa-play-circle"></i> 
             <span id="currentChapter">创世记 第1章</span>
         </span>
-        <a href="bible_text.html" target="_blank" class="nav-button">
-            <i class="fas fa-bible"></i> 圣经文本
-        </a>
+      
     </nav>
     
     <div class="container">
@@ -241,7 +244,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+    <script src="APlayer.min.js"></script>
     <script>
         // Complete Bible books database in English (66 books)
        // 完整的圣经书卷数据库（包含 66 卷）

@@ -3,371 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>联系我们 - eBible Fellowship</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/ebf.css">
-    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
-    <script src="js/index.js"></script>
-    <script src="js/airtime.js"></script>
-    <script src="js/daybible.js"></script>
-    <script src="js/time.js"></script>
-    <script src="js/zooms.js"></script>
-    <script src="js/timevideo.js"></script>
-    <script src="js/filedown.js"></script>
-    <script src="js/cookie.js"></script>
-    <script src="dist/fuse.min.js"></script>
+    <title>联系我们 - 美观高级版</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
+        /* 全局样式和背景 */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #e6f0fa;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            color: #2c3e50;
+            /* 更现代、柔和的渐变背景 */
+            background: linear-gradient(135deg, #e0f7fa, #e8fde7);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
-        /* 顶栏样式 */
-        .xkjh89 {
-            margin-left: 290px;
-            width: calc(100% - 290px);
-            height: 80px;
-            background: linear-gradient(to right, #3498db, #5dade2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            animation: pqlm45 0.5s ease-in;
+
+        /* 主内容容器 */
+        .mnbv90 {
+            background-color: #ffffff; /* 白色背景 */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); /* 更明显的阴影 */
+            max-width: 900px;
+            width: 90%;
+            text-align: center;
+            opacity: 0; /* 初始状态隐藏 */
+            transform: translateY(30px); /* 初始位置下移更多 */
+            animation: fadeInMoveUp 1s ease-out forwards; /* 应用进入动画 */
         }
-        .zxcv12 {
-            display: flex;
-            align-items: center;
+
+        /* 进入动画 */
+        @keyframes fadeInMoveUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .ghbn34 {
-            width: 50px;
-            height: 50px;
-            background-color: #fff;
-            border-radius: 50%;
+
+        /* 标题 */
+        .lkjh23 {
+            color: #00796b; /* 深青色，更专业 */
+            margin-bottom: 30px;
+            font-size: 2.8em; /* 标题更大 */
+            position: relative;
+            padding-bottom: 15px; /* 为下划线留空间 */
+        }
+
+        /* 标题下划线 */
+        .lkjh23::after {
+            content: '';
+            display: block;
+            width: 80px; /* 下划线更宽 */
+            height: 4px;
+            background-color: #00bcd4; /* 强调色，鲜明的青色 */
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 内容区域容器 (图片+表单) */
+        .qwert1 {
             display: flex;
+            flex-wrap: wrap;
+            gap: 50px; /* 间距更大 */
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            transition: transform 0.3s ease;
+            text-align: left;
         }
-        .ghbn34 img {
-            width: 80px;
-        }
-        .ghbn34:hover {
-            transform: rotate(360deg);
-        }
-        .tyui56 {
-            font-size: 1.8em;
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        .rtyu78 {
-            background-color: #fff;
-            color: #3498db;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .rtyu78:hover {
-            background-color: #ecf0f1;
-            transform: scale(1.05);
-        }
-        /* 内容样式 */
-        .mnbv90 {
-            margin-left: 290px;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        .lkjh23 {
-            text-align: center;
-            color: #3498db;
-            margin: 20px 0 40px;
-            animation: asdf67 1s ease-in;
-        }
-        .qwert1 {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            animation: vbnm45 0.5s ease-in;
-        }
+
+        /* 图片容器 */
         .zxcv78 {
-            text-align: center;
-            margin-bottom: 20px;
+            flex: 1;
+            min-width: 280px; /* 图片最小宽度更大 */
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px; /* 圆角更大 */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.6s ease-in-out; /* 添加整体缩放过渡 */
         }
-        .zxcv78 img {
-            width: 100px;
-            transition: transform 0.3s ease;
+
+         /* 图片容器悬停动画 */
+        .zxcv78:hover {
+            transform: scale(1.03); /* 悬停时轻微放大 */
         }
-        .zxcv78 img:hover {
-            transform: scale(1.1);
-        }
-        .poiu90 {
-            margin-bottom: 20px;
-        }
-        .poiu90 label {
+
+        .logo-img {
             display: block;
-            font-size: 1.1em;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .poiu90 input,
-        .poiu90 textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            color: #2c3e50;
-            transition: border-color 0.3s ease;
+            height: auto;
+            transition: transform 0.6s ease-in-out; /* 图片内部缩放过渡 */
         }
-        .poiu90 input:focus,
-        .poiu90 textarea:focus {
-            border-color: #3498db;
+
+        /* 图片叠加层 */
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+             /* 柔和的叠加层渐变 */
+            background: linear-gradient(135deg, rgba(0, 150, 136, 0.3), rgba(0, 188, 212, 0.3));
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out; /* 叠加层过渡 */
+        }
+
+        /* 鼠标悬停时显示叠加层 */
+        .zxcv78:hover .image-overlay {
+            opacity: 1;
+        }
+
+        /* 表单 */
+        form {
+            flex: 2;
+            min-width: 320px; /* 表单最小宽度更大 */
+            background-color: #fcfcfc; /* 接近白色的柔和背景 */
+            padding: 40px; /* 内边距更大 */
+            border-radius: 12px; /* 圆角更大 */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            animation: slideInRight 1s ease-out forwards 0.3s; /* 延迟进入动画 */
+            opacity: 0;
+            transform: translateX(30px); /* 初始位置右移更多 */
+        }
+
+        /* 表单进入动画 */
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 表单分组 */
+        .poiu90 {
+            margin-bottom: 25px; /* 间距更大 */
+        }
+
+        /* 标签 */
+        label {
+            display: block;
+            margin-bottom: 10px; /* 间距更大 */
+            font-weight: 500;
+            color: #555;
+            font-size: 1.1em; /* 字体稍大 */
+        }
+
+        /* 输入框和文本域 */
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 14px 18px; /* 内边距更大 */
+            border: 1px solid #ddd; /* 柔和边框 */
+            border-radius: 8px; /* 明显的圆角 */
+            box-sizing: border-box;
+            font-size: 1em;
+            background-color: #fff; /* 白色背景 */
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 添加过渡 */
+        }
+
+        /* 输入框和文本域聚焦效果 */
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #00bcd4; /* 聚焦时边框变色 */
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.3); /* 聚焦时添加更明显的光晕效果 */
             outline: none;
         }
-        .poiu90 textarea {
-            height: 150px;
+
+        textarea {
             resize: vertical;
+            min-height: 150px; /* 文本域最小高度更大 */
         }
+
+        /* 提交按钮 */
         .asdf11 {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #3498db;
-            color: #fff;
+            display: flex; /* 使用flexbox使图标和文字居中 */
+            align-items: center;
+            justify-content: center;
+            /* 漂亮的绿色渐变按钮 */
+            background: linear-gradient(45deg, #4caf50, #388e3c);
+            color: white;
+            padding: 14px 30px; /* 内边距调整 */
             border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
+            border-radius: 30px; /* 胶囊形按钮 */
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.2em; /* 字体更大 */
+            font-weight: 500;
+            transition: all 0.3s ease; /* 所有属性都过渡 */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4); /* 按钮阴影 */
+             gap: 8px; /* 图标与文字的间距 */
         }
+
+        /* 按钮悬停效果 */
         .asdf11:hover {
-            background-color: #2980b9;
-            transform: scale(1.05);
+            background: linear-gradient(45deg, #388e3c, #4caf50); /* 渐变方向变化 */
+            transform: translateY(-3px); /* 悬停时上移 */
+            box-shadow: 0 12px 25px rgba(76, 175, 80, 0.5); /* 悬停时阴影变大 */
         }
-        .tyui12 {
+
+        /* 按钮点击时的动画效果（CSS触发） */
+        .asdf11:active {
+             transform: translateY(-1px) scale(0.98); /* 点击时轻微下移和缩小 */
+             box-shadow: 0 5px 10px rgba(76, 175, 80, 0.3); /* 点击时阴影变小 */
+        }
+
+        /* 提交中状态（JS触发） */
+        .asdf11.submitting {
+            background: linear-gradient(45deg, #00bcd4, #00acc1); /* 变成青色渐变 */
+            cursor: wait;
+            box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4); /* 阴影变色 */
+            animation: pulseSubmitting 1.5s infinite; /* 脉冲动画 */
+        }
+
+        /* 提交中脉冲动画 */
+        @keyframes pulseSubmitting {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* 提交成功消息 */
+        .submit-success-message {
+            margin-top: 30px; /* 间距更大 */
+            padding: 20px; /* 内边距更大 */
+            background-color: #e8f5e9; /* 浅绿色背景 */
+            color: #2e7d32; /* 深绿色文字 */
+            border: 1px solid #c8e6c9;
+            border-radius: 8px; /* 圆角 */
             text-align: center;
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #7f8c8d;
-            background-color: #e6f0fa;
-            padding: 10px;
-            border-radius: 5px;
-            animation: hjkl90 1s ease-in;
+            opacity: 0; /* 初始隐藏 */
+            height: 0; /* 初始高度为0 */
+            overflow: hidden; /* 隐藏溢出内容 */
+            transform: translateY(20px) scale(0.95); /* 初始状态下移并缩小 */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, height 0.6s ease-in-out, padding 0.6s ease-in-out; /* 平滑过渡 */
+             display: flex; /* 使内容垂直居中 */
+             align-items: center;
+             justify-content: center;
+             gap: 10px; /* 图标与文字间距 */
         }
-        /* 动画 */
-        @keyframes asdf67 {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+
+        /* 提交成功消息显示状态 */
+        .submit-success-message.visible {
+            opacity: 1;
+            height: auto; /* 高度自动 */
+            padding: 20px; /* 恢复内边距 */
+            transform: translateY(0) scale(1); /* 恢复位置和大小 */
+             /* 成功消息的轻微弹跳动画 */
+             animation: bounceIn 0.8s ease-out forwards;
         }
-        @keyframes vbnm45 {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pqlm45 {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(0); }
-        }
-        @keyframes hjkl90 {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @media (max-width: 991px) {
-            .xkjh89 {
-                margin-left: 0;
-                width: 100%;
+
+        /* 成功消息弹跳动画 */
+        @keyframes bounceIn {
+            0%, 20%, 40%, 60%, 80%, 100% {
+                transition-timing-function: cubic-bezier(0.215, .61, .355, 1);
             }
+            0% { opacity: 0; transform: scale3d(.3, .3, .3); }
+            20% { transform: scale3d(1.1, 1.1, 1.1); }
+            40% { transform: scale3d(.9, .9, .9); }
+            60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+            80% { transform: scale3d(.97, .97, .97); }
+            100% { opacity: 1; transform: scale3d(1, 1, 1); }
+        }
+
+
+        /* 回复提示信息 */
+        .tyui12 {
+            margin-top: 30px; /* 间距更大 */
+            color: #777;
+            font-size: 1em; /* 字体稍大 */
+            text-align: center;
+            animation: fadeInText 1.5s ease-out forwards 0.8s; /* 延迟出现动画 */
+            opacity: 0; /* 初始隐藏 */
+        }
+
+        /* 文本出现动画 */
+        @keyframes fadeInText {
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .qwert1 {
+                flex-direction: column; /* 小屏幕时堆叠排列 */
+                gap: 40px;
+            }
+
             .mnbv90 {
-                margin-left: 0;
+                padding: 30px;
             }
+
             .lkjh23 {
-                margin-left: 0;
+                font-size: 2.2em;
             }
-            #sidebar-left {
-                display: none;
+
+            form {
+                padding: 30px;
+            }
+
+            .submit-success-message, form {
+                 animation: fadeIn 1s ease-out forwards; /* 移除特定的slide动画，使用通用淡入 */
+                 transform: none;
             }
         }
+
+        @media (max-width: 480px) {
+             .mnbv90 {
+                 padding: 20px;
+             }
+             .lkjh23 {
+                 font-size: 1.8em;
+             }
+             form {
+                 padding: 20px;
+             }
+             .asdf11 {
+                 padding: 12px 25px;
+                 font-size: 1.1em;
+             }
+        }
+
     </style>
 </head>
 <body>
-    <!-- 侧边栏（保持不变） -->
-    <div id="sidebar-left">
-        <img src="logo/ebfside.png" class="logo">
-        <div class="title">
-            <span>电子</span>
-            <span>圣经团契</span>
-        </div>
-        <p class="subtitle">生活在审判日里</p>
-        <div class="sadfds-container" id="sa d f d sContainer">
-            <input type="text" id="sadfdsInput" placeholder="搜索..." />
-            <button id="sadfdsButton">搜索</button>
-        </div>
-        <ul class="sidebar-list">
-            <li>
-                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
-                    <i class="fas fa-home"></i>
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09" class="sidebar-link">
-                    <i class="fas fa-video"></i>
-                    <span>Zoom</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbiblestudy.html" class="sidebar-link">
-                    <i class="fas fa-book-open"></i>
-                    <span>圣经学习</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbooks.html" class="sidebar-link">
-                    <i class="fas fa-book"></i>
-                    <span>书籍</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.newopenforum.org/" class="sidebar-link">
-                    <i class="fas fa-comments"></i>
-                    <span>圣经论坛</span>
-                </a>
-            </li>
-        </ul>
-        <div class="airtime-wrapper">
-            <div class="airtime-header">
-                <span class="text-blue">电子</span>圣经团契直播
-            </div>
-            <div class="airtime-player">
-                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="social-section">
-            <h3 class="social-title">
-                <span class="text-blue">电子</span>圣经团契社交媒体
-            </h3>
-            <div class="social-grid">
-                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <span class="social-label">YouTube</span>
-                </a>
-                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <span class="social-label">TikTok</span>
-                </a>
-                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </div>
-                    <span class="social-label">Facebook</span>
-                </a>
-            </div>
-            <div class="social-grid">
-                <a href="https://twitter.com/EBF2033" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <span class="social-label">Twitter</span>
-                </a>
-                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-spotify"></i>
-                    </div>
-                    <span class="social-label">Spotify</span>
-                </a>
-                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <span class="social-label">Instagram</span>
-                </a>
-            </div>
-        </div>
-        <div class="contact-container" style="
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        max-width: 320px;
-        margin: 40px auto;
-        padding: 25px;
-        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
-            <div class="contact-header" style="
-            background: #a7daff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: center;">
-                <h2 style="
-                color: #1a3a5e;
-                margin: 0;
-                font-size: 1.4em;
-                font-weight: 600;
-            ">联系我们</h2>
-            </div>
-            <address style="
-            text-align: center;
-            font-style: normal;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 20px;">
-                <p style="margin: 10px 0;">
-                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
-                       color: #1e6bce;
-                       text-decoration: none;
-                       font-weight: 500;">
-                        Info@eBibleFellowship.org
-                    </a>
-                </p>
-                <p style="margin: 10px 0;">P.O. Box 1393</p>
-                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
-                <p style="margin: 10px 0;">USA</p>
-            </address>
-            <div class="copyright" style="
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 15px;">
-                © 2024 eBible Fellowship
-            </div>
-        </div>
-    </div>
 
-    <!-- 顶栏 -->
-    <div class="xkjh89">
-        <div class="zxcv12">
-            <div class="ghbn34"><img src="logo/ebfside.png" alt="eBible Fellowship Logo"></div>
-            <span class="tyui56">电子圣经团契</span>
-        </div>
-        <button class="rtyu78" onclick="history.back()">返回</button>
-    </div>
-
-    <!-- 主内容 -->
     <div class="mnbv90">
         <h1 class="lkjh23">联系我们</h1>
         <div class="qwert1">
             <div class="zxcv78">
-                <img src="logo/ebfside.png" alt="eBible Fellowship Logo">
-            </div>
-            <form action="#" method="post">
+                <img src="logo/ebfside.png" alt="eBible Fellowship Logo" class="logo-img">
+                <div class="image-overlay"></div> </div>
+            <form action="#" method="post" id="contactForm">
                 <div class="poiu90">
                     <label for="zxcv01">电子邮箱</label>
                     <input type="email" id="zxcv01" name="email" placeholder="请输入您的邮箱" required>
@@ -380,20 +356,105 @@
                     <label for="qwert3">问题</label>
                     <textarea id="qwert3" name="question" placeholder="请输入您的问题" required></textarea>
                 </div>
-                <button type="submit" class="asdf11">提交</button>
+                <button type="submit" class="asdf11" id="submitButton">
+                    <i class="fas fa-paper-plane"></i> 提交
+                </button>
             </form>
+            <div class="submit-success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> 感谢您的联系！我们已收到您的信息。
+            </div>
             <div class="tyui12">
-                我们将在7日内回复您
+                我们将在7个工作日内回复您
             </div>
         </div>
     </div>
 
     <script>
-        // 表单提交后简单的提示（仅示例）
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('您的信息已提交，我们将在7日内回复您！');
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取页面元素
+            const contactForm = document.getElementById('contactForm');
+            const submitButton = document.getElementById('submitButton');
+            const successMessage = document.getElementById('successMessage');
+            const replyMessage = document.querySelector('.tyui12'); // 回复提示信息元素
+
+            // 检查所有必要的元素是否存在，确保脚本可以安全执行
+            if (contactForm && submitButton && successMessage && replyMessage) {
+
+                // 添加表单提交事件监听器
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault(); // 阻止表单默认的HTTP提交行为
+
+                    // 简单的客户端验证：检查必填字段是否为空
+                    const email = document.getElementById('zxcv01').value;
+                    const name = document.getElementById('asdf02').value;
+                    const question = document.getElementById('qwert3').value;
+
+                    if (!email || !name || !question) {
+                        // 如果有必填字段为空，显示提示并停止后续操作
+                        alert('请填写所有必填字段！');
+                        return;
+                    }
+
+                    // --- 模拟提交过程 ---
+                    // 在这里，我们不真正发送数据到服务器，而是模拟一个提交的耗时过程。
+                    // 如果需要实际发送，您需要在 form 的 action 属性中指定服务器地址，
+                    // 并可能使用 AJAX (fetch API 或 XMLHttpRequest) 来处理数据发送和服务器响应。
+
+                    console.log('Form submitted (simulated):', {
+                        email: email,
+                        name: name,
+                        question: question
+                    });
+
+                    // 禁用提交按钮，防止重复点击，并更新文本和图标
+                    submitButton.classList.add('submitting'); // 添加表示“提交中”的CSS类，触发CSS动画
+                    // 使用 innerHTML 来包含 Font Awesome 图标
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发送中...'; // 旋转图标
+                    submitButton.disabled = true; // 禁用按钮
+
+                    // 隐藏回复提示信息（如果在提交前可见）
+                     replyMessage.style.display = 'none';
+
+                    // 模拟网络延迟，这里设置为 2 秒
+                    setTimeout(() => {
+                        // --- 模拟提交完成后的处理 ---
+
+                        // 移除提交中的CSS类，恢复按钮文本和图标，并启用按钮
+                        submitButton.classList.remove('submitting');
+                        submitButton.innerHTML = '<i class="fas fa-paper-plane"></i> 提交'; // 恢复纸飞机图标
+                        submitButton.disabled = false; // 启用按钮
+
+                        // 清空表单中的所有输入内容
+                        contactForm.reset();
+
+                        // 显示提交成功消息
+                        successMessage.classList.add('visible'); // 添加CSS类触发显示动画
+
+                        // 成功消息在显示一段时间后自动隐藏，并恢复回复提示
+                        // 这里的延迟设置为 5 秒
+                        setTimeout(() => {
+                            successMessage.classList.remove('visible'); // 移除CSS类触发隐藏动画
+
+                            // 等待成功消息的隐藏动画（opacity和transform的transitionend）结束后，再恢复回复提示
+                            // 这样可以避免元素突然出现或布局跳动
+                            // 找到一个关键的动画属性监听，例如 opacity
+                            successMessage.addEventListener('transitionend', function handler() {
+                                // 动画结束后显示回复提示
+                                replyMessage.style.display = 'block';
+                                // 移除这个事件监听器，避免重复执行
+                                successMessage.removeEventListener('transitionend', handler);
+                            }, { once: true }); // 使用 { once: true } 确保事件只触发一次
+
+                        }, 5000); // 成功消息显示的时间（毫秒）
+
+                    }, 2000); // 模拟提交过程的耗时（毫秒）
+                });
+            } else {
+                // 如果页面加载时通过ID找不到必要的HTML元素，在浏览器的开发者控制台输出错误信息
+                console.error("页面加载失败：未找到所需的元素。请检查HTML中的ID (contactForm, submitButton, successMessage) 和 class (tyui12) 是否正确。");
+            }
         });
     </script>
+
 </body>
 </html>
