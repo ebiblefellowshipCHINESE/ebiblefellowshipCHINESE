@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线Word查看器</title>
+    
+    <!-- 样式库 -->
+    <link href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" rel="stylesheet">
+    
+    <!-- 文档解析库 -->
+    <script src="https://unpkg.com/mammoth@1.4.8/mammoth.browser.min.js"></script>
+
+    <style>
+        /* 移动版Word主题样式 */
+        :root {
+            --primary-color: #2B579A;
+            --background-light: #FFFFFF;
+            --background-dark: #1E1E1E;
+            --text-light: #333333;
+            --text-dark: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: var(--background-light);
+            color: var(--text-light);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 地址栏样式 */
+        .address-bar {
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .address-text {
+            margin-left: 10px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* 文档容器 */
+        .document-viewer {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+            background: white;
+        }
+
+        /* 底部控制栏 */
+        .control-bar {
+            background: #F3F3F3;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .control-btn:hover {
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* 文档内容样式 */
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* 夜间模式 */
+        body.dark-mode {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .document-viewer {
+            background: #2D2D2D;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 地址栏 -->
+        <div class="address-bar">
+            <i class="ms-Icon ms-Icon--WordDocument"></i>
+            <span class="address-text" id="address"></span>
+        </div>
+
+        <!-- 文档内容 -->
+        <div class="document-viewer">
+            <div class="doc-content" id="content"></div>
+        </div>
+
+        <!-- 底部控制 -->
+        <div class="control-bar">
+            <button class="control-btn" onclick="adjustFontSize(-1)">
+                <i class="ms-Icon ms-Icon--FontDecrease" style="color: var(--primary-color);"></i>
+            </button>
+            <button class="control-btn" onclick="toggleNightMode()">
+                <i class="ms-Icon ms-Icon--NightMode" style="color: var(--primary-color);"></i>
+            </button>
+            <button class="control-btn" onclick="adjustFontSize(1)">
+                <i class="ms-Icon ms-Icon--FontIncrease" style="color: var(--primary-color);"></i>
+            </button>
+        </div>
+    </div>
+
+<script>
+// 初始化配置
+let currentFontSize = 16;
+let isNightMode = false;
+
+// 页面加载时自动解析URL参数
+window.addEventListener('load', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filePath = urlParams.get('file');
+    
+    if (filePath) {
+        document.getElementById('address').textContent = decodeURIComponent(filePath);
+        await loadDocument(filePath);
+    } else {
+        document.getElementById('content').innerHTML = 
+            '<p class="ms-fontColor-redDark">未指定文档路径，请通过URL参数?file=指定文档地址</p>';
+    }
+});
+
+// 加载并解析文档
+async function loadDocument(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`文件加载失败: ${response.status}`);
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const { value: html } = await mammoth.convertToHtml({ arrayBuffer });
+        
+        document.getElementById('content').innerHTML = html;
+        applyWordStyles();
+        initGestureControl();
+    } catch (error) {
+        document.getElementById('content').innerHTML = 
+            `<p class="ms-fontColor-redDark">文档加载失败: ${error.message}</p>`;
+    }
+}
+
+// 应用Word样式
+function applyWordStyles() {
+    const content = document.getElementById('content');
+    
+    // 表格样式
+    content.querySelectorAll('table').forEach(table => {
+        table.style.borderCollapse = 'collapse';
+        table.style.width = '100%';
+        table.style.margin = '20px 0';
+        table.querySelectorAll('td, th').forEach(cell => {
+            cell.style.border = '1px solid #ddd';
+            cell.style.padding = '8px';
+        });
+    });
+
+    // 标题样式
+    content.querySelectorAll('h1, h2, h3').forEach(heading => {
+        heading.style.color = isNightMode ? '#8CB4F4' : '#2B579A';
+        heading.style.margin = '24px 0 16px';
+    });
+}
+
+// 字体大小调整
+function adjustFontSize(delta) {
+    currentFontSize = Math.min(24, Math.max(12, currentFontSize + delta));
+    document.getElementById('content').style.fontSize = `${currentFontSize}px`;
+}
+
+// 夜间模式切换
+function toggleNightMode() {
+    isNightMode = !isNightMode;
+    document.body.classList.toggle('dark-mode');
+    applyWordStyles();
+}
+
+// 手势控制初始化
+function initGestureControl() {
+    let initialPinchDistance = null;
+    
+    // 双指缩放
+    document.querySelector('.document-viewer').addEventListener('touchmove', e => {
+        if (e.touches.length === 2) {
+            const currentDistance = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY
+            );
+            
+            if (!initialPinchDistance) {
+                initialPinchDistance = currentDistance;
+            } else {
+                const scale = currentDistance / initialPinchDistance;
+                adjustFontSize(scale > 1 ? 1 : -1);
+                initialPinchDistance = currentDistance;
+            }
+        }
+    });
+
+    // 触摸结束重置
+    document.addEventListener('touchend', () => {
+        initialPinchDistance = null;
+    });
+}
+</script>
+</body>
+</html>

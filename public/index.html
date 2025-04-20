@@ -23,9 +23,19 @@
 
     </script>
     <script src="js/cookie.js"></script>
+    <style>
+       @media screen and (max-width: 768px) {
+      .video-container {
+        max-width: calc(100% - 80px) !important;
+        width: calc(100% - 80px) !important;
+        margin-left: 0 !important;
+        margin-right: 80px !important;
+      }
+    }
+      </style>
 </head>
 
-<body>
+<body style="font-family: Arial, Helvetica, sans-serif;">
     <div id="sidebar-left">
         <img src="logo/ebfside.png" class="logo">
         <div class="title" style="font-family: Arial, Helvetica, sans-serif;">
@@ -382,8 +392,11 @@
     </h1>
     <p class="forum-subtitle">现场互动式圣经问答节目</p>
     <div class="button-container">
-        <a href="https://NewOpenForum.org" class="forum-button forum-b" style="font-family: Arial, Helvetica, sans-serif;">立即访问 NewOpenForum.org</a>
-    </div>
+        <a href="#" class="forum-button">
+          <span class="main-text">Newopenforum.org</span>
+          <span class="sub-text">立即访问</span>
+        </a>
+      </div>
    
     <div class="BIBLE-EVERYDAY">
         <div class="bible-box">
@@ -404,18 +417,10 @@
     <script src="js/daybible.js"></script>
 
     <br>
-    <div class="video-switcher">
-        <header>
-            <h2>圣经历史年代表</h2>
-        </header>
-        <
-        <footer>
-            <video id="videoPlayer" class="responsive-video" controls>
-                <source src="video/timeline.mp4" type="video/mp4">
-                您的浏览器不支持视频标签。
-            </video>
-        </footer>
-    </div>
+    <h1 style="color: #0084ff;">圣经历史年代表部分</h1>
+    <div class="video-container" style="position: relative; width: 100%; max-width: calc(100% - 580px); height: 0; padding-bottom: 75%; margin: 0 auto; box-sizing: border-box;">
+        <iframe allow="fullscreen" allowfullscreen src="https://streamable.com/e/cjiww4?loop=0" style="border: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);"></iframe>
+      </div>
     <div class="center-container">
         <h1>来自圣经论坛的问题记录</h1>
         <a href="biblequestion.html" class="query-button">圣经问题查询（beta）</a>
@@ -580,54 +585,14 @@
 
 
         </p>
-        <p style="color: #000000;font-weight: 600;font-size: 24px;">
+        <p style="color: #000000;font-weight: 600ƒ;font-size: 24px;">
             您将单击编号框以揭开这些日期背后的真相，所有这些都是通过对圣经的仔细研究发现的。你会看到圣经的作者，全能的上帝是多么精确和详细。
 
 
         </p>
         <div class="timeline">
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <div class="box" style="width: 13.0392px;"></div>
-            <br>
            
-            </div>
-            <span>    </span>
-            <span>    </span>
-            <div class="enter-message"><a  style="color: white;" href="timeline.html">    <<<<<<进入</a></div>
+            <div class="enter-message"><a  style="color: white;" href="timeline.html">    <<<<<<进入圣经历史年代表</a></div>
     </div>
     <!--
     <div class="dsfdsafasd">
@@ -748,22 +713,10 @@
 <br>
 <br>
 
-<div class="sadjkfhjk"> <!-- 使用新的类名 sadjkfhjk -->
-    <h1>巴比伦的陨落 - Babylon's Fall</h1>
-    <p>《巴比伦的陨落》讲述了巴比伦陨落的故事，以及它与2011年5月21日审判日和撒旦王国陨落的关系。</p>
-    
-    <!-- 默认展开的视频部分 -->
-    <div id="videoSection" class="video-container">
-      <h2>巴比伦的陨落 - 视频</h2>
-      <p>点击下方按钮查看视频内容。</p>
-      <video controls>
-        <source src="video/bif.mp4" type="video/mp4">
-        您的浏览器不支持视频播放。
-      </video>
+<h1 style="color: #666;text-align: center;">巴比伦倾倒了</h1>
+<iframe src="https://streamable.com/e/ewst7x?loop=0" allowfullscreen style="width: 90vw; max-width: calc(100vw - 250px - 290px); min-width: 320px; aspect-ratio: 16 / 9; border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: block; margin: 20px auto; @media (max-width: 767px) { width: calc(100vw - 40px); max-width: calc(100vw - 40px); min-width: calc(100vw - 40px); }"></iframe>
 
-    </div>
-  </div>
-  
+
 <div class="welcom" style="font-family: Arial, Helvetica, sans-serif;">
     <h1>欢迎来到</h1>
     <h1 style="font-size: 36px"><span style="color: rgb(0, 140, 255);">e</span>Bible Fellowship</h1>
