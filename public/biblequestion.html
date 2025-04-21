@@ -1,177 +1,883 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>电子圣经团契</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/ebf.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
-    <script src="js/index.js"></script>
-    <SCRIpt src="js/airtime.js"></SCRIpt>
-    <script src="js/daybible.js"></script>
-    <script src="js/time.js"></script>
-    <script src="js/zooms.JS"></script>
-    <script src="js/timevideo.js"></script>
-    <script src="js/vidFeotime.js"></script>
-    <script src="js/filedown.js">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣经问题查询 - 电子圣经团契</title> <style>
+        :root {
+            /* 定义一些CSS变量，方便统一管理颜色等 */
+            --primary-color: #4A90E2; /* 更柔和的蓝色 */
+            --secondary-color: #50E3C2; /* 次要强调色 */
+            --background-color: #F5F7FA; /* 浅灰色背景 */
+            --surface-color: #FFFFFF; /* 白色表面 */
+            --border-color: #E0E6ED; /* 柔和边框色 */
+            --text-color: #2C3E50; /* 深灰字体色 */
+            --text-light-color: #7F8C8D; /* 浅灰字体色 */
+            --shadow-light: 0 3px 8px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --animation-duration: 0.4s; /* 动画时长微调 */
+            --animation-easing: cubic-bezier(0.4, 0, 0.2, 1); /* 更流畅的动画曲线 (Material Design) */
+        }
 
-    </script>
-    <script src="js/cookie.js"></script>
-</head>
-
-<body>
-    <div id="sidebar-left">
-        <img src="logo/ebfside.png" class="logo">
-        <div class="title">
-            <span>电子</span>
-            <span>圣经团契</span>
-        </div>
-        <p class="subtitle">生活在审判日里</p>
-        <div class="sadfds-container" id="sa d f d sContainer">
-            <input type="text" id="sadfdsInput" placeholder="搜索..." />
-            <button id="sadfdsButton">搜索</button>
-        </div>
-        <ul class="sidebar-list">
-            <li>
-                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
-                    <i class="fas fa-home"></i>
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09"
-                    class="sidebar-link">
-                    <i class="fas fa-video"></i>
-                    <span>Zoom</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbiblestudy.html" class="sidebar-link">
-                    <i class="fas fa-book-open"></i>
-                    <span>圣经学习</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbooks.html" class="sidebar-link">
-                    <i class="fas fa-book"></i>
-                    <span>书籍</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.newopenforum.org/" class="sidebar-link">
-                    <i class="fas fa-comments"></i>
-                    <span>圣经论坛</span>
-                </a>
-            </li>
-        </ul>
-        <div class="airtime-wrapper">
-            <div class="airtime-header">
-                <span class="text-blue">电子</span>圣经团契直播
-            </div>
-            <div class="airtime-player">
-                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen>
-                </iframe>
-            </div>
-        </div>
-        <div class="social-section">
-            <h3 class="social-title">
-                <span class="text-blue">电子</span>圣经团契社交媒体
-            </h3>
-            <div class="social-grid">
-                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <span class="social-label">YouTube</span>
-                </a>
-
-                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <span class="social-label">TikTok</span>
-                </a>
-
-                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </div>
-                    <span class="social-label">Facebook</span>
-                </a>
-            </div>
-            <div class="social-grid">
-                <a href="https://twitter.com/EBF2033" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <span class="social-label">Twitter</span>
-                </a>
-                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-spotify"></i>
-                    </div>
-                    <span class="social-label">Spotify</span>
-                </a>
-                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <span class="social-label">Instagram</span>
-                </a>
-            </div>
-        </div>
-        <div class="contact-container" style="
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        max-width: 320px;
-        margin: 40px auto;
-        padding: 25px;
-        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
-            <div class="contact-header" style="
-            background: #a7daff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: center;">
-                <h2 style="
-                color: #1a3a5e;
-                margin: 0;
-                font-size: 1.4em;
-                font-weight: 600;
-            ">联系我们</h2>
-            </div>
-
-            <address style="
-            text-align: center;
-            font-style: normal;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Sans SC", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.6;
-            color: #444;
-            margin-bottom: 20px;">
-                <p style="margin: 10px 0;">
-                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
-                       color: #1e6bce;
-                       text-decoration: none;
-                       font-weight: 500;">
-                        Info@eBibleFellowship.org
-                    </a>
-                </p>
-                <p style="margin: 10px 0;">P.O. Box 1393</p>
-                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
-                <p style="margin: 10px 0;">USA</p>
-            </address>
+            padding-top: 30px; /* 页面顶部留白增加 */
+            overflow-y: scroll;
+        }
 
-            <div class="copyright" style="
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 40px; /* 内边距增加 */
+            background-color: var(--surface-color);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); /* 更明显的容器阴影 */
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* 头部区域，包含Logo和标题 */
+        .header {
             text-align: center;
-            color: #666;
+            margin-bottom: 30px; /* 头部下方间距 */
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .site-logo {
+            margin-bottom: 15px; /* Logo下方间距 */
+        }
+
+        .site-logo img {
+            max-height: 55px;
+            display: block;
+        }
+
+        /* 页面上的主标题 */
+        .page-section-title {
+            font-size: 2.2em; /* 主标题字体大小 */
+            font-weight: 700;
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 30px; /* 标题下方间距 */
+            text-align: center;
+        }
+
+
+        /* 搜索区域容器，用于定位下拉框 */
+        .search-area {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 10; /* 确保搜索框和下拉框在卡片上方 */
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 13px 25px;
+            font-size: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color var(--animation-duration) var(--animation-easing), box-shadow var(--animation-duration) var(--animation-easing);
+        }
+        .search-bar input[type="text"]::placeholder {
+            color: var(--text-light-color);
+            opacity: 0.7;
+        }
+        .search-bar input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 12px rgba(74, 144, 226, 0.3);
+        }
+
+        /* 搜索结果下拉框样式 */
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-medium);
+            max-height: 300px;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            /* 动画效果 */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity var(--animation-duration) var(--animation-easing),
+                        visibility var(--animation-duration) var(--animation-easing),
+                        transform var(--animation-duration) var(--animation-easing);
+        }
+
+        .search-results.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease-in-out;
+            font-size: 1em;
+            color: var(--text-color);
+            text-align: left;
+        }
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        .search-result-item:hover {
+            background-color: #F8F8F8;
+        }
+        .search-result-item .result-title strong {
+            color: var(--primary-color);
+            font-weight: inherit;
+        }
+         .search-result-item .result-id {
+             font-size: 0.9em;
+             color: var(--text-light-color);
+             margin-right: 10px;
+             display: inline-block;
+             min-width: 40px;
+             font-weight: 500;
+         }
+         .search-result-item .result-title {
+             display: inline;
+         }
+
+
+        /* 问题卡片网格 - 搜索时隐藏 */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            z-index: 1;
+            opacity: 1;
+            transition: opacity var(--animation-duration) var(--animation-easing);
+        }
+         .questions-grid.hidden-by-search {
+             opacity: 0;
+             pointer-events: none;
+         }
+
+
+        /* 单个问题卡片样式美化 */
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: var(--surface-color);
+            box-shadow: var(--shadow-light);
+            cursor: pointer;
+            transition: transform var(--animation-duration) var(--animation-easing),
+                        box-shadow var(--animation-duration) var(--animation-easing);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .question-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+        }
+        .question-card .id {
             font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 15px;">
-                © 2024 eBible Fellowship
+            color: var(--text-light-color);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .question-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.2em;
+            color: var(--text-color);
+            font-weight: 700;
+        }
+        .question-card p {
+            font-size: 1em;
+            color: var(--text-light-color);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .question-card .category {
+             font-size: 0.85em;
+             color: var(--primary-color);
+             background-color: #E8F0FE; /* 浅蓝色背景，与主要颜色搭配 */
+             padding: 4px 10px;
+             border-radius: 15px;
+             display: inline-block;
+             margin-top: 10px;
+             font-weight: 500;
+         }
+
+        /* 分页控件样式 */
+        .pagination {
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            margin: 0 4px 8px 4px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            color: var(--text-color);
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease; /* 添加transform过渡 */
+            outline: none;
+        }
+
+        .pagination button:hover {
+            background-color: #F0F0F0;
+            transform: translateY(-2px); /* 悬停微上移 */
+        }
+
+         .pagination button:active {
+             transform: translateY(0); /* 点击按下时回到原位 */
+         }
+
+
+        .pagination button.active {
+            background-color: var(--primary-color);
+            color: var(--surface-color);
+            border-color: var(--primary-color);
+            font-weight: 700;
+            cursor: default;
+            transform: none; /* 激活状态无hover动画 */
+        }
+         .pagination button.active:hover {
+             background-color: var(--primary-color); /* 激活状态悬停不变色 */
+         }
+
+         .pagination button:disabled {
+             cursor: not-allowed;
+             opacity: 0.5;
+             transform: none; /* 禁用状态无动画 */
+         }
+         .pagination button:disabled:hover {
+              background-color: var(--surface-color); /* 禁用状态悬停不变色 */
+         }
+
+         /* 分页省略号样式 */
+         .pagination span {
+             margin: 0 5px;
+             color: var(--text-light-color);
+         }
+
+
+        /* 模态窗口样式 */
+        .modal {
+            /* display: none; /* 初始隐藏，这里保留，但配合 visibility */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            /* 弹出界面半透明 - 调整背景颜色alpha值 */
+            background-color: rgba(0,0,0,0.5); /* 半透明背景 */
+
+            justify-content: center;
+            align-items: center;
+
+            /* 动画效果 */
+            opacity: 0;
+            visibility: hidden; /* 默认隐藏，且不可见 */
+            /* 过渡属性：opacity, visibility */
+            /* visibility 在隐藏时（从 visible 变为 hidden）会延迟过渡，使其在 opacity 变为 0 后再发生 */
+            transition: opacity var(--animation-duration) var(--animation-easing),
+                        visibility 0s linear var(--animation-duration); /* visibility 延迟 */
+
+             /* 默认 display 为 none，通过JS在添加show类前设置为flex */
+             display: none;
+        }
+         .modal.show { /* 用于JS控制显示时的状态 */
+             display: flex; /* 使 Flexbox 生效 */
+             opacity: 1;
+             visibility: visible; /* 可见 */
+             /* 过渡属性： visibility 在显示时立即过渡 */
+             transition: opacity var(--animation-duration) var(--animation-easing),
+                         visibility 0s linear 0s; /* visibility 立即过渡 */
+         }
+
+        .modal-content {
+            background-color: var(--surface-color);
+            margin: auto;
+            /* 弹出窗口不挤了 - 增加内边距 */
+            padding: 40px; /* 增加内边距 */
+            border-radius: 10px;
+            max-width: 750px;
+            width: 90%;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            /* 动画效果 */
+            transform: scale(0.8); /* 初始缩放程度更大一些 */
+            transition: transform var(--animation-duration) var(--animation-easing);
+        }
+        .modal.show .modal-content { /* 模态窗口显示时内容缩放回原样 */
+             transform: scale(1);
+        }
+
+        .close-button {
+            color: var(--text-light-color);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        /* 模态窗口内部h2的下边框 */
+        .modal-content h2 {
+             border-bottom: 1px solid var(--border-color); /* 确保分隔线还在 */
+             padding-bottom: 15px; /* 增加标题下边距 */
+             margin-bottom: 20px; /* 增加标题到底部内容间距 */
+         }
+        /* 模态窗口内部 h4 和 answer-text 间距 */
+         .modal-content h4 {
+             margin-top: 20px; /* 确保回答标题有足够顶部间距 */
+             margin-bottom: 10px; /* 确保回答标题有足够底部间距 */
+         }
+         .modal-content .answer-text {
+             margin-top: 0; /* 确保回答内容顶部与标题对齐 */
+         }
+
+
+        /* 主界面固定返回按钮样式 (默认隐藏) */
+        .main-back-button {
+            position: fixed; /* 固定位置 */
+            top: 30px; /* 距离顶部 */
+            left: 30px; /* 距离左边 */
+            background-color: var(--surface-color); /* 白色背景 */
+            color: var(--text-color); /* 字体颜色 */
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: var(--shadow-light); /* 柔和阴影 */
+            z-index: 999; /* 在内容上方，模态窗口下方 */
+            opacity: 0; /* 默认隐藏 */
+            visibility: hidden; /* 默认隐藏 */
+            pointer-events: none; /* 默认不响应鼠标事件 */
+            transition: opacity var(--animation-duration) var(--animation-easing),
+                        visibility var(--animation-duration) var(--animation-easing);
+        }
+
+        .main-back-button.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto; /* 显示时响应鼠标事件 */
+        }
+
+        .main-back-button:hover {
+            background-color: #F8F8F8; /* 悬停变浅 */
+            box-shadow: var(--shadow-medium); /* 悬停阴影变深 */
+        }
+
+
+        /* 正处于测试阶段提示样式 */
+        .testing-phase-notice {
+            position: fixed; /* 固定位置 */
+            bottom: 0; /* 底部对齐 */
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* 深色半透明背景 */
+            color: rgba(255, 255, 255, 0.9); /* 浅色半透明文字 */
+            text-align: center;
+            padding: 8px 0; /* 上下内边距 */
+            font-size: 0.9em;
+            z-index: 1001; /* 确保在模态窗口背景上方 */
+            pointer-events: none; /* 不阻碍下方元素的点击事件 */
+        }
+
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+             .header {
+                 padding-bottom: 15px;
+             }
+             .site-logo img {
+                 max-height: 50px;
+             }
+             .page-section-title {
+                 font-size: 1.8em;
+                 margin-bottom: 20px;
+             }
+            .search-area {
+                 max-width: 100%;
+             }
+            .search-bar input[type="text"] {
+                 width: 100%;
+                 max-width: none;
+                 padding: 10px 15px;
+                 font-size: 16px;
+             }
+             .search-results {
+                 width: calc(100% - 0px);
+                 left: 0;
+                 transform: none;
+                 border-radius: 0 0 8px 8px;
+                 border-left: none;
+                 border-right: none;
+                 padding: 0;
+                 top: calc(100% + 5px);
+             }
+              .search-result-item {
+                  padding: 10px 15px;
+              }
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+             .question-card {
+                 padding: 15px;
+             }
+             .question-card h3 {
+                 font-size: 1.1em;
+             }
+             .modal-content {
+                 width: 95%;
+                 padding: 20px; /* 小屏幕模态窗口内边距调整 */
+             }
+             .close-button {
+                 top: 10px;
+                 right: 15px;
+                 font-size: 24px;
+             }
+             .pagination button {
+                 padding: 6px 10px;
+                 font-size: 0.9em;
+                 margin: 0 2px 6px 2px;
+             }
+              .pagination span {
+                  margin: 0 3px;
+              }
+              .main-back-button {
+                  top: 15px;
+                  left: 15px;
+                  padding: 8px 16px;
+                  font-size: 0.9em;
+              }
+              .testing-phase-notice {
+                  font-size: 0.8em;
+                  padding: 6px 0;
+              }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="site-logo">
+                <img src="logo/ebfside.png" alt="电子圣经团契 Logo">
             </div>
         </div>
+
+         <h2 class="page-section-title">圣经问题查询</h2> <div class="search-area">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="搜索圣经问题编号、标题、关键词...">
+            </div>
+            <ul id="searchResults" class="search-results">
+                </ul>
+        </div>
+
+
+        <div id="questionsGrid" class="questions-grid">
+            </div>
+
+        <div id="pagination" class="pagination">
+            </div>
+
     </div>
+
+    <div id="answerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modalQuestionTitle">问题标题将会显示在这里</h2>
+            <h4>克里斯的回答：</h4>
+            <div id="modalAnswerContent" class="answer-text">
+                </div>
+             </div>
+    </div>
+
+    <button id="mainBackButton" class="main-back-button">返回</button>
+
+    <div class="testing-phase-notice">正处于测试阶段</div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResultsUl = document.getElementById('searchResults');
+            const questionsGridDiv = document.getElementById('questionsGrid');
+            const paginationDiv = document.getElementById('pagination'); // 获取分页容器
+            const modal = document.getElementById('answerModal');
+            const closeButton = document.querySelector('.close-button');
+            const mainBackButton = document.getElementById('mainBackButton'); // 获取主界面返回按钮
+            const modalQuestionTitle = document.getElementById('modalQuestionTitle');
+            const modalAnswerContent = document.getElementById('modalAnswerContent');
+
+            // 圣经问题数据 (当前只有一个问题条目)
+            const allQuestions = [
+    {
+        id: 1,
+        displayId: '#001',
+        title: '圣经中无名的人往往是耶稣本人',
+        summary: '解释圣经中一些未具名提到“一个人”的经文，认为其指向耶稣基督...',
+        category: '#耶稣 #圣经解读',
+        answerContent: "<p>耶利米书5:1 你们在耶路撒冷的街上跑来跑去,现在看,知道,在那里的宽阔之处寻求,若能找到一个人,若有执行审判的,寻求真理的,我就赦免。</p><p>唯一能使上帝赦免耶路撒冷城罪过的人是耶稣基督。 基督在“耶路撒冷”的 bowlby:82的基督徒在耶路撒冷大街上跑来跑去，寻找真理的人，就是耶稣基督。基督在耶路撒冷的同在，指向他的灵与以色列的同在，以及新约的教会（见启示录2:1……他在七个灯台中行走）。当然，神在犹大找不到“一个人”，因为在神的殿开始审判的时候，神的灵离开了世界上所有的教会（彼得前书4:17）。</p><p>另一个提到无名的人（基督）的内容见于诗篇87:</p><p>诗篇87:5 论到锡安，必说：这人和那人生在她里面，至高的必亲自坚立她。<br>6 耶和华写下百姓的时候，要数算这人出生在那里。细拉。</p><p>上帝写下人民，是指羔羊生命册中所有上帝选民的具象性写作（启示录13:8）。耶稣的诞生和进入世界，当然与所有写在羔羊生命册上的人的赎罪有关。</p><p>我们再次读到这段经文中被称为一个男人:</p><p>以赛亚书 4:1 到那日，要有七个女人抓住一个男人，说：我们要吃自己的饼，穿自己的衣服，只叫我们称你的名，为要除去自己的羞辱。</p><p>启示录第2章和第3章中七个教会的照片。他们抓住了“一个人”（耶稣），但宣称他们要吃自己的饼（他们想要自己的教义和福音）和自己的衣服（圣经中的服装指向一个人的灵性掩盖——比如基督的义归咎于那些得救的人；但在这种情况下，这是他们“自己的”覆盖。他们的正义表明这是一个工作福音（自由意志福音就是这样），因此他们坚持自己的救赎计划，尽管想要自己的面包/服装（自己的教义和福音），但他们仍然渴望被这个人的名字称呼，他们渴望被称为基督徒，以基督之名。</p><p>雅各书 2:18 是的，有人可以说，你有信心，我也有行为：你不用你的行为，将你的信心指示我，我就用我的行为指示你我的信心。</p><p>只有耶稣有资格成为说他有工作的“人”。因为上帝不接受任何人（有罪的人）所做的工作，就称义而言（加拉太书2:16）。只有神人耶稣基督所做的信心工作是可以接受的。</p>"
+    },
+    {
+        id: 2,
+        displayId: '#002',
+        title: '困惑的国家的困境',
+        summary: '地上列国必有困惑，海浪咆哮（路加福音21:25）。探索末世列国的内心痛苦与混乱。',
+        category: '#末世 #信仰',
+        answerContent: "<p>在《路加福音》21章25节，我们读到：“地上列国必有困惑，海浪咆哮。”</p><p>根据《斯特朗经文汇编》，此处“困惑”一词（希腊文#4928）仅出现两次，一次在此，另一次在《哥林多后书》2章4节，意为“心中的痛苦”。这表明“困惑”指向内心或思想的困扰。上帝在此揭示，审判日的“五个月”折磨（启示录9:5）象征人类内心的痛苦，遍及列国，涵盖所有未得救之人。</p><p>“困惑”在希腊文中带有“疑惑”或“不确定”含义，如《约翰福音》13章22节所述。列国因失去信心，面对未知而困惑。“海浪咆哮”以“翻腾的海”比喻恶人（以赛亚书57:20），喧嚣不安。</p><p>《路加福音》21章26节继续说：“人因恐惧和预期地上将要临到的事，心都昏迷了……”希腊原文表明，人心因恐惧而冷漠，不仰望圣经或基督的再来，内心充满痛苦却拒绝顺服上帝的话语。</p><p>《加拉太书》2章16节宣告：“凡有血气的，没有一人因律法的行为称义。”圣经中的“行为”指人对上帝命令的回应，如亚伯拉罕献以撒（创世记22:2）或传福音（马太福音28:19）。信靠基督也是命令（约翰一书3:23），但无人能因“信仰的行为”称义。唯有基督的赎罪工作使选民因信称义。</p><p>“困惑的国家的困境”揭示末世列国的痛苦与混乱，源于疑惑与不信。救恩唯靠基督的功劳，非人的行为。</p>"
+    }
+];
+
+
+            // --- 分页变量 ---
+            // 注意：由于只有一个问题，分页功能将不会显示
+            const itemsPerPage = 8; // 每页显示的问题数量
+            let currentPage = 1; // 当前页码
+
+            // Fuse.js 配置选项
+            const fuseOptions = {
+                keys: [
+                    'displayId',
+                    'title',
+                    'summary',
+                    'category',
+                    'answerContent' // Fuse.js 可以在答案内容中搜索
+                ],
+                includeScore: true,
+                threshold: 0.3, // 容错阈值
+                ignoreLocation: true,
+                isCaseSensitive: false,
+            };
+
+            // 初始化 Fuse - 使用更新后的 allQuestions
+            const fuse = new Fuse(allQuestions, fuseOptions);
+
+            // --- 加载问题卡片（带分页逻辑） ---
+            function loadQuestionCards(questionsToDisplay, page = 1) {
+                questionsGridDiv.innerHTML = ''; // 清空现有卡片
+
+                // 分页逻辑依然存在，但对于单条数据，它只会显示在第一页
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const paginatedQuestions = questionsToDisplay.slice(startIndex, endIndex);
+
+                 if (paginatedQuestions.length === 0 && searchInput.value.trim() === '') {
+                      questionsGridDiv.innerHTML = '<p style="text-align: center; color: var(--text-light-color);">暂无问题或数据。</p>';
+                 } else if (paginatedQuestions.length === 0 && searchInput.value.trim() !== '') {
+                     // 搜索结果为空时，这里不做，因为搜索结果列表会显示“未找到”
+                 }
+                 else {
+                     paginatedQuestions.forEach(q => {
+                         const cardHtml = `
+                             <div class="question-card" data-question-id="${q.id}">
+                                 <div class="id">${q.displayId}</div>
+                                 <h3>${q.title}</h3>
+                                 <p>${q.summary}</p>
+                                 <div class="category">${q.category}</div>
+                             </div>
+                         `;
+                         questionsGridDiv.innerHTML += cardHtml;
+                     });
+                 }
+                addCardClickListeners(); // 为新加载的卡片添加点击事件
+            }
+
+            // --- 渲染分页控件 ---
+            function renderPagination(totalItems, itemsPerPage, currentPage) {
+                paginationDiv.innerHTML = ''; // 清空现有分页按钮
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                if (totalPages <= 1) {
+                    paginationDiv.style.display = 'none'; // 只有一页或没有内容时不显示分页
+                    return;
+                }
+
+                paginationDiv.style.display = 'flex'; // 显示分页容器
+
+                // 添加“上一页”按钮
+                const prevButton = document.createElement('button');
+                prevButton.textContent = '上一页';
+                prevButton.disabled = currentPage === 1;
+                prevButton.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        loadQuestionCards(allQuestions, currentPage); // 加载上一页卡片
+                        renderPagination(totalItems, itemsPerPage, currentPage); // 重新渲染分页
+                         window.scrollTo({ top: questionsGridDiv.offsetTop - 100, behavior: 'smooth' }); // 滚动到问题列表上方100px
+                    }
+                });
+                paginationDiv.appendChild(prevButton);
+
+                // 添加页码按钮
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, currentPage + 2);
+
+                if (currentPage <= 3) endPage = Math.min(totalPages, 5);
+                if (currentPage >= totalPages - 2) startPage = Math.max(1, totalPages - 4);
+
+
+                if (startPage > 1) {
+                    const firstPageButton = document.createElement('button');
+                    firstPageButton.textContent = '1';
+                     firstPageButton.addEventListener('click', () => {
+                         currentPage = 1;
+                         loadQuestionCards(allQuestions, currentPage);
+                         renderPagination(totalItems, itemsPerPage, currentPage);
+                          window.scrollTo({ top: questionsGridDiv.offsetTop - 100, behavior: 'smooth' });
+                     });
+                    paginationDiv.appendChild(firstPageButton);
+                    if (startPage > 2) {
+                          const span = document.createElement('span');
+                          span.textContent = '...';
+                          span.style.margin = '0 5px';
+                          span.style.color = "var(--text-light-color)";
+                          paginationDiv.appendChild(span);
+                     }
+                 }
+
+
+                 for (let i = startPage; i <= endPage; i++) {
+                     const pageButton = document.createElement('button');
+                     pageButton.textContent = i;
+                     if (i === currentPage) {
+                         pageButton.classList.add('active');
+                     } else {
+                         pageButton.addEventListener('click', () => {
+                             currentPage = i;
+                             loadQuestionCards(allQuestions, currentPage);
+                             renderPagination(totalItems, itemsPerPage, currentPage);
+                              window.scrollTo({ top: questionsGridDiv.offsetTop - 100, behavior: 'smooth' });
+                         });
+                     }
+                     paginationDiv.appendChild(pageButton);
+                 }
+
+                  if (endPage < totalPages) {
+                      if (endPage < totalPages - 1) {
+                           const span = document.createElement('span');
+                           span.textContent = '...';
+                           span.style.margin = '0 5px';
+                           span.style.color = "var(--text-light-color)";
+                           paginationDiv.appendChild(span);
+                      }
+                      if (totalPages > endPage) {
+                          const lastPageButton = document.createElement('button');
+                          lastPageButton.textContent = totalPages;
+                           lastPageButton.addEventListener('click', () => {
+                               currentPage = totalPages;
+                               loadQuestionCards(allQuestions, currentPage);
+                               renderPagination(totalItems, itemsPerPage, currentPage);
+                                window.scrollTo({ top: questionsGridDiv.offsetTop - 100, behavior: 'smooth' });
+                           });
+                          paginationDiv.appendChild(lastPageButton);
+                      }
+                  }
+
+
+                 // 添加“下一页”按钮
+                 const nextButton = document.createElement('button');
+                 nextButton.textContent = '下一页';
+                 nextButton.disabled = currentPage === totalPages;
+                 nextButton.addEventListener('click', () => {
+                     if (currentPage < totalPages) {
+                         currentPage++;
+                         loadQuestionCards(allQuestions, currentPage); // 加载下一页卡片
+                         renderPagination(totalItems, itemsPerPage, currentPage); // 重新渲染分页
+                          window.scrollTo({ top: questionsGridDiv.offsetTop - 100, behavior: 'smooth' });
+                     }
+                 });
+                 paginationDiv.appendChild(nextButton);
+
+            }
+
+
+             // --- 添加卡片点击事件监听器 ---
+             function addCardClickListeners() {
+                  const currentCards = questionsGridDiv.querySelectorAll('.question-card');
+                  currentCards.forEach(card => {
+                      card.removeEventListener('click', handleCardClick);
+                      card.addEventListener('click', handleCardClick);
+                  });
+             }
+
+             // 单独处理卡片点击事件的函数
+             function handleCardClick() {
+                 const questionId = this.getAttribute('data-question-id');
+                 const question = allQuestions.find(q => q.id === parseInt(questionId));
+
+                 if (question && question.answerContent) {
+                     modalQuestionTitle.textContent = question.title;
+                     modalAnswerContent.innerHTML = question.answerContent;
+
+                     // --- 优化显示逻辑 ---
+                     modal.style.display = 'flex'; // 先设置为 flex，让元素进入布局流
+                      requestAnimationFrame(() => { // 使用 rAF 确保 display 设置已经生效，再添加类触发过渡 (可选，但更稳健)
+                         modal.classList.add('show'); // 添加 show class 来触发过渡
+                         mainBackButton.classList.add('visible'); // 模态窗口打开时显示主界面返回按钮
+                      });
+
+                 } else {
+                     console.warn("该问题没有详细回答内容:", questionId);
+                     alert("该问题暂无详细回答内容。");
+                 }
+             }
+
+
+            // --- 搜索逻辑 ---
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim();
+
+                if (searchTerm.length > 0) {
+                    // Use Fuse.js to search
+                    const results = fuse.search(searchTerm);
+                    const matchedQuestions = results.map(result => result.item); // Extract original question objects
+
+                    // Clear search results dropdown
+                    searchResultsUl.innerHTML = '';
+                    questionsGridDiv.classList.add('hidden-by-search'); // Hide card grid (CSS fade out)
+                    paginationDiv.style.display = 'none'; // Hide pagination
+
+                    if (results.length > 0) {
+                        searchResultsUl.classList.add('visible'); // Show dropdown (CSS fade in/slide up)
+
+                        matchedQuestions.forEach(item => { // Iterate over matched question objects
+                            // Simple result HTML
+                            const resultItemHtml = `
+                                <li class="search-result-item" data-question-id="${item.id}">
+                                    <span class="result-id">${item.displayId}</span>
+                                    <span class="result-title">${item.title}</span>
+                                </li>
+                            `;
+                            searchResultsUl.innerHTML += resultItemHtml;
+                        });
+
+                        // Add click event listeners to search result items
+                        searchResultsUl.querySelectorAll('.search-result-item').forEach(item => {
+                            item.removeEventListener('click', handleSearchResultClick);
+                            item.addEventListener('click', handleSearchResultClick);
+                        });
+
+                    } else {
+                        // No results found
+                        searchResultsUl.classList.add('visible');
+                        searchResultsUl.innerHTML = '<li class="search-result-item" style="text-align:center; cursor:default; color: var(--text-light-color);">未找到相关问题</li>';
+                    }
+
+                } else {
+                    // Search box is empty, hide results dropdown, show all question cards and pagination
+                    searchResultsUl.classList.remove('visible'); // Hide dropdown (CSS fade out/slide down)
+                    searchResultsUl.innerHTML = ''; // Clear results list
+                    questionsGridDiv.classList.remove('hidden-by-search'); // Show card grid (CSS fade in)
+                    paginationDiv.style.display = 'flex'; // Show pagination container (use flex以便居中)
+
+                    // When search is cleared, reset to the first page and reload all question cards and pagination
+                    currentPage = 1;
+                    loadQuestionCards(allQuestions, currentPage);
+                    renderPagination(allQuestions.length, itemsPerPage, currentPage);
+                }
+            });
+
+             // Single function to handle search result item clicks
+             function handleSearchResultClick() {
+                 const questionId = this.getAttribute('data-question-id');
+                 const question = allQuestions.find(q => q.id === parseInt(questionId));
+                 if (question && question.answerContent) {
+                     modalQuestionTitle.textContent = question.title;
+                     modalAnswerContent.innerHTML = question.answerContent;
+
+                     // --- Optimize display logic ---
+                     modal.style.display = 'flex'; // First set display to flex
+                     requestAnimationFrame(() => { // Use rAF for smoother transition trigger
+                        modal.classList.add('show'); // Then add the show class
+                        mainBackButton.classList.add('visible'); // 模态窗口打开时显示主界面返回按钮
+                     });
+
+                 } else {
+                      console.warn("该问题没有详细回答内容:", questionId);
+                      alert("该问题暂无详细回答内容。");
+                 }
+
+                 // Hide search results dropdown and clear search input
+                 searchResultsUl.classList.remove('visible');
+                 searchInput.value = ''; // Clear input (this will trigger input event, thereby resetting grid/pagination)
+             }
+
+             // --- 统一的隐藏模态窗口函数 ---
+             function hideModal() {
+                 modal.classList.remove('show'); // 移除 show class 触发 CSS 隐藏过渡
+                 mainBackButton.classList.remove('visible'); // 隐藏主界面返回按钮
+                 // CSS 的 visibility 延迟过渡会处理 modal display: none 的时机
+             }
+
+
+            // --- Modal close logic ---
+            closeButton.addEventListener('click', hideModal); // 使用统一的隐藏函数
+
+             // --- 主界面返回按钮逻辑 ---
+            mainBackButton.addEventListener('click', hideModal); // 使用统一的隐藏函数
+
+            // Click outside modal/search results to close
+            window.addEventListener('click', function(event) {
+                // Clicked outside modal content (on backdrop)
+                if (event.target === modal) {
+                    hideModal(); // 使用统一的隐藏函数
+                }
+                // 同时隐藏搜索结果下拉框，除非点击的是搜索框或结果列表本身
+                if (!searchInput.contains(event.target) && !searchResultsUl.contains(event.target) && searchResultsUl.classList.contains('visible')) {
+                     searchResultsUl.classList.remove('visible');
+                }
+            });
+
+            // 页面加载完成后，初始化显示第一页问题卡片和分页
+            loadQuestionCards(allQuestions, currentPage);
+            renderPagination(allQuestions.length, itemsPerPage, currentPage);
+
+        });
+    </script>
+
+</body>
+</html>
