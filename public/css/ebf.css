@@ -2,6 +2,590 @@ body {
     margin: 0px !important;
     background-color: #f5faff;
 }
+  /* 主内容容器 */
+  .mnbv90 {
+    background-color: #ffffff; /* 白色背景 */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); /* 更明显的阴影 */
+    max-width: 900px;
+    width: 90%;
+    text-align: center;
+    opacity: 0; /* 初始状态隐藏 */
+    transform: translateY(30px); /* 初始位置下移更多 */
+    animation: fadeInMoveUp 1s ease-out forwards; /* 应用进入动画 */
+}
+
+/* 进入动画 */
+@keyframes fadeInMoveUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 标题 */
+.lkjh23 {
+    color: #00796b; /* 深青色，更专业 */
+    margin-bottom: 30px;
+    font-size: 2.8em; /* 标题更大 */
+    position: relative;
+    padding-bottom: 15px; /* 为下划线留空间 */
+}
+
+/* 标题下划线 */
+.lkjh23::after {
+    content: '';
+    display: block;
+    width: 80px; /* 下划线更宽 */
+    height: 4px;
+    background-color: #00bcd4; /* 强调色，鲜明的青色 */
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* 内容区域容器 (图片+表单) */
+.qwert1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px; /* 间距更大 */
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+
+/* 图片容器 */
+.zxcv78 {
+    flex: 1;
+    min-width: 280px; /* 图片最小宽度更大 */
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px; /* 圆角更大 */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.6s ease-in-out; /* 添加整体缩放过渡 */
+}
+
+ /* 图片容器悬停动画 */
+.zxcv78:hover {
+    transform: scale(1.03); /* 悬停时轻微放大 */
+}
+
+.logo-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.6s ease-in-out; /* 图片内部缩放过渡 */
+}
+
+/* 图片叠加层 */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+     /* 柔和的叠加层渐变 */
+    background: linear-gradient(135deg, rgba(0, 150, 136, 0.3), rgba(0, 188, 212, 0.3));
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* 叠加层过渡 */
+}
+
+/* 鼠标悬停时显示叠加层 */
+.zxcv78:hover .image-overlay {
+    opacity: 1;
+}
+
+/* 表单 */
+form {
+    flex: 2;
+    min-width: 320px; /* 表单最小宽度更大 */
+    background-color: #fcfcfc; /* 接近白色的柔和背景 */
+    padding: 40px; /* 内边距更大 */
+    border-radius: 12px; /* 圆角更大 */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    animation: slideInRight 1s ease-out forwards 0.3s; /* 延迟进入动画 */
+    opacity: 0;
+    transform: translateX(30px); /* 初始位置右移更多 */
+}
+
+/* 表单进入动画 */
+@keyframes slideInRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 表单分组 */
+.poiu90 {
+    margin-bottom: 25px; /* 间距更大 */
+}
+
+/* 标签 */
+label {
+    display: block;
+    margin-bottom: 10px; /* 间距更大 */
+    font-weight: 500;
+    color: #555;
+    font-size: 1.1em; /* 字体稍大 */
+}
+
+/* 输入框和文本域 */
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 14px 18px; /* 内边距更大 */
+    border: 1px solid #ddd; /* 柔和边框 */
+    border-radius: 8px; /* 明显的圆角 */
+    box-sizing: border-box;
+    font-size: 1em;
+    background-color: #fff; /* 白色背景 */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 添加过渡 */
+}
+
+/* 输入框和文本域聚焦效果 */
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+    border-color: #00bcd4; /* 聚焦时边框变色 */
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.3); /* 聚焦时添加更明显的光晕效果 */
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px; /* 文本域最小高度更大 */
+}
+
+/* 提交按钮 */
+.asdf11 {
+    display: flex; /* 使用flexbox使图标和文字居中 */
+    align-items: center;
+    justify-content: center;
+    /* 漂亮的绿色渐变按钮 */
+    background: linear-gradient(45deg, #4caf50, #388e3c);
+    color: white;
+    padding: 14px 30px; /* 内边距调整 */
+    border: none;
+    border-radius: 30px; /* 胶囊形按钮 */
+    cursor: pointer;
+    font-size: 1.2em; /* 字体更大 */
+    font-weight: 500;
+    transition: all 0.3s ease; /* 所有属性都过渡 */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4); /* 按钮阴影 */
+     gap: 8px; /* 图标与文字的间距 */
+}
+
+/* 按钮悬停效果 */
+.asdf11:hover {
+    background: linear-gradient(45deg, #388e3c, #4caf50); /* 渐变方向变化 */
+    transform: translateY(-3px); /* 悬停时上移 */
+    box-shadow: 0 12px 25px rgba(76, 175, 80, 0.5); /* 悬停时阴影变大 */
+}
+
+/* 按钮点击时的动画效果（CSS触发） */
+.asdf11:active {
+     transform: translateY(-1px) scale(0.98); /* 点击时轻微下移和缩小 */
+     box-shadow: 0 5px 10px rgba(76, 175, 80, 0.3); /* 点击时阴影变小 */
+}
+/* 内容容器 - 默认样式 (适用于中等屏幕或作为基础) */
+.bible-content-wrapper {
+    font-family: Arial, Helvetica, sans-serif;
+    }
+
+    @keyframes containerFadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 标题部分 */
+    .bible-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* 主标题 */
+    .bible-main-title {
+        font-size: 3em; /* Large and prominent title */
+        color: #0077cc; /* A classic, inviting blue */
+        margin: 0;
+        position: relative;
+        animation: titleSlideIn 1s ease-out; /* Slide-in animation */
+    }
+
+    @keyframes titleSlideIn {
+        from { opacity: 0; transform: translateY(-40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 标题下划线装饰 */
+    .bible-main-title::after {
+        content: '';
+        display: block;
+        width: 100px; /* Slightly wider underline */
+        height: 5px; /* Thicker underline */
+        background-color: #00aaff; /* Lighter blue for underline */
+        margin: 15px auto 0; /* More space below title */
+        border-radius: 3px;
+        animation: underlineExpand 1.5s ease-out forwards; /* Expand animation */
+        animation-delay: 0.5s; /* Delay after title appears */
+        transform-origin: center;
+    }
+
+    @keyframes underlineExpand {
+        from { width: 0; }
+        to { width: 100px; }
+    }
+
+    /* 介绍段落 */
+    .bible-intro-text {
+        color: #004d7a; /* Deep blue for readability */
+        font-weight: 400; /* Standard weight for body text */
+        font-size: 1.2em; /* Comfortable reading size */
+        line-height: 1.7; /* Increased line height for better readability */
+        margin-bottom: 25px; /* More space between paragraphs */
+        animation: textFadeIn 1.5s ease-out forwards; /* Fade-in animation */
+        opacity: 0; /* Start hidden for animation */
+    }
+
+     .bible-intro-text:nth-of-type(1) {
+         animation-delay: 1s; /* Delay first paragraph */
+     }
+      .bible-intro-text:nth-of-type(2) {
+         animation-delay: 1.3s; /* Delay second paragraph */
+     }
+
+    @keyframes textFadeIn {
+         from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* 链接按钮部分 */
+    .timeline-link-area {
+        text-align: center;
+        margin-top: 40px; /* More space above the button */
+    }
+
+    /* 进入年代表按钮 */
+    .enter-timeline-button {
+        display: inline-block;
+        background: linear-gradient(45deg, #00aaff, #0077cc); /* Gradient blue button */
+        color: white !important; /* Ensure white text */
+        padding: 18px 35px; /* Larger padding */
+        font-size: 1.6em; /* Larger font size */
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 35px; /* More rounded, pill-like */
+        transition: all 0.3s ease; /* Smooth transition for all changes */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Soft shadow for button */
+        animation: buttonPopIn 1s ease-out forwards; /* Pop-in animation */
+        animation-delay: 1.8s; /* Delay animation after text */
+        opacity: 0; /* Start invisible */
+        transform: scale(0.9); /* Start slightly smaller */
+    }
+
+    @keyframes buttonPopIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .enter-timeline-button:hover {
+        background: linear-gradient(45deg, #0077cc, #004d7a); /* Darker gradient on hover */
+        transform: scale(1.05); /* Enlarge slightly */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); /* More prominent shadow */
+    }
+
+    /* 确保移除所有元素的默认边框或白框 */
+    * {
+        outline: none;
+        border: none;
+    }
+
+    /* ==== 媒体查询部分 ==== */
+
+    /* 手机样式 (屏幕宽度小于或等于 767px 时应用) */
+    @media (max-width: 767px) {
+        .bible-content-wrapper {
+            max-width: 100%; /* 允许在小屏幕上占据更多宽度 */
+            margin: 20px 0; /* 调整垂直边距，移除自动水平居中 */
+            /* padding-right: 80px; 在容器内部右侧增加80px内边距，确保内容不会太靠近右边缘 */
+            padding: 20px 80px 20px 20px; /* 设置内边距：上 右 下 左。右侧80px确保内容与右边缘的距离 */
+            border-radius: 0; /* 手机上可能不需要圆角 */
+            box-shadow: none; /* 手机上可能不需要阴影 */
+            animation: none; /* 手机上可能不需要容器入场动画 */
+        }
+
+         .bible-main-title {
+             font-size: 2em; /* 手机上标题小一些 */
+         }
+
+        .bible-intro-text {
+            font-size: 1em; /* 手机上文字小一些 */
+            animation: none; /* 手机上可能不需要文字入场动画 */
+            opacity: 1; /* 手机上文字直接显示 */
+        }
+
+         .bible-intro-text:nth-of-type(1),
+         .bible-intro-text:nth-of-type(2) {
+             animation-delay: 0s; /* 移除动画延迟 */
+         }
+
+         .enter-timeline-button {
+             font-size: 1.2em; /* 手机上按钮小一些 */
+             padding: 12px 25px;
+             animation: none; /* 手机上可能不需要按钮入场动画 */
+             opacity: 1; /* 手机上按钮直接显示 */
+             transform: scale(1); /* 移除初始缩放 */
+         }
+          .enter-timeline-button:hover {
+               transform: scale(1.03); /* 手机上悬停效果略微缩小 */
+          }
+    }
+
+    /* 电脑样式 (屏幕宽度大于或等于 1200px 时应用) */
+    @media (min-width: 1200px) {
+        .bible-content-wrapper {
+            /* 根据左右边距计算最大宽度，确保内容不会太宽 */
+            max-width: calc(100% - 250px - 280px);
+             width: auto; /* 宽度自适应计算出的max-width */
+            /* 设置固定的左边距和右边距 */
+            margin: 40px 280px 40px 250px;
+            padding: 40px; /* 保持内边距 */
+            /* 保留默认的 border-radius 和 box-shadow */
+        }
+
+         .bible-main-title {
+            font-size: 3.5em; /* 电脑上标题可以更大一些 */
+         }
+
+        .bible-intro-text {
+             font-size: 1.3em; /* 电脑上文字可以更大一些 */
+        }
+
+         .enter-timeline-button {
+             font-size: 1.8em; /* 电脑上按钮可以更大一些 */
+             padding: 20px 40px;
+         }
+         .enter-timeline-button:hover {
+               transform: scale(1.05); /* 电脑上悬停效果 */
+          }
+    }
+
+     /* 调整平板等中间尺寸设备的默认样式 */
+    @media (min-width: 768px) and (max-width: 1199px) {
+         .bible-content-wrapper {
+             max-width: 800px; /* 在平板尺寸设置一个适中的最大宽度 */
+             margin: 30px auto; /* 继续居中 */
+             padding: 30px; /* 调整内边距 */
+         }
+          .bible-main-title {
+              font-size: 2.5em;
+          }
+           .bible-intro-text {
+               font-size: 1.1em;
+           }
+            .enter-timeline-button {
+                font-size: 1.4em;
+                 padding: 15px 30px;
+            }
+    }
+/* 提交中状态（JS触发） */
+.asdf11.submitting {
+    background: linear-gradient(45deg, #00bcd4, #00acc1); /* 变成青色渐变 */
+    cursor: wait;
+    box-shadow: 0 10px 20px rgba(0, 188, 212, 0.4); /* 阴影变色 */
+    animation: pulseSubmitting 1.5s infinite; /* 脉冲动画 */
+}
+
+/* 提交中脉冲动画 */
+@keyframes pulseSubmitting {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* 提交成功消息 */
+.submit-success-message {
+    display: none;
+    margin-top: 30px; /* 间距更大 */
+    padding: 20px; /* 内边距更大 */
+    background-color: #e8f5e9; /* 浅绿色背景 */
+    color: #2e7d32; /* 深绿色文字 */
+    border: 1px solid #c8e6c9;
+    border-radius: 8px; /* 圆角 */
+    text-align: center;
+    opacity: 0; /* 初始隐藏 */
+    height: 0; /* 初始高度为0 */
+    overflow: hidden; /* 隐藏溢出内容 */
+    transform: translateY(20px) scale(0.95); /* 初始状态下移并缩小 */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, height 0.6s ease-in-out, padding 0.6s ease-in-out; /* 平滑过渡 */
+     display: flex; /* 使内容垂直居中 */
+     align-items: center;
+     justify-content: center;
+     gap: 10px; /* 图标与文字间距 */
+}
+
+/* 提交成功消息显示状态 */
+.submit-success-message.visible {
+    opacity: 1;
+    height: auto; /* 高度自动 */
+    padding: 20px; /* 恢复内边距 */
+    transform: translateY(0) scale(1); /* 恢复位置和大小 */
+     /* 成功消息的轻微弹跳动画 */
+     animation: bounceIn 0.8s ease-out forwards;
+}
+
+/* 成功消息弹跳动画 */
+@keyframes bounceIn {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transition-timing-function: cubic-bezier(0.215, .61, .355, 1);
+    }
+    0% { opacity: 0; transform: scale3d(.3, .3, .3); }
+    20% { transform: scale3d(1.1, 1.1, 1.1); }
+    40% { transform: scale3d(.9, .9, .9); }
+    60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+    80% { transform: scale3d(.97, .97, .97); }
+    100% { opacity: 1; transform: scale3d(1, 1, 1); }
+}
+
+
+/* 回复提示信息 */
+.tyui12 {
+    margin-top: 30px; /* 间距更大 */
+    color: #777;
+    font-size: 1em; /* 字体稍大 */
+    text-align: center;
+    animation: fadeInText 1.5s ease-out forwards 0.8s; /* 延迟出现动画 */
+    opacity: 0; /* 初始隐藏 */
+}
+
+/* 文本出现动画 */
+@keyframes fadeInText {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .qwert1 {
+        flex-direction: column; /* 小屏幕时堆叠排列 */
+        gap: 40px;
+    }
+
+    .mnbv90 {
+        padding: 30px;
+    }
+
+    .lkjh23 {
+        font-size: 2.2em;
+    }
+
+    form {
+        padding: 30px;
+    }
+
+    .submit-success-message, form {
+         animation: fadeIn 1s ease-out forwards; /* 移除特定的slide动画，使用通用淡入 */
+         transform: none;
+    }
+}
+  /* About Us Section Styling */
+  .about-us-section {
+    background: #ffffff;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 25px rgba(0, 91, 187, 0.1); /* Soft shadow */
+    padding: 30px 25px; /* Internal padding (Top/Bottom, Left/Right) */
+
+    /* --- Mobile First Styles (Default) --- */
+    /* Enforces 80px gap on the RIGHT, smaller gap on left */
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 15px;     /* Small gap on the left */
+    margin-right: 80px;    /* <<< Strict 80px gap on the right for mobile */
+    /* NOTE: On very narrow screens, the left gap is 15px, right gap is 80px. */
+}
+
+/* --- Shared Content Styles (Applies to both mobile and desktop) --- */
+/* (These styles remain the same as the previous version) */
+.about-us-section h2 {
+    color: #2c3e50; margin-bottom: 20px; text-align: center; font-weight: 600; font-size: 24px;
+}
+.about-us-section p {
+    margin-bottom: 15px; font-size: 1em;
+}
+.about-us-section .intro-paragraph {
+    font-size: 1.05em; text-align: center; color: #555; margin-bottom: 25px;
+}
+.about-us-section .keyword-paragraph {
+    margin-bottom: 18px;
+}
+.about-us-section .keyword {
+    color: #007bff; font-size: 1.1em; font-weight: bold;
+}
+.about-us-section .emphasis {
+    font-style: italic; color: #0056b3;
+}
+.about-us-section .authority-emphasis {
+    font-weight: bold;
+}
+.about-us-section .closing-paragraph {
+    text-align: center; font-weight: 500; color: #444; margin-bottom: 25px; margin-top: 15px;
+}
+.about-us-section blockquote {
+    border-left: 5px solid #007bff; padding: 15px 20px; margin: 25px 0; background-color: #f8f9fa; border-radius: 5px;
+}
+.about-us-section blockquote p {
+    font-style: italic; color: #343a40; margin-bottom: 10px; font-size: 1.05em;
+}
+.about-us-section blockquote footer {
+    text-align: right; font-style: normal; font-size: 0.95em; color: #6c757d;
+}
+/* --- End of Shared Content Styles --- */
+
+
+/* --- Desktop Styles (Overrides mobile margins) --- */
+/* Applies when screen width is 992px or wider */
+@media (min-width: 992px) {
+    .about-us-section {
+        padding: 40px 50px;    /* Increase padding */
+        /* Override ALL mobile margins with desktop specific ones */
+        margin-top: 50px;
+        margin-bottom: 50px;
+        margin-left: 250px;   /* <<< Desktop left margin */
+        margin-right: 290px;  /* <<< Desktop right margin */
+        border-radius: 20px;  /* Larger radius */
+    }
+
+    /* Optional: Adjust text sizes for better desktop readability */
+    .about-us-section p {
+         font-size: 1.05em;
+    }
+     .about-us-section h2 {
+         font-size: 28px;
+    }
+}
+
+  
+@media (max-width: 480px) {
+     .mnbv90 {
+         padding: 20px;
+     }
+     .lkjh23 {
+         font-size: 1.8em;
+     }
+     form {
+         padding: 20px;
+     }
+     .asdf11 {
+         padding: 12px 25px;
+         font-size: 1.1em;
+     }
+}
 
 .title-bibli {
     display: flex;

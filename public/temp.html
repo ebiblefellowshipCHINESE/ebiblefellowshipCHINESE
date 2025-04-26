@@ -1,251 +1,229 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>圣经团契文件系统</title>
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #3498db;
-            --success-color: #27ae60;
-        }
-        .file-manager {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-        .file-column {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            min-height: 400px;
-        }
-        .file-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .file-actions button {
-            margin-left: 0.5rem;
-        }
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            min-height: 100vh;
-            font-family: 'Microsoft YaHei', sans-serif;
+<style>
+ 
+
+    
+
+    /* 内容容器 - 默认样式 (适用于中等屏幕或作为基础) */
+    .bible-content-wrapper {
+    font-family: Arial, Helvetica, sans-serif;
+    }
+
+    @keyframes containerFadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 标题部分 */
+    .bible-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* 主标题 */
+    .bible-main-title {
+        font-size: 3em; /* Large and prominent title */
+        color: #0077cc; /* A classic, inviting blue */
+        margin: 0;
+        position: relative;
+        animation: titleSlideIn 1s ease-out; /* Slide-in animation */
+    }
+
+    @keyframes titleSlideIn {
+        from { opacity: 0; transform: translateY(-40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 标题下划线装饰 */
+    .bible-main-title::after {
+        content: '';
+        display: block;
+        width: 100px; /* Slightly wider underline */
+        height: 5px; /* Thicker underline */
+        background-color: #00aaff; /* Lighter blue for underline */
+        margin: 15px auto 0; /* More space below title */
+        border-radius: 3px;
+        animation: underlineExpand 1.5s ease-out forwards; /* Expand animation */
+        animation-delay: 0.5s; /* Delay after title appears */
+        transform-origin: center;
+    }
+
+    @keyframes underlineExpand {
+        from { width: 0; }
+        to { width: 100px; }
+    }
+
+    /* 介绍段落 */
+    .bible-intro-text {
+        color: #004d7a; /* Deep blue for readability */
+        font-weight: 400; /* Standard weight for body text */
+        font-size: 1.2em; /* Comfortable reading size */
+        line-height: 1.7; /* Increased line height for better readability */
+        margin-bottom: 25px; /* More space between paragraphs */
+        animation: textFadeIn 1.5s ease-out forwards; /* Fade-in animation */
+        opacity: 0; /* Start hidden for animation */
+    }
+
+     .bible-intro-text:nth-of-type(1) {
+         animation-delay: 1s; /* Delay first paragraph */
+     }
+      .bible-intro-text:nth-of-type(2) {
+         animation-delay: 1.3s; /* Delay second paragraph */
+     }
+
+    @keyframes textFadeIn {
+         from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* 链接按钮部分 */
+    .timeline-link-area {
+        text-align: center;
+        margin-top: 40px; /* More space above the button */
+    }
+
+    /* 进入年代表按钮 */
+    .enter-timeline-button {
+        display: inline-block;
+        background: linear-gradient(45deg, #00aaff, #0077cc); /* Gradient blue button */
+        color: white !important; /* Ensure white text */
+        padding: 18px 35px; /* Larger padding */
+        font-size: 1.6em; /* Larger font size */
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 35px; /* More rounded, pill-like */
+        transition: all 0.3s ease; /* Smooth transition for all changes */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); /* Soft shadow for button */
+        animation: buttonPopIn 1s ease-out forwards; /* Pop-in animation */
+        animation-delay: 1.8s; /* Delay animation after text */
+        opacity: 0; /* Start invisible */
+        transform: scale(0.9); /* Start slightly smaller */
+    }
+
+    @keyframes buttonPopIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .enter-timeline-button:hover {
+        background: linear-gradient(45deg, #0077cc, #004d7a); /* Darker gradient on hover */
+        transform: scale(1.05); /* Enlarge slightly */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); /* More prominent shadow */
+    }
+
+    /* 确保移除所有元素的默认边框或白框 */
+    * {
+        outline: none;
+        border: none;
+    }
+
+    /* ==== 媒体查询部分 ==== */
+
+    /* 手机样式 (屏幕宽度小于或等于 767px 时应用) */
+    @media (max-width: 767px) {
+        .bible-content-wrapper {
+            max-width: 100%; /* 允许在小屏幕上占据更多宽度 */
+            margin: 20px 0; /* 调整垂直边距，移除自动水平居中 */
+            /* padding-right: 80px; 在容器内部右侧增加80px内边距，确保内容不会太靠近右边缘 */
+            padding: 20px 80px 20px 20px; /* 设置内边距：上 右 下 左。右侧80px确保内容与右边缘的距离 */
+            border-radius: 0; /* 手机上可能不需要圆角 */
+            box-shadow: none; /* 手机上可能不需要阴影 */
+            animation: none; /* 手机上可能不需要容器入场动画 */
         }
 
-        .auth-card {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+         .bible-main-title {
+             font-size: 2em; /* 手机上标题小一些 */
+         }
+
+        .bible-intro-text {
+            font-size: 1em; /* 手机上文字小一些 */
+            animation: none; /* 手机上可能不需要文字入场动画 */
+            opacity: 1; /* 手机上文字直接显示 */
         }
 
-        .auth-card:hover {
-            transform: translateY(-5px);
+         .bible-intro-text:nth-of-type(1),
+         .bible-intro-text:nth-of-type(2) {
+             animation-delay: 0s; /* 移除动画延迟 */
+         }
+
+         .enter-timeline-button {
+             font-size: 1.2em; /* 手机上按钮小一些 */
+             padding: 12px 25px;
+             animation: none; /* 手机上可能不需要按钮入场动画 */
+             opacity: 1; /* 手机上按钮直接显示 */
+             transform: scale(1); /* 移除初始缩放 */
+         }
+          .enter-timeline-button:hover {
+               transform: scale(1.03); /* 手机上悬停效果略微缩小 */
+          }
+    }
+
+    /* 电脑样式 (屏幕宽度大于或等于 1200px 时应用) */
+    @media (min-width: 1200px) {
+        .bible-content-wrapper {
+            /* 根据左右边距计算最大宽度，确保内容不会太宽 */
+            max-width: calc(100% - 250px - 280px);
+             width: auto; /* 宽度自适应计算出的max-width */
+            /* 设置固定的左边距和右边距 */
+            margin: 40px 280px 40px 250px;
+            padding: 40px; /* 保持内边距 */
+            /* 保留默认的 border-radius 和 box-shadow */
         }
 
-        .brand-header {
-            background: var(--primary-color);
-            border-radius: 20px 20px 0 0;
-            padding: 2rem;
-            text-align: center;
+         .bible-main-title {
+            font-size: 3.5em; /* 电脑上标题可以更大一些 */
+         }
+
+        .bible-intro-text {
+             font-size: 1.3em; /* 电脑上文字可以更大一些 */
         }
 
-        .brand-logo {
-            width: 80px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
+         .enter-timeline-button {
+             font-size: 1.8em; /* 电脑上按钮可以更大一些 */
+             padding: 20px 40px;
+         }
+         .enter-timeline-button:hover {
+               transform: scale(1.05); /* 电脑上悬停效果 */
+          }
+    }
 
-        .upload-section {
-            border-left: 3px solid var(--accent-color);
-            padding-left: 1.5rem;
-        }
+     /* 调整平板等中间尺寸设备的默认样式 */
+    @media (min-width: 768px) and (max-width: 1199px) {
+         .bible-content-wrapper {
+             max-width: 800px; /* 在平板尺寸设置一个适中的最大宽度 */
+             margin: 30px auto; /* 继续居中 */
+             padding: 30px; /* 调整内边距 */
+         }
+          .bible-main-title {
+              font-size: 2.5em;
+          }
+           .bible-intro-text {
+               font-size: 1.1em;
+           }
+            .enter-timeline-button {
+                font-size: 1.4em;
+                 padding: 15px 30px;
+            }
+    }
 
-        .role-badge {
-            position: absolute;
-            right: 1rem;
-            top: 1rem;
-            background: var(--success-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-    <!-- 登录界面 -->
-    <div id="loginPage" class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="auth-card w-100" style="max-width: 400px;">
-            <div class="brand-header">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFESURBVHgB7ZbBDcIwDESzQBfoAl2gC7JAF2RBF2TRBbpAF2TBH4QHkqMoctzESM6nSJblt3JiJ4QQQgghhBBCCOGVwD0YwzDso6oVkYqIqOqOiE5Edl9VHx/4pQoM1vA4jjvP8x2YvCxLZWYH5lzX9fqJX1JgWZYzER2CwC6QjYgYgDlA9vjULyowTdORiC5B4A2Yc57nBszJzJdv/KICzHyOqgKzA3NO03QB5mTm07d+SQHvfB8VgNnneQ4LMPPxF7+oQBAYFWDmQ1QVmP3wi19UwDvfRwVg9n3fwwLMPP7qFxXwzvdRAZh90zSwADOPv/pFBbzzfVQAZq/rGhZg5vFXv6iAd76PCsDsz/OABZh5/NUvKuCd76MCMHvbtmEBZh5/9YsKeOf7qADM3jQNLMDM469+UQHvfB8VgNnrugYLMPP4q19UwDvfRwVg9qqqYAFmHn/1iwp45/uowB9+ZyGE8A+8AUm8J0nRQT3iAAAAAElFTkSuQmCC" 
-                     alt="Logo" class="brand-logo">
-                <h3 class="text-white mt-3">圣经文件系统</h3>
-            </div>
-            <div class="card-body p-4">
-                <form id="loginForm">
-                    <div class="mb-3">
-                        <label class="form-label">用户名</label>
-                        <input type="text" class="form-control" placeholder="输入用户名" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">密码</label>
-                        <input type="password" class="form-control" placeholder="输入密码" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2">
-                        🕊️ 进入系统
-                    </button>
-                </form>
-            </div>
-        </div>
+
+
+
+</style>
+<div class="bible-content-wrapper">
+    <div class="bible-header">
+        <h1 class="bible-main-title">圣经历史年代表</h1>
     </div>
 
-    <!-- 内容界面 -->
-    <div id="contentPage" class="container-fluid d-none">
-        <nav class="navbar bg-white shadow-sm">
-            <div class="container">
-                <span class="navbar-brand">
-                    欢迎回来，<span id="currentUser"></span>
-                    <span id="roleBadge" class="role-badge text-white"></span>
-                </span>
-                <button onclick="logout()" class="btn btn-outline-danger">
-                    ⚡ 退出登录
-                </button>
-            </div>
-        </nav>
+    <p class="bible-intro-text">
+        看看圣经中发现的圣经历史时间表，从创世之日到时间的终结，由已故的哈罗德·康平 （Harold Camping） 发现，正如上帝允许他的那样，在末世时解封了他的话语。这个交互式图表将显示关键的圣经事件，例如创建日期、洪水发生的时间、出埃及、所罗门圣殿地基的奠基等。
+    </p>
+    <p class="bible-intro-text">
+        您将单击编号框以揭开这些日期背后的真相，所有这些都是通过对圣经的仔细研究发现的。你会看到圣经的作者，全能的上帝是多么精确和详细。
+    </p>
 
-        <div id="contentPage" class="container-fluid d-none">
-            <nav class="navbar bg-white shadow-sm">
-                <!-- 导航栏保持不变 -->
-            </nav>
-    
-            <div class="container mt-5">
-                <!-- 文件管理区域 -->
-                <div class="file-manager">
-                    <!-- 左侧列 -->
-                    <div class="file-column" id="leftColumn">
-                        <h5 id="leftColumnTitle"></h5>
-                        <div id="leftFiles"></div>
-                    </div>
-                    
-                    <!-- 右侧列 -->
-                    <div class="file-column" id="rightColumn">
-                        <h5 id="rightColumnTitle"></h5>
-                        <div id="rightFiles"></div>
-                    </div>
-                </div>
-    
-                <!-- 上传区域 -->
-                <div class="upload-section mt-5">
-                    <input type="file" id="fileInput" class="form-control mb-3" accept=".docx">
-                    <button onclick="uploadFile()" class="btn btn-success">
-                        <span id="uploadText">上传到云端</span>
-                        <div id="loading" class="spinner-border spinner-border-sm d-none"></div>
-                    </button>
-                </div>
-            </div>
-        </div>
-    
-        <!-- 添加GitHub SDK -->
-        <script src="https://cdn.jsdelivr.net/npm/@octokit/core@4.0.5/dist/index.umd.min.js"></script>
-
-<script>
-// 用户数据库
-const users = {
-    'mengxianglong': {
-        pwd: 'translaterbymeng',
-        role: 1 // 翻译权限
-    },
-    'jamesli': {
-        pwd: 'uploadbyjamesli',
-        role: 2 // 上传权限
-    }
-};
-
-// 登录状态管理
-let signin = localStorage.getItem('signin') || 0;
-
-// 初始化检查登录状态
-if(signin > 0) showContent();
-
-// 登录表单提交
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const username = this[0].value.trim();
-    const password = this[1].value;
-    
-    if(users[username] && users[username].pwd === password) {
-        signin = users[username].role;
-        localStorage.setItem('signin', signin);
-        localStorage.setItem('username', username);
-        showContent();
-    } else {
-        alert('⚠️ 用户名或密码错误');
-    }
-});
-
-// 显示内容界面
-function showContent() {
-    document.getElementById('loginPage').classList.add('d-none');
-    document.getElementById('contentPage').classList.remove('d-none');
-    document.getElementById('currentUser').textContent = localStorage.getItem('username');
-    
-    // 根据权限设置界面
-    const roleBadge = document.getElementById('roleBadge');
-    const fileInput = document.getElementById('fileInput');
-    
-    if(signin == 1) {
-        roleBadge.textContent = '翻译人员';
-        fileInput.accept = '.txt';
-    } else if(signin == 2) {
-        roleBadge.textContent = '上传人员';
-        fileInput.accept = '.docx,.pdf';
-    }
-}
-
-// 文件上传处理
-function uploadFile() {
-    const file = document.getElementById('fileInput').files[0];
-    if(!file) return alert('请先选择文件');
-    
-    // 验证文件类型
-    const allowedTypes = signin == 1 ? ['text/plain'] : ['application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    
-    if(!allowedTypes.includes(file.type)) {
-        return alert('⚠️ 文件类型不符合权限要求');
-    }
-
-    // 显示上传动画
-    const btn = document.querySelector('button.btn-success');
-    btn.disabled = true;
-    document.getElementById('loading').classList.remove('d-none');
-    
-    // 模拟上传过程
-    setTimeout(() => {
-        btn.disabled = false;
-        document.getElementById('loading').classList.add('d-none');
-        document.getElementById('uploadResult').innerHTML = `
-            <div class="alert alert-success">
-                ✅ 文件 ${file.name} 上传成功！
-                <small class="d-block mt-1">${new Date().toLocaleString()}</small>
-            </div>
-        `;
-    }, 1500);
-}
-
-// 退出登录
-function logout() {
-    localStorage.clear();
-    location.reload();
-}
-</script>
-</body>
-</html>
+    <div class="timeline-link-area">
+        <a class="enter-timeline-button" href="timeline.html">
+            &lt;&lt;&lt;&lt;&lt;&lt; 进入圣经历史年代表
+        </a>
+    </div>
+</div>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子圣经团契 - 文件管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #333;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #ff4081;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #f50057;
+            transform: translateY(-2px);
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        .add-file {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #6200ea;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .add-file:hover {
+            background: #7c4dff;
+            transform: translateY(-2px);
+        }
+
+        .file-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .file-card {
+            width: 200px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .file-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+        }
+
+        .file-card h3 {
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            margin: 10px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .file-card p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .file-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .file-card:hover::before {
+            opacity: 1;
+            transform: translate(25%, 25%);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>电子圣经团契</h1>
+        <button class="back-button" onclick="goBack()">返回</button>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="搜索文件...">
+    </div>
+    <button class="add-file" onclick="addFile()">新增文件</button>
+    <div class="file-container" id="fileContainer">
+        <!-- 文件卡片将动态添加 -->
+    </div>
+
+    <script>
+        // 模拟文件数据
+        let files = [
+            { name: "查经笔记.docx", path: "files/bible_study_notes.docx", date: "2025-04-26" },
+            { name: "团契活动计划.docx", path: "files/fellowship_plan.docx", date: "2025-04-25" }
+        ];
+
+        // 渲染文件卡片
+        function renderFiles(filteredFiles = files) {
+            const container = document.getElementById('fileContainer');
+            container.innerHTML = '';
+            filteredFiles.forEach(file => {
+                const card = document.createElement('div');
+                card.className = 'file-card';
+                card.innerHTML = `
+                    <img src="https://img.icons8.com/color/80/000000/microsoft-word-2019.png" alt="Word Icon">
+                    <h3>${file.name}</h3>
+                    <p>${file.date}</p>
+                `;
+                card.onclick = () => window.location.href = `file=${file.path}`;
+                container.appendChild(card);
+            });
+        }
+
+        // 搜索功能
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filteredFiles = files.filter(file => file.name.toLowerCase().includes(query));
+            renderFiles(filteredFiles);
+        });
+
+        // 新增文件
+        function addFile() {
+            const name = prompt("请输入文件名（.docx）:");
+            if (name && name.endsWith('.docx')) {
+                const path = `files/${name}`;
+                const date = new Date().toISOString().split('T')[0];
+                files.push({ name, path, date });
+                renderFiles();
+            } else {
+                alert("请输入有效的 .docx 文件名！");
+            }
+        }
+
+        // 返回功能
+        function goBack() {
+            window.history.back();
+        }
+
+        // 初始渲染
+        renderFiles();
+    </script>
+</body>
+</html>

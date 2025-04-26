@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBible Fellowship - 中文</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Color Palette */
+        :root {
+            --primary-blue: #1E88E5;
+            --accent-blue: #0288D1;
+            --light-blue-header: rgba(225, 245, 254, 0.9);
+            --text-color: #1A237E;
+            --welcome-text-color: #FFFFFF;
+            --button-bg-light: rgba(187, 222, 251, 0.7);
+            --button-bg-dark: linear-gradient(135deg, #0288D1, #0277BD);
+            --button-text-dark: #1A237E;
+            --button-text-light: #FFFFFF;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-image: url('https://images.unsplash.com/photo-1432821596592-e2c18b78144f'); /* Open Bible background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header Styles */
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background: var(--light-blue-header);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 30px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .site-header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .site-header-left .logo {
+            width: 70px;
+            max-width: 70px;
+            border-radius: 10px;
+            margin-right: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .site-header-left .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .site-header-left h2 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .site-header-left .highlight {
+            color: var(--primary-blue);
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .site-header .main-site-link {
+            color: var(--primary-blue);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 2px solid var(--primary-blue);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .site-header .main-site-link:hover {
+            background: var(--button-bg-dark);
+            color: var(--button-text-light);
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background-image: url('https://images.unsplash.com/photo-1459666644539-a9755287d6b0'); /* Parchment with cross */
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            margin-bottom: 50px;
+            position: relative;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .welcome-section .welcome-text {
+            font-size: 1.6em;
+            font-weight: 300;
+            margin: 0 0 30px;
+            color: var(--welcome-text-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .welcome-section .cover-verse {
+            font-size: 1.3em;
+            font-weight: 400;
+            font-style: italic;
+            margin: 40px 0 0;
+            color: var(--welcome-text-color);
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .welcome-section .cover-verse strong {
+            display: block;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 10px;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin: 0 20px 50px;
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            padding: 10px;
+            background: var(--button-bg-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--button-text-dark);
+            box-shadow: 0 6px 15px var(--shadow-color);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out var(--delay) both;
+        }
+
+        .feature-button:nth-child(1) { --delay: 0.1s; }
+        .feature-button:nth-child(2) { --delay: 0.2s; }
+        .feature-button:nth-child(3) { --delay: 0.3s; }
+        .feature-button:nth-child(4) { --delay: 0.4s; }
+        .feature-button:nth-child(5) { --delay: 0.5s; }
+        .feature-button:nth-child(6) { --delay: 0.6s; }
+        .feature-button:nth-child(7) { --delay: 0.7s; }
+        .feature-button:nth-child(8) { --delay: 0.8s; }
+        .feature-button:nth-child(9) { --delay: 0.9s; }
+
+        .feature-button:hover {
+            background: var(--button-bg-dark);
+            color: var(--button-text-light);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-button img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-button:hover img {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .feature-button p {
+            margin: 0;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        /* Live Stream and Schedule Section */
+        .live-schedule-section {
+            padding: 40px 0;
+            margin: 0;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .live-schedule-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .live-schedule-container h3 {
+            font-size: 1.5em;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .live-schedule-container .iframe-wrapper {
+            margin: 0; /* No spacing between iframes */
+        }
+
+        .live-stream-player, .audio-player {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 15px;
+            background: var(--button-bg-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 6px 15px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .live-stream-player {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .audio-player {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .live-stream-player:hover, .audio-player:hover {
+            transform: scale(1.02);
+        }
+
+        /* Schedule Table */
+        .schedule-table {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .schedule-button {
+            padding: 10px 20px;
+            background: var(--button-bg-light);
+            color: var(--button-text-dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .schedule-button:hover {
+            background: var(--button-bg-dark);
+            color: var(--button-text-light);
+            transform: translateY(-2px);
+        }
+
+        .schedule-button.active {
+            background: var(--primary-blue);
+            color: var(--button-text-light);
+        }
+
+        .audio-player audio {
+            width: 80%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        /* Radio Section */
+        .radio-section {
+            padding: 40px 0;
+            margin: 0;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .radio-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .radio-container h3 {
+            font-size: 1.5em;
+            color: var(--text-color);
+            margin-bottom: 30px;
+        }
+
+        .radio-container .iframe-wrapper {
+            margin: 0;
+        }
+
+        .radio-player {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 15px;
+            background: var(--button-bg-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 6px 15px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        .radio-player:hover {
+            transform: scale(1.02);
+        }
+
+        /* No Broadcast Message */
+        .no-broadcast {
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: var(--text-color);
+            background: var(--button-bg-light);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px var(--shadow-color);
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+
+            .site-header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 15px;
+            }
+
+            .site-header-left .logo {
+                width: 60px;
+                max-width: 60px;
+                margin-bottom: 10px;
+            }
+
+            .site-header-left h2 {
+                font-size: 1.2em;
+            }
+
+            .site-header .main-site-link {
+                align-self: flex-start;
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .welcome-section {
+                padding: 60px 0;
+            }
+
+            .welcome-section .welcome-text {
+                font-size: 1.2em;
+            }
+
+            .welcome-section .cover-verse {
+                font-size: 1em;
+                margin-top: 20px;
+            }
+
+            .live-schedule-section, .radio-section {
+                padding: 30px 0;
+            }
+
+            .live-stream-player, .audio-player, .radio-player, .no-broadcast {
+                height: 400px;
+            }
+
+            .schedule-table {
+                gap: 8px;
+            }
+
+            .schedule-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .features-section {
+                padding: 30px 15px;
+                margin: 0 10px 40px;
+            }
+
+            .features-container {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 15px;
+            }
+
+            .feature-button {
+                width: 100px;
+                height: 100px;
+                padding: 8px;
+                border-radius: 12px;
+            }
+
+            .feature-button img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .feature-button p {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .live-stream-player, .audio-player, .radio-player, .no-broadcast {
+                height: 300px;
+            }
+
+            .schedule-table {
+                gap: 6px;
+            }
+
+            .schedule-button {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+
+            .features-container {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            }
+
+            .feature-button {
+                width: 90px;
+                height: 90px;
+                padding: 6px;
+            }
+
+            .feature-button img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .feature-button p {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header-left">
+            <img src="logo/ebfside.png" alt="eBible Fellowship Logo" class="logo">
+            <h2><span class="highlight">e</span>Bible Fellowship - <span class="highlight">中文/Chinese</span></h2>
+        </div>
+        <a href="https://www.ebiblefellowship.org" class="main-site-link">主要网站</a>
+    </header>
+
+    <section class="welcome-section">
+        <div class="welcome-content">
+            <p class="welcome-text">
+                欢迎来到 fenli.org，在这里可以提出你的问题，收听离线的 AM 广播，和在线的 24/7 的广播，查看圣经传单以及圣经查考，欢迎您的到来
+            </p>
+            <p class="cover-verse">
+                神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不致灭亡，反得永生。
+                <strong>约翰福音 3:16</strong>
+            </p>
+        </div>
+    </section>
+
+    <section class="features-section">
+        <div class="features-container">
+            <a href="#live-schedule" class="feature-button">
+                <img src="picture/live.png" alt="直播室图标">
+                <p>直播室</p>
+            </a>
+            <a href="#radio" class="feature-button">
+                <img src="picture/am.png" alt="电台图标">
+                <p>电台</p>
+            </a>
+            <a href="#live-schedule" class="feature-button">
+                <img src="picture/am.png" alt="电台内容图标">
+                <p>电台内容</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/books.png" alt="圣经书刊图标">
+                <p>圣经书刊</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/about.png" alt="关于我们图标">
+                <p>关于我们</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/audio.png" alt="查考音频图标">
+                <p>查考音频</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/book.png" alt="查考书籍图标">
+                <p>查考书籍</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/money.png" alt="捐赠图标">
+                <p>捐赠</p>
+            </a>
+            <a href="#" class="feature-button">
+                <img src="picture/contact.png" alt="联系我们图标">
+                <p>联系我们</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="live-schedule-section" id="live-schedule">
+        <div class="live-schedule-container">
+            <h3>直播与计划</h3>
+            <div class="iframe-wrapper">
+                <iframe class="live-stream-player" src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" title="eBible Fellowship 直播室"></iframe>
+            </div>
+            <div class="iframe-wrapper">
+                <div class="audio-player">
+                    <div class="schedule-table">
+                        <button class="schedule-button" data-day="monday">星期一</button>
+                        <button class="schedule-button" data-day="tuesday">星期二</button>
+                        <button class="schedule-button" data-day="wednesday">星期三</button>
+                        <button class="schedule-button" data-day="thursday">星期四</button>
+                        <button class="schedule-button" data-day="friday">星期五</button>
+                        <button class="schedule-button" data-day="saturday">星期六</button>
+                        <button class="schedule-button" data-day="sunday">星期日</button>
+                    </div>
+                    <audio id="schedule-audio" controls>
+                        <source src="" type="audio/mpeg">
+                        您的浏览器不支持音频播放。
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="radio-section" id="radio">
+        <div class="radio-container">
+            <h3>中央广播电台 557 kHz</h3>
+            <div class="iframe-wrapper" id="radio-stream-container">
+                <div class="no-broadcast">无广播电台</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Audio files for each day (replace with actual URLs)
+        const audioFiles = {
+            monday: 'https://your-server.com/audio/monday.mp3',
+            tuesday: 'https://your-server.com/audio/tuesday.mp3',
+            wednesday: 'https://your-server.com/audio/wednesday.mp3',
+            thursday: 'https://your-server.com/audio/thursday.mp3',
+            friday: 'https://your-server.com/audio/friday.mp3',
+            saturday: 'https://your-server.com/audio/saturday.mp3',
+            sunday: 'https://your-server.com/audio/sunday.mp3'
+        };
+
+        // Schedule table functionality
+        const scheduleButtons = document.querySelectorAll('.schedule-button');
+        const audioPlayer = document.getElementById('schedule-audio');
+
+        scheduleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                scheduleButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                // Update audio source
+                const day = button.getAttribute('data-day');
+                audioPlayer.src = audioFiles[day];
+                audioPlayer.play();
+            });
+        });
+
+        // Check if current time is Sunday 6:00-7:00 AM (CST, UTC+8) for 557 kHz
+        function isBroadcastTime() {
+            const now = new Date();
+            const cstOffset = 8 * 60; // CST, UTC+8 in minutes
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const cstTime = new Date(utc + (cstOffset * 60000));
+            
+            const day = cstTime.getDay(); // 0 = Sunday
+            const hours = cstTime.getHours();
+            const minutes = cstTime.getMinutes();
+            
+            return day === 0 && hours === 6 && minutes >= 0 && minutes < 60;
+        }
+
+        // Update radio stream display
+        function updateRadioStream() {
+            const container = document.getElementById('radio-stream-container');
+            if (isBroadcastTime()) {
+                container.innerHTML = `
+                    <iframe class="radio-player" src="https://your-stream-server.com/557khz" title="中央广播电台 557 kHz AM 直播"></iframe>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="no-broadcast">无广播电台</div>
+                `;
+            }
+        }
+
+        // Run on page load
+        updateRadioStream();
+
+        // Check every minute for radio stream
+        setInterval(updateRadioStream, 60000);
+    </script>
+</body>
+</html>

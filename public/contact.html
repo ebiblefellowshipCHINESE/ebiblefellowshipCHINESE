@@ -9,6 +9,96 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
+        @media (max-width: 768px) {
+    /* 保留其他针对小屏幕的样式，例如 .qwert1, .mnbv90, .lkjh23 的样式 */
+
+    .qwert1 {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .mnbv90 {
+        padding: 30px;
+    }
+
+    .lkjh23 {
+        font-size: 2.2em;
+    }
+
+    /* --- 临时测试样式：强制表单显示 --- */
+    form {
+        opacity: 1 !important; /* 强制不透明，确保可见 */
+        transform: none !important; /* 移除任何初始位移 */
+        animation: none !important; /* 禁用所有动画 */
+        display: block !important; /* 确保元素是以块级形式显示 */
+        visibility: visible !important; /* 确保元素可见 */
+        width: 100%; /* 确保在小屏幕下占满宽度 */
+        min-width: unset !important; /* 移除最小宽度限制，避免布局问题 */
+        /* 保留表单的其他样式，例如 padding, border-radius, box-shadow 等 */
+        background-color: #fcfcfc; /* 根据您原有的代码保留背景色 */
+        padding: 40px; /* 根据您原有的代码保留内边距 */
+        border-radius: 12px; /* 根据您原有的代码保留圆角 */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* 根据您原有的代码保留阴影 */
+    }
+    /* --- 临时测试样式结束 --- */
+
+    /* 检查并可能注释掉下面这条包含了 form 的复合选择器规则，以确保上面的测试样式生效 */
+    /* .submit-success-message, form {
+         animation: fadeIn 1s ease-out forwards;
+         transform: none;
+    } */
+
+
+    /* 保留针对成功消息（.submit-success-message）的样式 */
+    .submit-success-message {
+         /* 确保初始状态是隐藏的，通过 .visible 类控制显示 */
+         opacity: 0;
+         height: 0;
+         overflow: hidden;
+         transform: translateY(20px) scale(0.95);
+         transition: opacity 0.6s ease-out, transform 0.6s ease-out, height 0.6s ease-in-out, padding 0.6s ease-in-out;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+     }
+     /* 成功消息显示时的样式 */
+     .submit-success-message.visible {
+         opacity: 1 !important;
+         height: auto !important;
+         padding: 20px !important;
+         transform: translateY(0) scale(1) !important;
+          animation: bounceIn 0.8s ease-out forwards !important; /* 保留弹跳动画 */
+     }
+
+
+}
+
+@media (max-width: 480px) {
+    /* 保留针对更小屏幕的样式 */
+     .mnbv90 {
+         padding: 20px;
+     }
+     .lkjh23 {
+         font-size: 1.8em;
+     }
+     /* 这里也可能需要临时应用强制显示样式，取决于您原有的 .poiu90, input, textarea 样式是否会受影响 */
+     form {
+         padding: 20px; /* 根据您原有的代码保留内边距 */
+         /* 可以再次添加强制显示样式，确保在更小屏幕下也生效 */
+         opacity: 1 !important;
+         transform: none !important;
+         animation: none !important;
+         display: block !important;
+         visibility: visible !important;
+         width: 100%;
+         min-width: unset !important;
+     }
+     .asdf11 {
+         padding: 12px 25px;
+         font-size: 1.1em;
+     }
+}
         /* 全局样式和背景 */
         body {
             font-family: 'Roboto', sans-serif;
