@@ -1,0 +1,4 @@
+2025-04-26 03:01:54 - 创建文件目录: /Users/owner/ebiblefellowshipCHINESE/public/NewFile/files
+2025-04-26 03:02:13 - 检测到新的或修改的文件: 约珥书2章第4讲x.doc
+2025-04-26 03:02:14 - 移动文件: 约珥书2章第4讲x.doc 到 /Users/owner/ebiblefellowshipCHINESE/public/NewFile
+2025-04-26 03:02:14 - 更新 /Users/owner/ebiblefellowshipCHINESE/public/NewFile/New.html，包含 1 个文件
