@@ -244,6 +244,9 @@
             <button class="control-btn" onclick="adjustFontSize(2)" title="放大字体">
                 <i class="fas fa-plus"></i>
             </button>
+            <button class="control-btn" onclick="scrollToTop()" title="返回顶部">
+                <i class="fas fa-arrow-up"></i>
+            </button>
         </div>
 
         <!-- 缩放百分比膜 -->
@@ -335,24 +338,51 @@
 
         // 分享文档
         function shareDocument() {
+            const content = document.getElementById('content');
+            // 仅收集 h1 标题
+            const headings = content.querySelectorAll('h1');
+            let titleText = Array.from(headings)
+                .map(heading => heading.textContent.trim())
+                .filter(text => text) // 过滤空标题
+                .map(text => text.replace(/讲/g, '')) // 去掉所有“讲”字
+                .join(' | '); // 用 | 分隔多个标题
+
+            // 如果没有 h1 标题，使用默认标题
+            if (!titleText) {
+                titleText = '在线 Word 查看器 - 文档';
+            }
+
+            console.log('分享标题:', titleText); // 调试日志
+
             const shareData = {
-                title: '在线 Word 查看器 - 文档',
+                title: titleText,
                 url: window.location.href
             };
+
             if (navigator.share) {
-                navigator.share(shareData).then(() => {
-                    console.log('分享成功');
-                }).catch(err => {
-                    console.error('分享失败:', err);
-                    alert('分享失败，请手动复制链接。');
-                });
+                navigator.share(shareData)
+                    .then(() => {
+                        console.log('分享成功');
+                        alert('分享成功！');
+                    })
+                    .catch(err => {
+                        console.error('分享失败:', err);
+                        alert('分享失败，请手动复制链接。');
+                        // 回退到复制链接
+                        navigator.clipboard.writeText(shareData.url)
+                            .then(() => alert('链接已复制到剪贴板！'))
+                            .catch(err => console.error('复制链接失败:', err));
+                    });
             } else {
-                navigator.clipboard.writeText(shareData.url).then(() => {
-                    alert('链接已复制到剪贴板！');
-                }).catch(err => {
-                    console.error('复制链接失败:', err);
-                    alert('复制失败，请手动复制链接。');
-                });
+                console.log('浏览器不支持 Web Share API，回退到复制链接');
+                navigator.clipboard.writeText(shareData.url)
+                    .then(() => {
+                        alert('链接已复制到剪贴板！');
+                    })
+                    .catch(err => {
+                        console.error('复制链接失败:', err);
+                        alert('复制失败，请手动复制链接。');
+                    });
             }
         }
 
@@ -370,14 +400,24 @@
                 alert('文档内容已复制到剪贴板！');
             } catch (err) {
                 console.error('复制失败:', err);
-                navigator.clipboard.writeText(content.innerText).then(() => {
-                    alert('文档内容已复制到剪贴板！');
-                }).catch(err => {
-                    console.error('Fallback 复制失败:', err);
-                    alert('复制失败，请手动复制内容。');
-                });
+                navigator.clipboard.writeText(content.innerText)
+                    .then(() => {
+                        alert('文档内容已复制到剪贴板！');
+                    })
+                    .catch(err => {
+                        console.error('Fallback 复制失败:', err);
+                        alert('复制失败，请手动复制内容。');
+                    });
             }
             selection.removeAllRanges();
+        }
+
+        // 返回到顶部
+        function scrollToTop() {
+            document.querySelector('.document-viewer').scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
 
         // 手势控制初始化

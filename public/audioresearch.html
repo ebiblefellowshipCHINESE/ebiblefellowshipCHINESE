@@ -1,531 +1,473 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>查考音频索引 - eBible Fellowship</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/ebf.css">
-    <link rel="icon" href="logo/ebflogo.png" type="image/x-icon">
-    <script src="js/index.js"></script>
-    <script src="js/airtime.js"></script>
-    <script src="js/daybible.js"></script>
-    <script src="js/time.js"></script>
-    <script src="js/zooms.js"></script>
-    <script src="js/timevideo.js"></script>
-    <script src="js/filedown.js"></script>
-    <script src="js/cookie.js"></script>
-    <script src="dist/fuse.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { font-size: 16px; scroll-behavior: smooth; }
-        body { 
-            font-family: 'Arial', sans-serif; 
-            background: linear-gradient(135deg, #e6f0fa, #b3d9ff); 
-            color: #333; 
-            line-height: 1.6; 
-            overflow-x: hidden; 
-            margin-left: 290px; 
-        }
-        a { text-decoration: none; color: inherit; cursor: default; }
-        /* 顶栏样式 */
-        .xkjh89 { 
-            width: calc(100% - 290px); 
-            background: linear-gradient(to right, #1e90ff, #4169e1); 
-            padding: 15px 30px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            z-index: 1000; 
-            transition: all 0.3s ease; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 0 0 10px 10px; 
-        }
-        .xkjh89:hover { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); }
-        .zxcv12 { 
-            display: flex; 
-            align-items: center; 
-            padding: 5px; 
-        }
-        .ghbn34 { 
-            width: 50px; 
-            height: 50px; 
-            background: #fff; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin-right: 10px; 
-            transition: transform 0.3s ease; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-        }
-        .ghbn34 img { width: 80px; }
-        .zxcv12:hover .ghbn34 { transform: rotate(360deg); }
-        .tyui56 { 
-            font-size: 28px; 
-            font-weight: 700; 
-            color: #fff; 
-            letter-spacing: 1.5px; 
-            text-transform: uppercase; 
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
-            transition: color 0.3s ease; 
-            line-height: 1.2; 
-        }
-        .zxcv12:hover .tyui56 { color: #ffd700; }
-        .rtyu78 { 
-            background: #4682b4; 
-            color: #fff; 
-            padding: 10px 25px; 
-            border: none; 
-            border-radius: 15px; 
-            font-size: 16px; 
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-            margin-right: 10px; 
-        }
-        .rtyu78:hover { 
-            background: #5f9ea0; 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
-        }
-        .rtyu78:active { 
-            transform: translateY(0); 
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); 
-        }
-        /* 内容样式 */
-        .mnbv90 { 
-            max-width: calc(1200px - 290px); 
-            margin: 100px auto 50px; 
-            padding: 40px 60px; 
-            background: #fff; 
-            border-radius: 25px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
-            position: relative; 
-            overflow: hidden; 
-            transition: box-shadow 0.3s ease; 
-            animation: qwert9 0.8s ease-out; 
-            min-height: 600px; 
-            border: 1px solid #e0e0e0; 
-        }
-        .mnbv90:hover { box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); }
-        .mnbv90::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 5px; 
-            background: #1e90ff; 
-        }
-        .mnbv90::after { 
-            content: ''; 
-            position: absolute; 
-            bottom: 0; 
-            right: 0; 
-            width: 100px; 
-            height: 100px; 
-            background: radial-gradient(circle, rgba(30, 144, 255, 0.2), transparent); 
-            border-radius: 50%; 
-            transform: translate(50%, 50%); 
-        }
-        .lkjh23 { 
-            font-size: 36px; 
-            color: #1e90ff; 
-            text-align: center; 
-            margin: 20px 0 40px; 
-            font-weight: 700; 
-            letter-spacing: 1px; 
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); 
-            padding-bottom: 10px; 
-            border-bottom: 2px solid #1e90ff; 
-            transition: color 0.3s ease; 
-            line-height: 1.4; 
-        }
-        .lkjh23:hover { color: #4169e1; }
-        .asdf11 { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-            gap: 20px; 
-            justify-items: center; 
-            padding: 30px; 
-            background: #f9f9f9; 
-            border-radius: 10px; 
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
-            min-height: 400px; 
-            animation: poiu90 0.5s ease-in; 
-        }
-        .zxcv78 { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background: #1e90ff; 
-            color: #fff; 
-            padding: 15px; 
-            width: 150px; 
-            height: 150px; 
-            border-radius: 20px; 
-            font-size: 18px; 
-            font-weight: 600; 
-            text-align: center; 
-            transition: all 0.4s ease; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            text-transform: uppercase; 
-            letter-spacing: 0.8px; 
-            line-height: 1.3; 
-            margin: 5px; 
-        }
-        .zxcv78::before { 
-            content: ''; 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            width: 0; 
-            height: 0; 
-            background: rgba(255, 255, 255, 0.2); 
-            border-radius: 50%; 
-            transform: translate(-50%, -50%); 
-            transition: width 0.6s ease, height 0.6s ease; 
-        }
-        .zxcv78:hover::before { 
-            width: 300px; 
-            height: 300px; 
-        }
-        .zxcv78:hover { 
-            background: #4169e1; 
-            transform: translateY(-5px); 
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25); 
-            letter-spacing: 1.2px; 
-        }
-        .zxcv78:active { 
-            transform: translateY(0); 
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
-        }
-        .zxcv78 span { 
-            position: absolute; 
-            top: 10px; 
-            left: 10px; 
-            font-size: 24px; 
-            color: #ffd700; 
-            transition: transform 0.3s ease; 
-        }
-        .zxcv78:hover span { transform: scale(1.2); }
-        /* 动画 */
-        @keyframes qwert9 { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-        @keyframes poiu90 { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-        @keyframes pqlm45 { 
-            from { opacity: 0; transform: translateY(-20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-        .zxcv78 { animation: poiu90 1s ease-out; animation-fill-mode: backwards; }
-        .zxcv78:nth-child(1) { animation-delay: 0.1s; }
-        .zxcv78:nth-child(2) { animation-delay: 0.2s; }
-        .zxcv78:nth-child(3) { animation-delay: 0.3s; }
-        .zxcv78:nth-child(4) { animation-delay: 0.4s; }
-        .zxcv78:nth-child(5) { animation-delay: 0.5s; }
-        .zxcv78:nth-child(6) { animation-delay: 0.6s; }
-        /* 媒体查询 */
-        @media (max-width: 768px) { 
-            body { margin-left: 0; } 
-            .xkjh89 { width: 100%; padding: 10px 20px; }
-            .zxcv12 { font-size: 22px; }
-            .ghbn34 { width: 40px; height: 40px; }
-            .ghbn34 img { width: 60px; }
-            .tyui56 { font-size: 22px; }
-            .rtyu78 { padding: 8px 16px; font-size: 14px; }
-            .mnbv90 { margin: 80px 20px 30px; padding: 20px; max-width: 100%; }
-            .lkjh23 { font-size: 28px; }
-            .asdf11 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
-            .zxcv78 { width: 120px; height: 120px; font-size: 16px; }
-        }
-        @media (max-width: 480px) { 
-            .zxcv12 { font-size: 18px; }
-            .ghbn34 { width: 30px; height: 30px; }
-            .ghbn34 img { width: 50px; }
-            .tyui56 { font-size: 18px; }
-            .rtyu78 { padding: 6px 12px; font-size: 12px; }
-            .lkjh23 { font-size: 24px; }
-            .asdf11 { grid-template-columns: 1fr; }
-            .zxcv78 { width: 100%; height: 100px; }
-        }
-        /* 额外样式填充 */
-        body { background-attachment: fixed; background-size: cover; padding-bottom: 50px; min-height: 100vh; }
-        .xkjh89 { padding-top: 20px; padding-bottom: 20px; background-size: cover; }
-        .zxcv12 { margin-left: 10px; }
-        .rtyu78 { margin-right: 10px; }
-        .mnbv90 { padding-top: 50px; padding-bottom: 50px; background-size: cover; }
-        .lkjh23 { margin-top: 20px; }
-        .asdf11 { padding-top: 20px; padding-bottom: 20px; margin-bottom: 20px; }
-        .zxcv78 { padding-top: 20px; padding-bottom: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>电子圣经团契</title>
+  <link rel="icon" href="logo/ebfside.png">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    /* ========== 变量定义 ========== */
+    :root {
+      --primary-color: #4A90E2;
+      --secondary-color: #50E3C2;
+      --accent-color: #006eff; /* Gold for divine touch */
+      --bg-light: #F8FAFC;
+      --text-dark: #1A2A44;
+      --shadow-color: rgba(0, 0, 0, 0.15);
+      --btn-radius: 16px;
+      --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ========== 全局重置 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* ========== 顶部导航 ========== */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px var(--shadow-color);
+      z-index: 1000;
+    }
+    header .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform var(--transition-fast);
+    }
+    header .logo:hover {
+      transform: scale(1.05);
+    }
+    header .logo img {
+      height: 36px;
+      width: 36px;
+      border-radius: 8px;
+      filter: drop-shadow(0 2px 4px var(--shadow-color));
+    }
+    header .logo span {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      position: relative;
+    }
+    header .logo span::after {
+      content: "🦐"; /* Playful shrimp for 欧虾饺 */
+      position: absolute;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+    header .logo:hover span::after {
+      opacity: 1;
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+    }
+    header nav ul {
+      display: flex;
+      gap: 18px;
+      list-style: none;
+    }
+    header nav a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: var(--btn-radius);
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    header nav a i {
+      margin-right: 6px;
+      color: var(--primary-color);
+      transition: color var(--transition-fast);
+    }
+    header nav a:hover {
+      background: var(--primary-color);
+      color: #fff;
+    }
+    header nav a:hover i {
+      color: var(--accent-color);
+    }
+    header nav a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      background: var(--accent-color);
+      transition: width var(--transition-fast), left var(--transition-fast);
+    }
+    header nav a:hover::after {
+      width: 50%;
+      left: 25%;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text-dark);
+      cursor: pointer;
+      padding: 8px;
+      transition: color var(--transition-fast);
+    }
+    .hamburger:hover {
+      color: var(--primary-color);
+    }
+    .nav-menu {
+      display: flex;
+    }
+
+    /* ========== 欢迎区 ========== */
+    .hero {
+      text-align: center;
+      padding: 120px 32px;
+      background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(80, 227, 194, 0.2));
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+      opacity: 0.5;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      line-height: 1.4;
+      text-shadow: 0 2px 4px var(--shadow-color);
+      animation: fadeInUp 1s ease-out;
+    }
+    .hero h1 span {
+      color: var(--accent-color);
+    }
+    .hero button {
+      padding: 16px 48px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--primary-color);
+      border: none;
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    .hero button i {
+      margin-right: 8px;
+    }
+    .hero button:hover {
+      transform: translateY(-4px);
+      background: var(--secondary-color);
+      box-shadow: 0 8px 24px var(--shadow-color);
+    }
+
+    /* ========== 网格按钮区 ========== */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      padding: 48px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid-container .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border: 2px solid var(--primary-color);
+      border-radius: var(--btn-radius);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    .grid-container .btn i {
+      margin-right: 12px;
+      font-size: 1.3rem;
+      color: var(--accent-color);
+    }
+    .grid-container .btn:hover {
+      background: var(--primary-color);
+      color: #fff;
+      border-color: var(--secondary-color);
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 12px 24px var(--shadow-color);
+    }
+    .grid-container .btn::after {
+      content: "";
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      top: 100%;
+      left: -10%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(45deg);
+      transition: top 0.5s ease-out;
+    }
+    .grid-container .btn:hover::after {
+      top: -10%;
+    }
+
+    /* ========== 右下角“最新系列” ========== */
+    .latest {
+      position: fixed;
+      right: 32px;
+      bottom: 32px;
+      background: var(--accent-color);
+      color: var(--text-dark);
+      padding: 16px 24px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 16px var(--shadow-color);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-weight: 600;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .latest:hover {
+      transform: scale(1.1);
+      background: var(--secondary-color);
+      color: #fff;
+    }
+    .latest i {
+      font-size: 1.4rem;
+    }
+
+    /* ========== 响应式 ========== */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .grid-container {
+        gap: 16px;
+        padding: 24px 16px;
+      }
+      header {
+        padding: 10px 16px;
+      }
+      header .logo img {
+        height: 32px;
+        width: 32px;
+      }
+      header .logo span {
+        font-size: 1.1rem;
+      }
+      header nav ul {
+        gap: 12px;
+      }
+      header nav a {
+        font-size: 0.85rem;
+        padding: 6px 8px;
+      }
+    }
+    @media (max-width: 640px) {
+      .hamburger {
+        display: block;
+      }
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        padding: 16px;
+        box-shadow: 0 4px 20px var(--shadow-color);
+      }
+      .nav-menu.active {
+        display: flex;
+      }
+      header nav ul {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      header nav a {
+        font-size: 1rem;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      header nav a:hover::after {
+        width: 20%;
+        left: 0;
+      }
+    }
+
+    /* ========== 键帧动画 ========== */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .btn, .hero h1, .hero button {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+  </style>
 </head>
 <body>
-    <!-- 侧边栏（保持不变） -->
-    <div id="sidebar-left">
-        <img src="logo/ebfside.png" class="logo">
-        <div class="title">
-            <span>电子</span>
-            <span>圣经团契</span>
-        </div>
-        <p class="subtitle">生活在审判日里</p>
-        <div class="sadfds-container" id="sa d f d sContainer">
-            <input type="text" id="sadfdsInput" placeholder="搜索..." />
-            <button id="sadfdsButton">搜索</button>
-        </div>
-        <ul class="sidebar-list">
-            <li>
-                <a href="https://chineseebiblefellowship.pages.dev" class="sidebar-link">
-                    <i class="fas fa-home"></i>
-                    <span>首页</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://us02web.zoom.us/j/8721925979?pwd=aHpWQ0RBcCs2Um1NY1dXVFdrRDZOdz09" class="sidebar-link">
-                    <i class="fas fa-video"></i>
-                    <span>Zoom</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbiblestudy.html" class="sidebar-link">
-                    <i class="fas fa-book-open"></i>
-                    <span>圣经学习</span>
-                </a>
-            </li>
-            <li>
-                <a href="ebfbooks.html" class="sidebar-link">
-                    <i class="fas fa-book"></i>
-                    <span>书籍</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://www.newopenforum.org/" class="sidebar-link">
-                    <i class="fas fa-comments"></i>
-                    <span>圣经论坛</span>
-                </a>
-            </li>
+  <header>
+    <div class="logo">
+      <img src="logo/ebfside.png" alt="eBible Fellowship">
+      <span>电子圣经团契</span>
+    </div>
+    <nav>
+      <button class="hamburger" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-menu">
+        <ul>
+          <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+          <li><a href="audioresearch.html"><i class="fas fa-podcast"></i> 音频查考</a></li>
+          <li><a href="notfinish.html"><i class="fas fa-book-open"></i> 创世纪查考系列</a></li>
         </ul>
-        <div class="airtime-wrapper">
-            <div class="airtime-header">
-                <span class="text-blue">电子</span>圣经团契直播
-            </div>
-            <div class="airtime-player">
-                <iframe src="https://ebiblefellowshipcn.airtime.pro/embed/player?stream=auto&skin=2" allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="social-section">
-            <h3 class="social-title">
-                <span class="text-blue">电子</span>圣经团契社交媒体
-            </h3>
-            <div class="social-grid">
-                <a href="https://www.youtube.com/user/EBibleFellowship1" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <span class="social-label">YouTube</span>
-                </a>
-                <a href="https://www.tiktok.com/@ebiblefellowship" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <span class="social-label">TikTok</span>
-                </a>
-                <a href="https://www.facebook.com/groups/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </div>
-                    <span class="social-label">Facebook</span>
-                </a>
-            </div>
-            <div class="social-grid">
-                <a href="https://twitter.com/EBF2033" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <span class="social-label">Twitter</span>
-                </a>
-                <a href="https://open.spotify.com/show/2QaYhjDxUM6TYcFZS1k25N" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-spotify"></i>
-                    </div>
-                    <span class="social-label">Spotify</span>
-                </a>
-                <a href="https://www.instagram.com/ebiblefellowship/" class="social-item">
-                    <div class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <span class="social-label">Instagram</span>
-                </a>
-            </div>
-        </div>
-        <div class="contact-container" style="
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        max-width: 320px;
-        margin: 40px auto;
-        padding: 25px;
-        font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;">
-            <div class="contact-header" style="
-            background: #a7daff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: center;">
-                <h2 style="
-                color: #1a3a5e;
-                margin: 0;
-                font-size: 1.4em;
-                font-weight: 600;
-            ">联系我们</h2>
-            </div>
-            <address style="
-            text-align: center;
-            font-style: normal;
-            line-height: 1.6;
-            color: #444;
-            margin-bottom: 20px;">
-                <p style="margin: 10px 0;">
-                    <a href="mailto:htmlInfo@eBibleFellowship.org" style="
-                       color: #1e6bce;
-                       text-decoration: none;
-                       font-weight: 500;">
-                        Info@eBibleFellowship.org
-                    </a>
-                </p>
-                <p style="margin: 10px 0;">P.O. Box 1393</p>
-                <p style="margin: 10px 0;">Sharon Hill, PA 19079-0593</p>
-                <p style="margin: 10px 0;">USA</p>
-            </address>
-            <div class="copyright" style="
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 15px;">
-                © 2024 eBible Fellowship
-            </div>
-        </div>
-    </div>
+      </div>
+    </nav>
+  </header>
 
-    <!-- 顶栏 -->
-    <div class="xkjh89">
-        <div class="zxcv12">
-            <div class="ghbn34"><img src="logo/ebfside.png" alt="eBible Fellowship Logo"></div>
-            <span class="tyui56">电子圣经团契</span>
-        </div>
-        <button class="rtyu78" id="vbnm19">返回</button>
-    </div>
+  <section class="hero">
+    <h1>欢迎来到<span>电子圣经团契</span> </h1>
+    <button id="start-btn"><i class="fas fa-rocket"></i> 开始学习</button>
+  </section>
 
-    <!-- 主内容 -->
-    <div class="mnbv90">
-        <h1 class="lkjh23">查考音频索引</h1>
-        <div class="asdf11">
-            <a href="#" class="zxcv78"><span>✝</span>诗篇 37</a>
-            <a href="#" class="zxcv78"><span>✝</span>但以理书</a>
-            <a href="#" class="zxcv78"><span>✝</span>路加福音</a>
-            <a href="studyaudio/romanstudy.html" class="zxcv78"><span>✝</span>罗马书</a>
-            <a href="#" class="zxcv78"><span>✝</span>启示录</a>
-            <a href="#" class="zxcv78"><span>✝</span>末日圣经证据</a>
-        </div>
-    </div>
+  <main class="grid-container">
+    <div class="btn" onclick="window.location.href='Roman.html'"><i class="fas fa-bible"></i> 罗马书 2–5</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-cross"></i> 末日圣经证据</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-scroll"></i> 但以理书 1, 2, 3</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-pray"></i> 诗篇 37</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-church"></i> 路加福音</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-fire"></i> 启示录</div>
+    <div class="btn" onclick="window.location.href='notfinish.html'"><i class="fas fa-globe"></i> 创世纪查考系列</div>
+  </main>
 
-    <script>
-        // 返回按钮功能
-        document.getElementById('vbnm19').addEventListener('click', function() {
-            window.history.back();
-        });
+  <div class="latest" id="latest-btn">
+    <i class="fas fa-bolt"></i><span>最新系列</span>
+  </div>
 
-        // 日志记录
-        function logEvent(event) {
-            console.log(`Event: ${event.type} on ${event.target.tagName}`);
+  <script>
+    // Hamburger Menu Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      hamburger.querySelector('i').classList.toggle('fa-bars');
+      hamburger.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // Close menu when clicking a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        hamburger.querySelector('i').classList.add('fa-bars');
+        hamburger.querySelector('i').classList.remove('fa-times');
+      });
+    });
+
+    // 按钮点击水波纹效果
+    document.querySelectorAll('.btn, #start-btn, #latest-btn').forEach(el => {
+      el.addEventListener('click', e => {
+        const ripple = document.createElement('span');
+        const size = Math.max(el.offsetWidth, el.offsetHeight);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - el.getBoundingClientRect().left - size/2) + 'px';
+        ripple.style.top = (e.clientY - el.getBoundingClientRect().top - size/2) + 'px';
+        ripple.classList.add('ripple');
+        el.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // 动画样式注入
+    const styleTag = document.createElement('style');
+    styleTag.innerHTML = `
+      .ripple {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: ripple-effect 0.6s linear;
+        pointer-events: none;
+      }
+      @keyframes ripple-effect {
+        to { transform: scale(4); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(styleTag);
+
+    // “开始学习”跳转
+    document.getElementById('start-btn').addEventListener('click', () => {
+      window.location.href = 'Courses.html';
+    });
+
+    // “最新系列”跳转
+    document.getElementById('latest-btn').addEventListener('click', () => {
+      window.location.href = 'LatestSeries.html';
+    });
+
+    // 滚动时渐显效果
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = 'none';
         }
-        document.querySelectorAll('.zxcv78').forEach(btn => {
-            btn.addEventListener('mouseover', logEvent);
-            btn.addEventListener('mouseout', logEvent);
-        });
+      });
+    }, { threshold: 0.2 });
 
-        // 按钮动画初始化
-        function animateButtons() {
-            document.querySelectorAll('.zxcv78').forEach(btn => {
-                btn.style.opacity = '1';
-            });
-        }
-        window.addEventListener('load', animateButtons);
-
-        // 时间更新
-        function updateTime() {
-            const now = new Date();
-            console.log(now.toLocaleTimeString());
-        }
-        setInterval(updateTime, 1000);
-
-        // 窗口大小监控
-        function getWindowSize() {
-            return { width: window.innerWidth, height: window.innerHeight };
-        }
-        function logWindowSize() {
-            const size = getWindowSize();
-            console.log(`Window size: ${size.width}x${size.height}`);
-        }
-        window.addEventListener('resize', logWindowSize);
-
-        // 粒子效果
-        function createParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.style.position = 'absolute';
-            particle.style.width = '10px';
-            particle.style.height = '10px';
-            particle.style.background = '#ffd700';
-            particle.style.borderRadius = '50%';
-            particle.style.left = `${x}px`;
-            particle.style.top = `${y}px`;
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1000);
-        }
-        document.addEventListener('click', (e) => {
-            createParticle(e.clientX, e.clientY);
-        });
-
-        // 填充到接近900行
-        function dummyFunc1() { console.log('Dummy 1'); }
-        function dummyFunc2() { console.log('Dummy 2'); }
-        function dummyFunc3() { console.log('Dummy 3'); }
-        function dummyFunc4() { console.log('Dummy 4'); }
-        function dummyFunc5() { console.log('Dummy 5'); }
-        function dummyFunc6() { console.log('Dummy 6'); }
-        function dummyFunc7() { console.log('Dummy 7'); }
-        function dummyFunc8() { console.log('Dummy 8'); }
-        function dummyFunc9() { console.log('Dummy 9'); }
-        function dummyFunc10() { console.log('Dummy 10'); }
-        function dummyFunc11() { console.log('Dummy 11'); }
-        function dummyFunc12() { console.log('Dummy 12'); }
-        function dummyFunc13() { console.log('Dummy 13'); }
-        function dummyFunc14() { console.log('Dummy 14'); }
-        function dummyFunc15() { console.log('Dummy 15'); }
-        function dummyFunc16() { console.log('Dummy 16'); }
-        function dummyFunc17() { console.log('Dummy 17'); }
-        function dummyFunc18() { console.log('Dummy 18'); }
-        function dummyFunc19() { console.log('Dummy 19'); }
-        function dummyFunc20() { console.log('Dummy 20'); }
-        // 继续填充
-        for (let i = 21; i <= 200; i++) {
-            eval(`function dummyFunc${i}() { console.log('Dummy ${i}'); }`);
-        }
-    </script>
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.style.opacity = 0;
+      btn.style.transform = 'translateY(30px)';
+      observer.observe(btn);
+    });
+  </script>
 </body>
 </html>

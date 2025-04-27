@@ -15,7 +15,7 @@
             --text: #333333;
             --shadow: rgba(44, 62, 80, 0.15);
             --progress: #008cff;
-            --progress-bg: #dbdbdb; /* 进度条底色 */
+            --progress-bg: #dbdbdb;
         }
 
         * {
@@ -35,7 +35,6 @@
             overflow-y: auto;
         }
 
-        /* Top Bar Styling */
         .top-bar {
             position: fixed;
             top: 0;
@@ -113,23 +112,23 @@
         }
 
         .progress-container {
-            background: var(--progress-bg); /* 未播放时的底色 */
+            background: var(--progress-bg);
             border-radius: 5px;
-            height: 8px; /* 略微增高以提升美观 */
+            height: 8px;
             width: 100%;
             margin-bottom: 1.5rem;
             cursor: pointer;
             position: relative;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 内阴影增加质感 */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .progress {
             background: var(--progress);
             height: 100%;
-            width: 0; /* 初始宽度为0，但颜色可见 */
+            width: 0;
             border-radius: 5px;
-            transition: width 0.2s ease; /* 平滑过渡 */
-            box-shadow: 0 2px 5px rgba(0, 140, 255, 0.4); /* 进度条轻微发光，匹配蓝色主题 */
+            transition: width 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 140, 255, 0.4);
         }
 
         .time {
@@ -212,7 +211,6 @@
             margin-top: 1rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
             .player-container {
                 width: 90%;
@@ -244,11 +242,10 @@
     </style>
 </head>
 <body>
-    <!-- Top Bar -->
     <div class="top-bar">
         <div class="branding">电子圣经团契</div>
         <div class="audio-name" id="audioName">音频标题</div>
-        <button class="back-btn" onclick="history.back()">返回</button>
+        <button class="back-btn" onclick="window.location.href='index.html'">返回</button>
     </div>
 
     <div class="player-container">
@@ -288,14 +285,28 @@
     </div>
 
     <script>
+        // 文件列表（与 index.html 保持一致）
+        const files = [
+            { name: 'A Shelter in the Time of Storm - Piano.mp3', size: '2.7 MB', type: 'audio' },
+            { name: 'And Can It Be - Piano.mp3', size: '10.9 MB', type: 'audio' }
+        ];
+
         // 获取URL参数
         const urlParams = new URLSearchParams(window.location.search);
-        const audioPath = urlParams.get('path');
-        const audioName = urlParams.get('file') || '未知音频';
-        const defaultAudio = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+        const fileParam = urlParams.get('file'); // 例如 "NewFile/A Shelter in the Time of Storm - Piano.mp3"
+        let currentTrackIndex = 0;
+
+        // 初始化播放列表
+        if (fileParam) {
+            const fileName = decodeURIComponent(fileParam).replace('NewFile/', '');
+            currentTrackIndex = files.findIndex(file => file.name === fileName);
+            if (currentTrackIndex === -1) {
+                currentTrackIndex = 0; // 找不到文件，默认播放第一个
+            }
+        }
 
         // 初始化音频对象
-        const audio = new Audio(audioPath ? `/${audioPath}` : defaultAudio);
+        const audio = new Audio(fileParam ? fileParam : 'NewFile/' + files[0].name);
         const playPauseBtn = document.getElementById('playPauseBtn');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -315,13 +326,12 @@
         let isPlaying = false;
         let isLooping = false;
         let isShuffling = false;
+        let isDragging = false;
 
-        // 设置标题
-        audioTitle.textContent = audioName;
-        audioNameEl.textContent = audioName;
-        document.title = `播放 ${audioName} - 电子圣经团契`;
+        // 设置初始标题
+        updateTrackInfo();
 
-        // 初始化音频事件
+        // 音频事件
         audio.addEventListener('loadedmetadata', () => {
             durationEl.textContent = formatTime(audio.duration);
             progress.style.width = '0%';
@@ -329,7 +339,7 @@
         });
 
         audio.addEventListener('timeupdate', () => {
-            if (!isDragging) { // 仅在未拖动时自动更新，避免冲突
+            if (!isDragging) {
                 const percentage = (audio.currentTime / audio.duration) * 100;
                 progress.style.width = `${percentage}%`;
                 currentTimeEl.textContent = formatTime(audio.currentTime);
@@ -345,8 +355,8 @@
             }
         });
 
-        audio.addEventListener('error', (e) => {
-            errorMessage.textContent = '音频加载失败，请检查文件路径';
+        audio.addEventListener('error', () => {
+            errorMessage.textContent = '音频加载失败，请检查文件路径或返回重试';
             errorMessage.style.display = 'block';
             playPauseBtn.disabled = true;
         });
@@ -374,14 +384,12 @@
             const newTime = (clickX / width) * duration;
             audio.currentTime = newTime;
             const percentage = (newTime / duration) * 100;
-            progress.style.width = `${percentage}%`; // 立即更新进度条
-            currentTimeEl.textContent = formatTime(newTime); // 立即更新时间
+            progress.style.width = `${percentage}%`;
+            currentTimeEl.textContent = formatTime(newTime);
         }
 
         progressContainer.addEventListener('click', updateProgress);
 
-        // 添加拖动功能
-        let isDragging = false;
         progressContainer.addEventListener('mousedown', () => {
             isDragging = true;
         });
@@ -389,23 +397,17 @@
         document.addEventListener('mousemove', (e) => {
             if (isDragging) {
                 const rect = progressContainer.getBoundingClientRect();
-                const clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width)); // 限制在进度条范围内
+                const clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
                 const duration = audio.duration || 0;
                 const newTime = (clickX / rect.width) * duration;
                 audio.currentTime = newTime;
                 const percentage = (newTime / duration) * 100;
-                progress.style.width = `${percentage}%`; // 实时更新进度条
-                currentTimeEl.textContent = formatTime(newTime); // 实时更新时间
+                progress.style.width = `${percentage}%`;
+                currentTimeEl.textContent = formatTime(newTime);
             }
         });
 
         document.addEventListener('mouseup', () => {
-            if (isDragging && isPlaying) {
-                audio.play().catch(err => {
-                    errorMessage.textContent = `播放失败：${err.message}`;
-                    errorMessage.style.display = 'block';
-                });
-            }
             isDragging = false;
         });
 
@@ -443,12 +445,22 @@
             shuffleBtn.classList.toggle('active', isShuffling);
         });
 
-        // 上一首/下一首（示例功能）
-        prevBtn.addEventListener('click', () => alert('上一首功能待实现'));
-        nextBtn.addEventListener('click', () => alert('下一首功能待实现'));
+        // 上一首
+        prevBtn.addEventListener('click', () => {
+            if (isShuffling) {
+                currentTrackIndex = Math.floor(Math.random() * files.length);
+            } else {
+                currentTrackIndex = (currentTrackIndex - 1 + files.length) % files.length;
+            }
+            loadTrack(currentTrackIndex);
+        });
+
+        // 下一首
+        nextBtn.addEventListener('click', nextTrack);
 
         // 格式化时间
         function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
             const minutes = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
@@ -465,13 +477,42 @@
             }
         }
 
-        // 示例下一首逻辑（可扩展）
+        // 加载指定曲目
+        function loadTrack(index) {
+            const wasPlaying = isPlaying;
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+            }
+            audio.src = `NewFile/${files[index].name}`;
+            updateTrackInfo();
+            audio.load();
+            if (wasPlaying) {
+                audio.play().catch(err => {
+                    errorMessage.textContent = `播放失败：${err.message}`;
+                    errorMessage.style.display = 'block';
+                });
+                isPlaying = true;
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+        }
+
+        // 更新曲目信息
+        function updateTrackInfo() {
+            const trackName = files[currentTrackIndex].name;
+            audioTitle.textContent = trackName;
+            audioNameEl.textContent = trackName;
+            document.title = `播放 ${trackName} - 电子圣经团契`;
+        }
+
+        // 下一首逻辑
         function nextTrack() {
             if (isShuffling) {
-                alert('随机播放下一首待实现');
+                currentTrackIndex = Math.floor(Math.random() * files.length);
             } else {
-                alert('顺序播放下一首待实现');
+                currentTrackIndex = (currentTrackIndex + 1) % files.length;
             }
+            loadTrack(currentTrackIndex);
         }
     </script>
 </body>
