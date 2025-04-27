@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>在线 Word 查看器</title>
+    
+    <!-- 样式库 -->
+    <link href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- 文档解析库 -->
+    <script src="https://unpkg.com/mammoth@1.4.8/mammoth.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2B579A;
+            --background-light: #FFFFFF;
+            --background-dark: #1E1E1E;
+            --text-light: #333333;
+            --text-dark: #FFFFFF;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: var(--background-light);
+            color: var(--text-light);
+            transition: background 0.3s, color 0.3s;
+            overscroll-behavior: none;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* 地址栏样式 */
+        .address-bar {
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .address-text {
+            margin-left: 10px;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .address-buttons {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .address-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 6px;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: white;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .address-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 文档容器 */
+        .document-viewer {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+            background: white;
+            touch-action: manipulation;
+        }
+
+        /* 底部控制栏 */
+        .control-bar {
+            background: #F3F3F3;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .control-btn:hover {
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* 文档内容样式 */
+        .doc-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-size: 18px; /* 默认字体 */
+            font-family: 'Times New Roman', 'SimSun', serif;
+        }
+
+        /* Word 文档样式优化 */
+        .doc-content p {
+            margin: 0 0 12px 0;
+            font-size: inherit; /* 继承父级 font-size */
+            line-height: 1.15;
+        }
+
+        .doc-content h1, .doc-content h2, .doc-content h3, .doc-content h4, .doc-content h5, .doc-content h6 {
+            font-family: 'Times New Roman', 'SimHei', sans-serif;
+            margin: 24px 0 16px;
+            font-weight: bold;
+        }
+
+        .doc-content h1 { font-size: 1.33em; } /* 相对父级 font-size */
+        .doc-content h2 { font-size: 1.17em; }
+        .doc-content h3 { font-size: 1em; }
+
+        .doc-content ul, .doc-content ol {
+            margin: 12px 0;
+            padding-left: 40px;
+        }
+
+        .doc-content li {
+            margin-bottom: 6px;
+        }
+
+        .doc-content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .doc-content th, .doc-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 夜间模式 */
+        body.dark-mode {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .document-viewer {
+            background: #2D2D2D;
+        }
+
+        body.dark-mode .doc-content table {
+            border-color: #444;
+        }
+
+        body.dark-mode .doc-content th, body.dark-mode .doc-content td {
+            border-color: #444;
+        }
+
+        /* 缩放百分比膜 */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-size: 24px;
+            color: #333;
+            font-family: 'Segoe UI', sans-serif;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .zoom-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 地址栏 -->
+        <div class="address-bar">
+            <i class="ms-Icon ms-Icon--WordDocument"></i>
+            <span class="address-text" id="address"></span>
+            <div class="address-buttons">
+                <button class="address-btn" onclick="history.back()" title="返回">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button class="address-btn" onclick="shareDocument()" title="分享">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="address-btn" onclick="copyDocument()" title="复制">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 文档内容 -->
+        <div class="document-viewer">
+            <div class="doc-content" id="content"></div>
+        </div>
+
+        <!-- 底部控制 -->
+        <div class="control-bar">
+            <button class="control-btn" onclick="adjustFontSize(-2)" title="缩小字体">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="control-btn" onclick="toggleNightMode()" title="夜间模式">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" onclick="adjustFontSize(2)" title="放大字体">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <!-- 缩放百分比膜 -->
+        <div class="zoom-overlay" id="zoomOverlay">
+            <span id="zoomPercentage">100%</span>
+        </div>
+    </div>
+
+    <script>
+        // 初始化配置
+        const initialFontSize = 18; // 固定基准字体大小
+        let currentFontSize = initialFontSize; // 当前字体大小
+        let isNightMode = false;
+
+        // 页面加载时自动解析 URL 参数
+        window.addEventListener('load', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filePath = urlParams.get('file');
+            
+            if (filePath) {
+                document.getElementById('address').textContent = decodeURIComponent(filePath);
+                await loadDocument(filePath);
+            } else {
+                document.getElementById('content').innerHTML = 
+                    '<p class="ms-fontColor-redDark">未指定文档路径，请通过 URL 参数 ?file= 指定文档地址</p>';
+            }
+        });
+
+        // 加载并解析文档
+        async function loadDocument(path) {
+            try {
+                const response = await fetch(path);
+                if (!response.ok) throw new Error(`文件加载失败: ${response.status}`);
+                
+                const arrayBuffer = await response.arrayBuffer();
+                const { value: html } = await mammoth.convertToHtml({ arrayBuffer });
+                
+                document.getElementById('content').innerHTML = html;
+                applyWordStyles();
+                initGestureControl();
+            } catch (error) {
+                console.error('文档加载错误:', error);
+                document.getElementById('content').innerHTML = 
+                    `<p class="ms-fontColor-redDark">文档加载失败: ${error.message}</p>`;
+            }
+        }
+
+        // 应用 Word 样式
+        function applyWordStyles() {
+            const content = document.getElementById('content');
+            
+            // 表格样式
+            content.querySelectorAll('table').forEach(table => {
+                table.style.borderCollapse = 'collapse';
+                table.style.width = '100%';
+                table.style.margin = '20px 0';
+                table.querySelectorAll('td, th').forEach(cell => {
+                    cell.style.border = '1px solid #ddd';
+                    cell.style.padding = '8px';
+                });
+            });
+
+            // 标题样式
+            content.querySelectorAll('h1, h2, h3').forEach(heading => {
+                heading.style.color = isNightMode ? '#8CB4F4' : '#2B579A';
+                heading.style.margin = '24px 0 16px';
+            });
+        }
+
+        // 字体大小调整（按钮）
+        function adjustFontSize(delta) {
+            currentFontSize = Math.min(36, Math.max(10, currentFontSize + delta));
+            document.getElementById('content').style.fontSize = `${currentFontSize}px`;
+            updateZoomPercentage();
+        }
+
+        // 更新缩放百分比
+        function updateZoomPercentage() {
+            const percentage = Math.round((currentFontSize / initialFontSize) * 100);
+            document.getElementById('zoomPercentage').textContent = `${percentage}%`;
+        }
+
+        // 夜间模式切换
+        function toggleNightMode() {
+            isNightMode = !isNightMode;
+            document.body.classList.toggle('dark-mode');
+            applyWordStyles();
+        }
+
+        // 分享文档
+        function shareDocument() {
+            const shareData = {
+                title: '在线 Word 查看器 - 文档',
+                url: window.location.href
+            };
+            if (navigator.share) {
+                navigator.share(shareData).then(() => {
+                    console.log('分享成功');
+                }).catch(err => {
+                    console.error('分享失败:', err);
+                    alert('分享失败，请手动复制链接。');
+                });
+            } else {
+                navigator.clipboard.writeText(shareData.url).then(() => {
+                    alert('链接已复制到剪贴板！');
+                }).catch(err => {
+                    console.error('复制链接失败:', err);
+                    alert('复制失败，请手动复制链接。');
+                });
+            }
+        }
+
+        // 复制文档内容
+        function copyDocument() {
+            const content = document.getElementById('content');
+            const range = document.createRange();
+            range.selectNodeContents(content);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                alert('文档内容已复制到剪贴板！');
+            } catch (err) {
+                console.error('复制失败:', err);
+                navigator.clipboard.writeText(content.innerText).then(() => {
+                    alert('文档内容已复制到剪贴板！');
+                }).catch(err => {
+                    console.error('Fallback 复制失败:', err);
+                    alert('复制失败，请手动复制内容。');
+                });
+            }
+            selection.removeAllRanges();
+        }
+
+        // 手势控制初始化
+        function initGestureControl() {
+            let initialPinchDistance = null;
+            let baseFontSize = currentFontSize;
+            const docContent = document.querySelector('.doc-content');
+            const zoomOverlay = document.getElementById('zoomOverlay');
+            
+            // 双指缩放
+            document.querySelector('.document-viewer').addEventListener('touchstart', e => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    initialPinchDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    baseFontSize = currentFontSize;
+                    console.log('触控开始，初始距离:', initialPinchDistance, '初始字体:', baseFontSize);
+                    zoomOverlay.classList.add('show');
+                    updateZoomPercentage();
+                }
+            });
+
+            document.querySelector('.document-viewer').addEventListener('touchmove', e => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const currentDistance = Math.hypot(
+                        e.touches[0].clientX - e.touches[1].clientX,
+                        e.touches[0].clientY - e.touches[1].clientY
+                    );
+                    
+                    if (initialPinchDistance) {
+                        const ratio = currentDistance / initialPinchDistance;
+                        // 增强字体变化，增加灵敏度
+                        currentFontSize = Math.min(36, Math.max(10, baseFontSize * ratio));
+                        docContent.style.fontSize = `${currentFontSize}px`;
+                        console.log('触控移动，当前距离:', currentDistance, '字体大小:', currentFontSize, '比率:', ratio);
+                        updateZoomPercentage();
+                    }
+                }
+            });
+
+            // 触摸结束隐藏膜
+            document.addEventListener('touchend', () => {
+                if (initialPinchDistance !== null) {
+                    initialPinchDistance = null;
+                    console.log('触控结束，最终字体大小:', currentFontSize);
+                    setTimeout(() => {
+                        zoomOverlay.classList.remove('show');
+                    }, 500);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
