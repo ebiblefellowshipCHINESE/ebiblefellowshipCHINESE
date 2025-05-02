@@ -799,9 +799,7 @@
             <div class="submit-success-message" id="successMessage">
                 <i class="fas fa-check-circle"></i> 感谢您的联系！我们已收到您的信息。
             </div>
-            <div class="tyui12">
-                我们将在7个工作日内回复您
-            </div>
+           
         </div>
     
     <script>
@@ -1093,99 +1091,92 @@
     </form>
 </body>
 <script>
-    // 模拟文件数据（可替换为真实数据）
-    const files = [
-
-   
- //2
+const files = [
 { name: 'And Can It Be - Piano.mp3', size: '10.9 MB', type: 'audio' },
-    ];
+{ name: 'Document.docx', size: '1.2 MB', type: 'docx' },
+{ name: 'Report.pdf', size: '2.5 MB', type: 'pdf' }
+];
 
-    function getFileIcon(type) {
-        const icons = {
-            audio: 'fa-file-audio',
-            video: 'fa-file-video',
-            image: 'fa-file-image',
-            pdf: 'fa-file-pdf',
-            docx: 'fa-file-word',
-            default: 'fa-file'
-        };
-        return `<i class="fas ${icons[type] || icons.default} file-icon"></i>`;
+// 获取文件图标
+function getFileIcon(type) {
+const icons = {
+    audio: 'fa-file-audio',
+    video: 'fa-file-video',
+    image: 'fa-file-image',
+    pdf: 'fa-file-pdf',
+    docx: 'fa-file-word',
+    default: 'fa-file'
+};
+return `<i class="fas ${icons[type] || icons.default} file-icon"></i>`;
+}
+
+// 生成文件列表
+function generateFileList() {
+const fileList = document.getElementById('fileList');
+fileList.innerHTML = files.map(file => {
+    // 获取文件扩展名
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+    // 根据文件扩展名确定跳转的路径
+    let filePath = '#';
+    if (fileExtension === 'mp3' || fileExtension === 'm4a') {
+        filePath = `html/mp3.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
+    } else if (fileExtension === 'docx') {
+        filePath = `html/docx.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
+    } else if (fileExtension === 'pdf') {
+        filePath = `html/pdf.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
     }
 
-    function generateFileList() {
-        const fileList = document.getElementById('fileList');
-        fileList.innerHTML = files.map(file => {
-            // 获取文件扩展名
-            const fileExtension = file.name.split('.').pop().toLowerCase();
+    return `
+        <a href="${filePath}" class="file-item" target="_blank">
+            ${getFileIcon(file.type)}
+            <div class="file-info">
+                <div class="file-name">${file.name}</div>
+                <div class="file-details">
+                    ${file.type.toUpperCase()} • ${file.size}
+                </div>
+            </div>
+        </a>
+    `;
+}).join('');
+}
 
-            // 根据文件扩展名确定跳转的路径
-            let filePath = '#';
-                if (fileExtension === 'mp3' || fileExtension === 'm4a') {
-                    filePath = `html/mp3.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
-                } else if (fileExtension === 'pdf') {
-                    filePath = `html/pdf.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
-                } else if (fileExtension === 'docx') {
-                    filePath = `html/docx.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
-                } else if (fileExtension === 'jpg' || fileExtension === 'jpeg' || fileExtension === 'png') {
-                    filePath = `html/image.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
-                } else {
-                    filePath = `html/${fileExtension}.html?file=${encodeURIComponent(`NewFile/${file.name}`)}`;
-                }
+// 切换文件列表显示/隐藏
+function toggleFileList() {
+const fileList = document.getElementById('fileList');
+fileList.classList.toggle('show');
+}
 
+// 点击外部区域关闭文件列表
+document.addEventListener('click', (e) => {
+if (!e.target.closest('.file-container')) {
+    document.getElementById('fileList').classList.remove('show');
+}
+});
 
-            return `
-                <a href="${filePath}" class="file-item" target="_blank">
-                    ${getFileIcon(file.type)}
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-details">
-                            ${file.type.toUpperCase()} • ${file.size}
-                        </div>
-                    </div>
-                </a>
-            `;
-        }).join('');
+// 搜索功能
+const searchButton = document.querySelector('.srfatgrn');
+const searchInput = document.querySelector('.ssadfe');
+
+searchButton.addEventListener('click', function () {
+const searchTerm = searchInput.value;
+if (searchTerm.trim() !== '') {
+    // 这里可以添加实际的搜索逻辑，例如发送请求到服务器
+    alert(`你搜索的关键词是: ${searchTerm}`);
+}
+});
+
+searchInput.addEventListener('keydown', function (event) {
+if (event.key === 'Enter') {
+    const searchTerm = searchInput.value;
+    if (searchTerm.trim() !== '') {
+        // 这里可以添加实际的搜索逻辑，例如发送请求到服务器
+        alert(`你搜索的关键词是: ${searchTerm}`);
     }
+}
+});
 
-    function toggleFileList() {
-        const fileList = document.getElementById('fileList');
-        fileList.classList.toggle('show');
-    }
-
-    // 点击外部区域关闭列表
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.file-container')) {
-            document.getElementById('fileList').classList.remove('show');
-        }
-    });
-
-    // 初始化生成文件列表
-    generateFileList();
-</script>
-<script>
-    // 获取搜索按钮和输入框元素
-    const searchButton = document.querySelector('.srfatgrn');
-    const searchInput = document.querySelector('.s﻿sadfe');
-
-    // 为搜索按钮添加点击事件监听器
-    searchButton.addEventListener('click', function () {
-        const searchTerm = searchInput.value;
-        if (searchTerm.trim()!== '') {
-            // 这里可以添加实际的搜索逻辑，例如发送请求到服务器
-            alert(`你搜索的关键词是: ${searchTerm}`);
-        }
-    });
-
-    // 为输入框添加按下回车键事件监听器
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            const searchTerm = searchInput.value;
-            if (searchTerm.trim()!== '') {
-                // 这里可以添加实际的搜索逻辑，例如发送请求到服务器
-                alert(`你搜索的关键词是: ${searchTerm}`);
-            }
-        }
-    });
+// 初始化生成文件列表
+generateFileList();
 </script>
 </html>

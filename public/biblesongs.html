@@ -1,60 +1,685 @@
-<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-<script>
-// 播放器配置数据（只需加入这一段）
-const playersConfig = [
-    {
-        audio: {
-            url: 'https://example.com/song3.mp3',
-            name: '温暖阳光',
-            artist: '阳光乐队',
-            cover: 'https://example.com/cover3.jpg',
-            lrc: '[00:00.00]歌词内容3...'
-        },
-        theme: '#FF9800'
-    },
-    {
-        audio: {
-            url: 'https://example.com/song4.mp3',
-            name: '甜蜜回忆',
-            artist: '回忆组合',
-            cover: 'https://example.com/cover4.jpg',
-            lrc: '[00:00.00]歌词内容4...'
-        },
-        theme: '#E91E63'
-    },
-    {
-        audio: {
-            url: 'https://example.com/song5.mp3',
-            name: '深夜电台',
-            artist: '都市夜归人',
-            cover: 'https://example.com/cover5.jpg',
-            lrc: '[00:00.00]歌词内容5...'
-        },
-        theme: '#607D8B'
-    }
-];
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>电子圣经团契 - 圣经音乐</title>
+    <!-- 引入 APlayer 的 CSS 和 JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+    <style>
+        /* 全局样式：淡蓝色背景 */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #E6F0FF 0%, #FFFFFF 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', Roboto, sans-serif;
+            color: #1C2526;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-// 自动创建播放器 DOM 并初始化
-const container = document.querySelector('.player-container');
+        /* 头部：顶栏设计 */
+        header {
+            background: linear-gradient(90deg, #007AFF 0%, #40C4FF 100%);
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-in-out;
+        }
 
-playersConfig.forEach((config, index) => {
-    const id = `player${index + 1}`;
-    const div = document.createElement('div');
-    div.id = id;
-    div.className = 'aplayer';
-    container.appendChild(div);
+        /* Logo 和标题容器 */
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
 
-    new APlayer({
-        container: div,
-        fixed: false,
-        autoplay: false,
-        theme: config.theme,
-        loop: 'all',
-        preload: 'metadata',
-        volume: 0.7,
-        mutex: true,
-        lrcType: 3,
-        audio: config.audio
-    });
-});
-</script>
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            width: 50px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text .electronic {
+            color: #E6F0FF;
+        }
+
+        .logo-text .fellowship {
+            color: #FFFFFF;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        /* 导航链接 */
+        .header-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-right a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .header-right a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 返回按钮样式 */
+        .back-button {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 播放器容器样式 */
+        .players-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 120px 30px 30px;
+            gap: 25px;
+        }
+
+        .player-container {
+            width: 380px;
+            height: 420px;
+            background: linear-gradient(135deg, #F5F9FF 0%, #E6F0FF 100%);
+            border: 1px solid #B3D4FF;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .player-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.25);
+        }
+
+        .song-info {
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1C2526;
+            margin: 0;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #4B5EAA;
+            margin: 4px 0 0;
+        }
+
+        .album-cover {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .album-cover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(179, 212, 255, 0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .album-cover.playing::before {
+            opacity: 1;
+        }
+
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .album-cover.playing {
+            animation: rotate 12s linear infinite, pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #B3D4FF;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #40C4FF);
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+
+        .time {
+            color: #1C2526;
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: rgba(230, 240, 255, 0.8);
+            border: none;
+            color: #007AFF;
+            font-size: 22px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(230, 240, 255, 1);
+        }
+
+        .control-btn:active {
+            transform: scale(1);
+            background: rgba(179, 212, 255, 1);
+        }
+
+        .lrc-container {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto;
+            text-align: center;
+            color: #4B5EAA;
+            font-size: 20px;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .lrc-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .lrc-container::-webkit-scrollbar-thumb {
+            background: #007AFF;
+            border-radius: 2px;
+        }
+
+        .lrc-container p {
+            margin: 6px 0;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            font-weight: normal;
+        }
+
+        .lrc-container p.active {
+            opacity: 1;
+            transform: scale(1.05);
+            color: #007AFF;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* 隐藏 APlayer 默认界面 */
+        .aplayer {
+            display: none !important;
+            visibility: hidden !important;
+            position: absolute !important;
+            left: -9999px !important;
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .player-container {
+                width: 350px;
+                height: 400px;
+            }
+            .album-cover {
+                width: 160px;
+                height: 160px;
+            }
+            .time {
+                font-size: 11px;
+            }
+            .control-btn {
+                font-size: 20px;
+                width: 36px;
+                height: 36px;
+            }
+            .lrc-container {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .header-left {
+                flex-direction: column;
+                align-items: center;
+            }
+            .logo-container img {
+                width: 40px;
+            }
+            .logo-text {
+                font-size: 18px;
+            }
+            header h1 {
+                font-size: 20px;
+            }
+            .header-right {
+                gap: 10px;
+            }
+            .header-right a, .back-button {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            .players-wrap {
+                flex-direction: column;
+                padding: 100px 20px 20px;
+            }
+            .player-container {
+                width: 320px;
+                height: 380px;
+            }
+            .album-cover {
+                width: 140px;
+                height: 140px;
+            }
+            .time {
+                font-size: 10px;
+            }
+            .control-btn {
+                font-size: 18px;
+                width: 34px;
+                height: 34px;
+            }
+            .lrc-container {
+                font-size: 17px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 10px 15px;
+            }
+            .logo-container img {
+                width: 35px;
+            }
+            .logo-text {
+                font-size: 16px;
+            }
+            header h1 {
+                font-size: 18px;
+            }
+            .header-right a, .back-button {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+            .player-container {
+                width: 280px;
+                height: 360px;
+            }
+            .album-cover {
+                width: 120px;
+                height: 120px;
+            }
+            .time {
+                font-size: 9px;
+            }
+            .control-btn {
+                font-size: 16px;
+                width: 32px;
+                height: 32px;
+            }
+            .lrc-container {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="header-left">
+            <div class="logo-container">
+                <img src="logo/ebfside.png" alt="电子圣经团契 Logo">
+                <div class="logo-text">
+                    <span class="electronic">电子</span><span class="fellowship">圣经团契</span>
+                </div>
+            </div>
+            <h1>圣经音乐</h1>
+        </div>
+        <div class="header-right">
+            <a href="#" class="back-button">返回</a>
+            <a href="#">首页</a>
+        </div>
+    </header>
+
+    <!-- 音乐播放器容器 -->
+    <div class="players-wrap" id="players-wrap"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    <script>
+        // 音频素材
+        const audioList = [
+            {
+                name: '怎能如此',
+                artist: '电子圣经团契',
+                url: 'Hymns/andcanitbe.mp3',
+                cover: 'picture/Hymns.jpg',
+                lrc: `[00:06.34]怎能如此
+[00:12.00]eBibleFellowship-Hymns
+[00:21.07]怎能如此──像我这样罪人，
+[00:27.59]也蒙宝血救赎大恩？
+[00:35.06]主为我受痛苦鞭伤，
+[00:41.43]也为我死在十架上？
+[00:48.71]奇异的爱，怎能如此──
+[00:55.36]我主我神为我受死？
+[01:02.58]奇异的爱，怎能如此，
+[01:09.45]我主我神，竟为我死！
+[01:18.22]何等奇妙！永生主竟受死！
+[01:24.52]有谁能解释这奥祕？
+[01:31.78]神圣之爱，广阔深长，
+[01:38.48]最高天使也难测量，
+[01:45.52]上主怜悯，超过猜想，
+[01:51.99]世人都当敬拜景仰。
+[01:59.11]奇异的爱，怎能如此，
+[02:06.10]我主我神，竟为我死！
+[02:15.25]我主离开天上宝座荣华。
+[02:22.01]无量恩惠白白赐下，
+[02:29.15]谦卑虚已，显彰慈爱，
+[02:35.89]流血救赎亚当后代，
+[02:43.24]恩典怜爱，无边无涯，
+[02:49.80]罪人像我，竟蒙厚爱。
+[02:57.14]奇异的爱，怎能如此，
+[03:03.91]我主我神，竟为我死！
+[03:25.76]不再定罪，心中除尽忧愁；
+[03:32.67]我拥有主并祂所有。
+[03:40.75]主内生活让祂居首，
+[03:47.74]穿起义袍圣洁无垢；
+[03:55.45]坦然无惧到宝座前，
+[04:02.41]藉主救赎，获得冠冕。
+[04:10.25]奇异的爱，怎能如此，
+[04:17.99]我主我神，竟为我死！
+`
+            },
+          
+        ];
+
+        // 动态生成播放器
+        const playersWrap = document.getElementById('players-wrap');
+        audioList.forEach((audio, index) => {
+            const playerId = index + 1;
+
+            // 创建播放器容器
+            const playerContainer = document.createElement('div');
+            playerContainer.className = 'player-container';
+            playerContainer.innerHTML = `
+                <div class="album-cover">
+                    <img src="${audio.cover}" alt="专辑封面">
+                </div>
+                <div class="song-info">
+                    <h2 class="song-title" id="song-title-${playerId}">${audio.name}</h2>
+                    <p class="song-artist" id="song-artist-${playerId}">${audio.artist}</p>
+                </div>
+                <div class="progress-container">
+                    <span class="time" id="current-time-${playerId}">0:00</span>
+                    <div class="progress-bar" id="progress-bar-${playerId}">
+                        <div class="progress" id="progress-${playerId}"></div>
+                    </div>
+                    <span class="time" id="duration-${playerId}">0:00</span>
+                </div>
+                <div class="controls">
+                    <button class="control-btn" id="prev-${playerId}">⏮</button>
+                    <button class="control-btn" id="play-pause-${playerId}">▶</button>
+                    <button class="control-btn" id="next-${playerId}">⏭</button>
+                </div>
+                <div class="lrc-container" id="lrc-${playerId}"></div>
+            `;
+
+            // 创建 APlayer 容器
+            const aplayerContainer = document.createElement('div');
+            aplayerContainer.id = `aplayer-${playerId}`;
+            document.body.appendChild(aplayerContainer);
+            playersWrap.appendChild(playerContainer);
+
+            // 初始化播放器配置
+            const playerConfig = {
+                id: playerId,
+                container: aplayerContainer,
+                elements: {
+                    playPauseBtn: document.getElementById(`play-pause-${playerId}`),
+                    prevBtn: document.getElementById(`prev-${playerId}`),
+                    nextBtn: document.getElementById(`next-${playerId}`),
+                    progressBar: document.getElementById(`progress-bar-${playerId}`),
+                    progress: document.getElementById(`progress-${playerId}`),
+                    currentTime: document.getElementById(`current-time-${playerId}`),
+                    duration: document.getElementById(`duration-${playerId}`),
+                    lrcContainer: document.getElementById(`lrc-${playerId}`),
+                    albumCover: playerContainer.querySelector('.album-cover'),
+                    songTitle: document.getElementById(`song-title-${playerId}`),
+                    songArtist: document.getElementById(`song-artist-${playerId}`)
+                }
+            };
+
+            // 初始化 APlayer
+            const ap = new APlayer({
+                container: playerConfig.container,
+                audio: [audio],
+                lrcType: audio.lrc ? 3 : 0
+            });
+
+            const { playPauseBtn, prevBtn, nextBtn, progressBar, progress, currentTime, duration, lrcContainer, albumCover, songTitle, songArtist } = playerConfig.elements;
+
+            // 播放/暂停
+            playPauseBtn.addEventListener('click', () => {
+                try {
+                    ap.toggle();
+                } catch (error) {
+                    console.error(`播放器 ${playerConfig.id} 播放错误:`, error);
+                }
+            });
+
+            // 上一曲/下一曲
+            prevBtn.addEventListener('click', () => ap.skipBack());
+            nextBtn.addEventListener('click', () => ap.skipForward());
+
+            // 更新播放状态
+            ap.on('play', () => {
+                playPauseBtn.textContent = '⏸';
+                albumCover.classList.add('playing');
+            });
+            ap.on('pause', () => {
+                playPauseBtn.textContent = '▶';
+                albumCover.classList.remove('playing');
+            });
+
+            // 更新进度条和时间
+            ap.on('timeupdate', () => {
+                const current = ap.audio.currentTime;
+                const dur = ap.audio.duration || 0;
+                const percentage = dur ? (current / dur) * 100 : 0;
+                progress.style.width = percentage + '%';
+                currentTime.textContent = formatTime(current);
+                duration.textContent = formatTime(dur);
+            });
+
+            // 进度条交互
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const percentage = offsetX / rect.width;
+                const newTime = percentage * ap.audio.duration;
+                ap.audio.currentTime = newTime;
+            });
+
+            // 歌词处理
+            function initLyrics(lrc) {
+                if (!lrc) {
+                    lrcContainer.innerHTML = '<p>暂无歌词</p>';
+                    return;
+                }
+                const lines = lrc.split('\n').filter(line => line.trim());
+                lrcContainer.innerHTML = lines.map(line => `<p>${line.slice(10)}</p>`).join('');
+                ap.on('timeupdate', () => {
+                    const current = ap.audio.currentTime;
+                    const lrcLines = lrcContainer.querySelectorAll('p');
+                    lines.forEach((line, idx) => {
+                        const time = parseLrcTime(line.slice(1, 9));
+                        const nextTime = idx < lines.length - 1 ? parseLrcTime(lines[idx + 1].slice(1, 9)) : Infinity;
+                        lrcLines[idx].classList.toggle('active', current >= time && current < nextTime);
+                        if (lrcLines[idx].classList.contains('active')) {
+                            lrcContainer.scrollTop = lrcLines[idx].offsetTop - lrcContainer.offsetHeight / 2 + lrcLines[idx].offsetHeight / 2;
+                        }
+                    });
+                });
+            }
+
+            // 解析歌词时间
+            function parseLrcTime(timeStr) {
+                const [min, sec] = timeStr.split(':').map(parseFloat);
+                return min * 60 + sec;
+            }
+
+            // 格式化时间
+            function formatTime(seconds) {
+                const min = Math.floor(seconds / 60);
+                const sec = Math.floor(seconds % 60);
+                return min + ':' + (sec < 10 ? '0' : '') + sec;
+            }
+
+            // 初始化歌词
+            initLyrics(audio.lrc);
+
+            // 更新封面和歌曲信息
+            ap.on('listswitch', (idx) => {
+                const audioData = ap.list.audios[idx];
+                albumCover.querySelector('img').src = audioData.cover;
+                songTitle.textContent = audioData.name;
+                songArtist.textContent = audioData.artist;
+            });
+
+            // 错误处理
+            ap.on('error', (error) => {
+                console.error(`播放器 ${playerConfig.id} 错误:`, error);
+                alert(`播放器 ${playerConfig.id} 无法加载音频，请检查网络或音频 URL！`);
+            });
+        });
+    </script>
+</body>
+</html>
